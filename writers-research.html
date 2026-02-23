@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>नेपाली लेखक रिमोट आम्दानी अध्ययन २०२६</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@200;300;400;500;600;700;800&display=swap');
+
+body {
+font-family: 'Mukta', sans-serif;
+background-color: #f8fafc;
+}
+
+.glass-card {
+background: rgba(255, 255, 255, 0.95);
+backdrop-filter: blur(10px);
+border: 1px solid rgba(255, 255, 255, 0.2);
+box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+}
+
+.gradient-text {
+background: linear-gradient(90deg, #1e40af, #3b82f6);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+
+.category-card:hover {
+transform: translateY(-5px);
+transition: all 0.3s ease;
+}
+</style>
+</head>
+<body class="text-gray-800 leading-relaxed">
+
+<!-- Header Section -->
+<header class="bg-white border-b border-gray-100 sticky top-0 z-50">
+<div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+<h1 class="text-2xl font-bold gradient-text">साहित्यिक रिमोट अध्ययन <span class="text-sm font-normal text-gray-500">२०२६ संस्करण</span></h1>
+<button onclick="window.print()" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition">
+<i class="fas fa-download mr-2"></i> रिपोर्ट प्रिन्ट गर्नुहोस्
+</button>
+</div>
+</header>
+
+<main class="max-w-6xl mx-auto px-4 py-8">
+
+<!-- Executive Summary -->
+<section class="glass-card rounded-2xl p-8 mb-10 border-l-8 border-blue-600">
+<h2 class="text-3xl font-bold mb-4">१. कार्यकारी सारांश (Executive Summary)</h2>
+<p class="text-lg text-gray-600">
+२०२६ को डिजिटल युगमा नेपाली साहित्यकार र लेखकका लागि अवसरको ढोका विश्वव्यापी रूपमा खुलेको छ। अब लेखक केवल पुस्तकको रोयल्टीमा सीमित छैनन्। **AI Training**, **Global Localization**, र **Independent Publishing** मार्फत लेखकहरूले घरै बसेर मासिक $१,५०० देखि $४,००० सम्म कमाउन सक्ने आधारहरू यस अध्ययनले प्रस्तुत गरेको छ।
+</p>
+</section>
+
+<!-- Market Graphs -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+<div class="glass-card rounded-2xl p-6">
+<h3 class="text-xl font-bold mb-4 text-center">आम्दानीको सम्भावना (USD/महिना)</h3>
+<canvas id="incomeChart"></canvas>
+</div>
+<div class="glass-card rounded-2xl p-6">
+<h3 class="text-xl font-bold mb-4 text-center">बजार मागको हिस्सा (२०२६)</h3>
+<canvas id="demandChart"></canvas>
+</div>
+</section>
+
+<!-- Categories Section -->
+<section class="mb-10">
+<h2 class="text-3xl font-bold mb-8 text-center">२. मुख्य ६ कार्य क्षेत्रहरू (Key Categories)</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+<!-- AI Training -->
+<div class="glass-card p-6 rounded-xl category-card">
+<div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+<i class="fas fa-robot text-purple-600 text-xl"></i>
+</div>
+<h4 class="text-xl font-bold mb-2">AI भाषा विज्ञ (AI Training)</h4>
+<p class="text-sm text-gray-600 mb-4">ChatGPT/Gemini जस्ता AI मोडललाई नेपाली भाषाको शुद्धता र भावना सिकाउने।</p>
+<div class="bg-purple-50 p-3 rounded text-xs font-bold text-purple-700">
+सम्भावित आय: $२० - $३५ / घण्टा
+</div>
+</div>
+
+<!-- Self Publishing -->
+<div class="glass-card p-6 rounded-xl category-card">
+<div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+<i class="fas fa-book-open text-green-600 text-xl"></i>
+</div>
+<h4 class="text-xl font-bold mb-2">स्वतन्त्र ई-बुक प्रकाशन</h4>
+<p class="text-sm text-gray-600 mb-4">Amazon KDP र थुप्रै डटकममा आफ्ना पुस्तकहरू विश्वभरका नेपालीलाई बेच्ने।</p>
+<div class="bg-green-50 p-3 rounded text-xs font-bold text-green-700">
+सम्भावित आय: प्यासिभ (Unlimited)
+</div>
+</div>
+
+<!-- Specialized Translation -->
+<div class="glass-card p-6 rounded-xl category-card">
+<div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+<i class="fas fa-language text-blue-600 text-xl"></i>
+</div>
+<h4 class="text-xl font-bold mb-2">विशिष्टीकृत अनुवाद</h4>
+<p class="text-sm text-gray-600 mb-4">कानुनी, मेडिकल र प्राविधिक डकुमेन्टलाई अङ्ग्रेजीबाट नेपालीमा रूपान्तरण गर्ने।</p>
+<div class="bg-blue-50 p-3 rounded text-xs font-bold text-blue-700">
+सम्भावित आय: $०.०५ - $०.१५ / शब्द
+</div>
+</div>
+
+<!-- Ghostwriting -->
+<div class="glass-card p-6 rounded-xl category-card">
+<div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+<i class="fas fa-user-secret text-red-600 text-xl"></i>
+</div>
+<h4 class="text-xl font-bold mb-2">घोस्ट राइटिङ (Ghostwriting)</h4>
+<p class="text-sm text-gray-600 mb-4">ठूला व्यक्तित्व वा व्यवसायीका जीवनी र लेखहरू उनीहरूको नाममा लेखिदिने।</p>
+<div class="bg-red-50 p-3 rounded text-xs font-bold text-red-700">
+सम्भावित आय: ५ लाख - १५ लाख / पुस्तक
+</div>
+</div>
+
+<!-- Scriptwriting -->
+<div class="glass-card p-6 rounded-xl category-card">
+<div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
+<i class="fas fa-video text-yellow-600 text-xl"></i>
+</div>
+<h4 class="text-xl font-bold mb-2">पटकथा लेखन (Scripts)</h4>
+<p class="text-sm text-gray-600 mb-4">YouTube भिडियो, डकुमेन्ट्री र पोडकास्टका लागि आकर्षक स्क्रिप्टहरू तयार गर्ने।</p>
+<div class="bg-yellow-50 p-3 rounded text-xs font-bold text-yellow-700">
+सम्भावित आय: $१०० - $५०० / भिडियो
+</div>
+</div>
+
+<!-- Newsletters -->
+<div class="glass-card p-6 rounded-xl category-card">
+<div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
+<i class="fas fa-envelope-open-text text-indigo-600 text-xl"></i>
+</div>
+<h4 class="text-xl font-bold mb-2">डिजिटल न्यूजलेटर (Substack)</h4>
+<p class="text-sm text-gray-600 mb-4">आफ्ना विशेष लेखहरू सिधै पाठकको ईमेलमा पठाउने र मासिक शुल्क लिने।</p>
+<div class="bg-indigo-50 p-3 rounded text-xs font-bold text-indigo-700">
+सम्भावित आय: रु ५०० - रु २००० / ग्राहक
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- Deep Strategy Section -->
+<section class="glass-card rounded-2xl p-8 mb-10">
+<h2 class="text-2xl font-bold mb-6 border-b pb-4">३. गहिरो विश्लेषण र सफलताको कडी (Deep Insights)</h2>
+<div class="space-y-6">
+<div>
+<h4 class="font-bold text-blue-700"><i class="fas fa-check-circle mr-2"></i> बजारको खाडल (Market Gap):</h4>
+<p class="text-gray-600">अहिले अन्तर्राष्ट्रिय कम्पनीहरूमा "नेपाली भाषाको शुद्ध र औपचारिक लेखन" गर्ने जनशक्तिको ठूलो अभाव छ। यदि तपाईंको नेपाली व्याकरण राम्रो छ भने, यो तपाईंको सबैभन्दा ठूलो शक्ति हो।</p>
+</div>
+<div>
+<h4 class="font-bold text-blue-700"><i class="fas fa-check-circle mr-2"></i> भुक्तानीको समस्या समाधान:</h4>
+<p class="text-gray-600">नेपाल राष्ट्र बैंकले जारी गरेको ५०० डलरको प्रिपेड कार्ड र Payoneer मार्फत तपाईंले सिधै डलरमा भुक्तानी लिन र विज्ञापन खर्च गर्न सक्नुहुन्छ।</p>
+</div>
+<div>
+<h4 class="font-bold text-blue-700"><i class="fas fa-check-circle mr-2"></i> एआई (AI) सँग सहकार्य:</h4>
+<p class="text-gray-600">AI लाई आफ्नो शत्रु होइन, सहयोगी बनाउनुहोस्। अनुवाद गर्दा पहिले AI को सहायता लिनुहोस् र पछि आफ्नो साहित्यिक ज्ञान प्रयोग गरेर त्यसलाई "Human Touch" दिनुहोस्। यसले तपाईंको उत्पादकत्व ५ गुणा बढाउँछ।</p>
+</div>
+</div>
+</section>
+
+<!-- Action Plan -->
+<section class="bg-blue-900 text-white rounded-2xl p-8">
+<h2 class="text-2xl font-bold mb-6 text-center">४. तत्काल सुरु गर्ने कार्ययोजना (5-Step Action Plan)</h2>
+<div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+<div class="text-center p-4">
+<div class="text-3xl font-bold text-blue-400 mb-2">१</div>
+<div class="text-sm font-semibold">पोर्टफोलियो बनाउने (LinkedIn/Proz)</div>
+</div>
+<div class="text-center p-4">
+<div class="text-3xl font-bold text-blue-400 mb-2">२</div>
+<div class="text-sm font-semibold">AI ट्यागिङ साइटमा दर्ता हुने (Outlier)</div>
+</div>
+<div class="text-center p-4">
+<div class="text-3xl font-bold text-blue-400 mb-2">३</div>
+<div class="text-sm font-semibold">अघिल्ला कृति डिजिटल गर्ने (E-book)</div>
+</div>
+<div class="text-center p-4">
+<div class="text-3xl font-bold text-blue-400 mb-2">४</div>
+<div class="text-sm font-semibold">भुक्तानी गेटवे मिलाउने (Payoneer)</div>
+</div>
+<div class="text-center p-4">
+<div class="text-3xl font-bold text-blue-400 mb-2">५</div>
+<div class="text-sm font-semibold">नियमित नेटवर्किङ सुरु गर्ने</div>
+</div>
+</div>
+</section>
+
+</main>
+
+<footer class="bg-white border-t border-gray-100 py-10 mt-10">
+<div class="max-w-6xl mx-auto px-4 text-center">
+<p class="text-gray-500 text-sm">© २०२६ नेपाली साहित्यिक रिमोट अध्ययन रिपोर्ट | शब्दको शक्ति, डिजिटलको गति।</p>
+</div>
+</footer>
+
+<script>
+// Income Potential Chart
+const ctxIncome = document.getElementById('incomeChart').getContext('2d');
+new Chart(ctxIncome, {
+type: 'bar',
+data: {
+labels: ['AI Specialist', 'Ghostwriting', 'E-Publishing', 'Specialized Trans', 'Scriptwriting'],
+datasets: [{
+label: 'मासिक आम्दानी ($)',
+data: [3500, 2500, 1800, 2000, 1500],
+backgroundColor: 'rgba(59, 130, 246, 0.7)',
+borderColor: 'rgba(59, 130, 246, 1)',
+borderWidth: 1,
+borderRadius: 8
+}]
+},
+options: {
+responsive: true,
+plugins: { legend: { display: false } },
+scales: { y: { beginAtZero: true } }
+}
+});
+
+// Market Demand Pie Chart
+const ctxDemand = document.getElementById('demandChart').getContext('2d');
+new Chart(ctxDemand, {
+type: 'doughnut',
+data: {
+labels: ['AI Training', 'Localization', 'E-books', 'Corporate Writing', 'Others'],
+datasets: [{
+data: [40, 25, 15, 10, 10],
+backgroundColor: [
+'#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ef4444'
+],
+hoverOffset: 4
+}]
+},
+options: {
+responsive: true,
+plugins: {
+legend: { position: 'bottom' }
+}
+}
+});
+</script>
+</body>
+</html>
