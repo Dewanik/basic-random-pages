@@ -1,0 +1,20 @@
+<FUNC, [1,1]> <<new symbol table entity (0, "main")>><ID, attr:sym-id:0, [1,6]> <TYPEOF, [1,11]> <VOID, [1,14]> <LPAREN, [1,19]> <BOOL, [1,21]> <RPAREN, [1,26]>
+<BEGIN, [2,1]>
+    <IF, [3,5]> <<new symbol table entity (1, "a")>><ID, attr:sym-id:1, [3,8]> <RELOP, attr:"=", [3,10]><RELOP, attr:"=", [3,11]> <INT_VALUE, attr:"1", [3,13]> <THEN, [3,15]>
+        <ID, attr:sym-id:0, [4,9]> <ASSIGN, [4,14]> <INT_VALUE, attr:"1", [4,17]><SEMI, [4,18]>
+    <ELSE, [5,5]>
+        <ID, attr:sym-id:0, [6,9]> <ASSIGN, [6,14]> <ID, attr:sym-id:1, [6,17]> <OP, attr:"+", [6,19]> <INT_VALUE, attr:"2", [6,21]><SEMI, [6,22]>
+    <END, [7,5]>
+    <ID, attr:sym-id:1, [8,5]> <ASSIGN, [8,7]> <INT_VALUE, attr:"3", [8,10]> <OP, attr:"+", [8,12]> <ID, attr:sym-id:1, [8,14]><SEMI, [8,15]> // hello
+    <<new symbol table entity (2, "b")>><ID, attr:sym-id:2, [9,5]> <ASSIGN, [9,7]> <ID, attr:sym-id:1, [9,10]> /* + 4;
+    _c := a + b; % hello
+    d := b */<OP, attr:"+", [11,14]> <<new symbol table entity (3, "c")>><ID, attr:sym-id:3, [11,16]><SEMI, [11,17]>
+    <PRINT, [12,5]> <<new symbol table entity (4, "d")>><ID, attr:sym-id:4, [12,11]><SEMI, [12,12]>
+<END, [13,1]>
+
+<FUNC, [15,1]> <VAR, [15,6]> <VOID, [15,10]> <BOOL, [15,15]> <INT, [15,20]> <FLOAT, [15,24]> <STRUCT, [15,30]> <SIZE, [15,37]> <NEW, [15,42]> <BEGIN, [15,46]> <END, [15,52]>
+<IF, [16,1]> <THEN, [16,4]> <ELSE, [16,9]> <WHILE, [16,14]> <RETURN, [16,20]> <BREAK, [16,27]> <CONTINUE, [16,33]> <PRINT, [16,42]> <BOOL_VALUE, attr:"true", [16,48]> <BOOL_VALUE, attr:"false", [16,53]>
+<LPAREN, [17,1]> <RPAREN, [17,3]> <LBRACKET, [17,5]> <RBRACKET, [17,7]> <ASSIGN, [17,9]> <TYPEOF, [17,12]> <SEMI, [17,15]> <COMMA, [17,17]> <DOT, [17,19]> <ADDROF, [17,21]> <VALUEAT, [17,23]>
+<OP, attr:"+", [18,1]> <OP, attr:"-", [18,3]> <OP, attr:"*", [18,5]> <OP, attr:"/", [18,7]> <OP, attr:"%", [18,9]> <OP, attr:"and", [18,11]> <OP, attr:"or", [18,15]> <OP, attr:"not", [18,18]>
+<RELOP, attr:"=", [19,1]> <RELOP, attr:"<>", [19,3]> <RELOP, attr:"<", [19,6]> <RELOP, attr:">", [19,8]> <RELOP, attr:"<=", [19,10]> <RELOP, attr:">=", [19,13]> 
+Lexical error: unexpected character '#' at 19:16.
