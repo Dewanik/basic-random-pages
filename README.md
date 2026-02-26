@@ -13,6 +13,17 @@ The goal is simple: make it easy for anyone to open and view these files directl
 ## Files
 
 <!-- FILE_LIST_START -->
+- [content-edit-40-60.html](content-edit-40-60.html)
+- [lexical_analyzer/src/Readme.txt](lexical_analyzer/src/Readme.txt)
+- [lexical_analyzer/test/_out_test5_now.txt](lexical_analyzer/test/_out_test5_now.txt)
+- [lexical_analyzer/test/_out_testpreproc_now.txt](lexical_analyzer/test/_out_testpreproc_now.txt)
+- [lexical_analyzer/test/testsolu1.txt](lexical_analyzer/test/testsolu1.txt)
+- [lexical_analyzer/test/testsolu2.txt](lexical_analyzer/test/testsolu2.txt)
+- [lexical_analyzer/test/testsolu3.txt](lexical_analyzer/test/testsolu3.txt)
+- [lexical_analyzer/test/testsolu4.txt](lexical_analyzer/test/testsolu4.txt)
+- [lexical_analyzer/test/testsolu5.txt](lexical_analyzer/test/testsolu5.txt)
+- [lexical_analyzer/test/testsolu6.txt](lexical_analyzer/test/testsolu6.txt)
+- [lexical_analyzer/test/testsolupreproc.txt](lexical_analyzer/test/testsolupreproc.txt)
 - [writers-research.html](writers-research.html)
 - [writers2.html](writers2.html)
 <!-- FILE_LIST_END -->
