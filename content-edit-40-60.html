@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>डिजिटल यात्रा: ४०-६० वर्षका लागि विशेष गाइड</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <!-- Chosen Palette: Himalayan Warmth - Deep Red, Golden Yellow, and Creamy White for familiarity and readability -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'nepal-red': '#B11030',
+                        'nepal-blue': '#003893',
+                        'nepal-gold': '#F2A900',
+                        'warm-cream': '#FDFCF0',
+                        'deep-gray': '#333333'
+                    },
+                    fontFamily: {
+                        sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-size: 19px; line-height: 1.6; }
+        .nav-active { border-bottom: 4px solid #B11030; color: #B11030; font-weight: bold; }
+        .chart-container { position: relative; width: 100%; max-width: 500px; margin: auto; height: 300px; }
+        .step-num { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #B11030; color: white; font-weight: bold; }
+        .card { background: white; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s; }
+        .card:hover { transform: translateY(-3px); }
+        .loading-spinner { border: 4px solid rgba(0, 0, 0, 0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: #B11030; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+    <!-- Application Structure Plan:
+         यो एप ४०-६० वर्षका नेपाली दाजुभाइ तथा दिदीबहिनीहरूका लागि बनाइएको हो।
+         १. गृहपृष्ठ (Home): किन सिक्ने? भन्ने कुरामा केन्द्रित।
+         २. उपकरण (Tools): स्मार्टफोन र कम्प्युटर रोज्ने सुविधा।
+         ३. खोज विधि (Research): युट्युब र गुगल प्रयोग गर्ने तरिका।
+         ४. तालिका (Schedule): ३० दिनको स्पष्ट कार्यतालिका।
+         ५. प्रयोगशाला (Lab): सम्पादनका शब्दहरू चित्रमार्फत बुझाइएको।
+         ६. एआई सहयोगी (AI ✨): Gemini API को प्रयोग गरेर भिडियो आइडिया र स्क्रिप्ट जेनेरेट गर्ने नयाँ फिचर।
+    -->
+</head>
+<body class="bg-warm-cream text-deep-gray font-sans">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center py-4">
+                <div class="flex items-center space-x-3 mb-4 md:mb-0">
+                    <div class="w-12 h-12 bg-nepal-red rounded-full flex items-center justify-center text-white text-2xl">🇳🇵</div>
+                    <span class="text-2xl font-bold text-nepal-blue">डिजिटल यात्रा</span>
+                </div>
+                <div class="flex flex-wrap justify-center gap-4 text-lg" id="nav-links">
+                    <button onclick="navigate('home')" class="nav-btn nav-active pb-1">सुरुवात</button>
+                    <button onclick="navigate('tools')" class="nav-btn pb-1">उपकरण</button>
+                    <button onclick="navigate('research')" class="nav-btn pb-1">सिक्ने विधि</button>
+                    <button onclick="navigate('schedule')" class="nav-btn pb-1">कार्ययोजना</button>
+                    <button onclick="navigate('lab')" class="nav-btn pb-1">सम्पादन ज्ञान</button>
+                    <button onclick="navigate('ai-helper')" class="nav-btn pb-1 text-nepal-red font-bold">एआई सहयोगी ✨</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-10 max-w-5xl">
+
+        <!-- SECTION: HOME -->
+        <section id="home" class="block space-y-8">
+            <div class="bg-white p-8 rounded-3xl shadow-sm border-l-8 border-nepal-red">
+                <h1 class="text-4xl font-bold text-nepal-blue mb-4">तपाईंको नयाँ सिर्जनात्मक यात्रा यहाँबाट सुरु हुन्छ!</h1>
+                <p class="text-xl mb-6">
+                    नमस्कार! ४० देखि ६० वर्षको उमेर भनेको ज्ञान र अनुभवको खानी हो। अब आफ्नो यो ज्ञानलाई भिडियोको माध्यमबाट संसारमाझ बाँड्ने समय आएको छ। प्रविधि सिक्न कहिल्यै ढिलो हुँदैन। हामी तपाईंलाई एकदमै सरल तरिकाले सिकाउनेछौं।
+                </p>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-semibold text-nepal-red">यस गाइडबाट तपाईंले के पाउनुहुन्छ?</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-center gap-3">
+                                <span class="text-green-600 text-2xl">✔</span> <span>मोबाइलबाटै भिडियो खिच्न र एडिट गर्न।</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-green-600 text-2xl">✔</span> <span>युट्युबमा आफ्ना कुराहरू राख्न।</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-green-600 text-2xl">✔</span> <span>नयाँ: एआईको मद्दतले भिडियो आइडिया पाउन ✨</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="p-6 bg-gray-50 rounded-2xl">
+                        <h4 class="text-center font-bold mb-4">समयको सही सदुपयोग</h4>
+                        <div class="chart-container">
+                            <canvas id="homeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: TOOLS -->
+        <section id="tools" class="hidden space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-nepal-blue">तपाईंसँग कुन साधन छ?</h2>
+                <p class="mt-2">आफुसँग भएको साधन छान्नुहोस्, हामी त्यही अनुसार सिकाउनेछौं।</p>
+            </div>
+
+            <div class="flex justify-center gap-6">
+                <button onclick="toggleDevice('mobile')" id="btn-mobile" class="px-8 py-4 rounded-2xl font-bold text-xl shadow-md transition-all bg-nepal-red text-white">स्मार्टफोन (Mobile)</button>
+                <button onclick="toggleDevice('pc')" id="btn-pc" class="px-8 py-4 rounded-2xl font-bold text-xl shadow-md transition-all bg-white text-gray-600">कम्प्युटर (PC/Laptop)</button>
+            </div>
+
+            <div id="tools-display" class="grid md:grid-cols-2 gap-8 mt-10">
+                <!-- Data Injected by JS -->
+            </div>
+        </section>
+
+        <!-- SECTION: RESEARCH -->
+        <section id="research" class="hidden space-y-8">
+            <div class="bg-white p-8 rounded-3xl shadow-sm">
+                <h2 class="text-3xl font-bold text-nepal-blue mb-6">सिक्ने तरिका: 'स्मार्ट' खोज</h2>
+                <p class="text-lg mb-8">गुगल र युट्युबमा खोज्दा सही शब्द प्रयोग गरेमा सजिला भिडियोहरू भेटिन्छन्।</p>
+                
+                <div class="grid gap-6">
+                    <div class="flex gap-5 p-6 bg-blue-50 rounded-2xl border border-blue-100">
+                        <div class="step-num">१</div>
+                        <div>
+                            <h4 class="font-bold text-xl mb-2">सही शब्द (Keywords) को प्रयोग</h4>
+                            <p>खोज्दा सधैं "for beginners" वा "Nepali" थप्नुहोस्।</p>
+                            <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div class="bg-white p-3 rounded shadow-sm text-sm italic">"InShot editing tutorial Nepali"</div>
+                                <div class="bg-white p-3 rounded shadow-sm text-sm italic">"How to use CapCut for beginners"</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-5 p-6 bg-green-50 rounded-2xl border border-green-100">
+                        <div class="step-num">२</div>
+                        <div>
+                            <h4 class="font-bold text-xl mb-2">राम्रो गुरु कसरी चिन्ने?</h4>
+                            <p>जुन भिडियोमा बिस्तारै बोलिएको छ र बटनहरू स्पष्ट देखाइएको छ, त्यही हेर्नुहोस्। धेरै छिटो बोल्ने वा हल्ला गर्ने भिडियो छोडिदिनुहोस्।</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: SCHEDULE -->
+        <section id="schedule" class="hidden space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-nepal-blue">३० दिनको पाइला-पाइला योजना</h2>
+                <div class="flex flex-wrap justify-center gap-3 mt-4">
+                    <button onclick="renderWeek(1)" id="w1" class="week-btn px-6 py-2 rounded-full bg-nepal-red text-white font-bold">हप्ता १</button>
+                    <button onclick="renderWeek(2)" id="w2" class="week-btn px-6 py-2 rounded-full bg-white shadow-sm">हप्ता २</button>
+                    <button onclick="renderWeek(3)" id="w3" class="week-btn px-6 py-2 rounded-full bg-white shadow-sm">हप्ता ३</button>
+                    <button onclick="renderWeek(4)" id="w4" class="week-btn px-6 py-2 rounded-full bg-white shadow-sm">हप्ता ४</button>
+                </div>
+            </div>
+            <div id="schedule-display" class="bg-white p-8 rounded-3xl shadow-md min-h-[300px]">
+                <!-- Data Injected by JS -->
+            </div>
+        </section>
+
+        <!-- SECTION: LAB -->
+        <section id="lab" class="hidden space-y-8">
+            <div class="bg-white p-8 rounded-3xl shadow-sm border-t-8 border-nepal-gold">
+                <h2 class="text-3xl font-bold text-nepal-blue mb-4">भिडियो सम्पादन (Editing) का मुख्य कुराहरू</h2>
+                <div class="grid md:grid-cols-2 gap-10">
+                    <div>
+                        <h4 class="font-bold text-xl mb-4">१. समयरेखा (Timeline)</h4>
+                        <div class="bg-gray-800 h-24 rounded-lg flex items-center px-4 gap-2 relative overflow-hidden">
+                            <div class="bg-blue-500 h-12 w-24 rounded border border-white flex items-center justify-center text-white text-xs">क्लिप १</div>
+                            <div class="bg-blue-600 h-12 w-32 rounded border border-white flex items-center justify-center text-white text-xs">क्लिप २</div>
+                            <div class="absolute left-1/2 top-0 bottom-0 w-1 bg-red-500 shadow-lg"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-xl mb-4">२. काट्ने (Trimming)</h4>
+                        <div class="flex items-center gap-2">
+                            <div class="h-6 bg-red-200 w-10 rounded-l"></div>
+                            <div class="h-10 bg-green-500 flex-grow rounded flex items-center justify-center text-white text-xs font-bold">राम्रो भाग</div>
+                            <div class="h-6 bg-red-200 w-10 rounded-r"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: AI HELPER ✨ -->
+        <section id="ai-helper" class="hidden space-y-8">
+            <div class="bg-white p-8 rounded-3xl shadow-sm border-t-8 border-nepal-red">
+                <h2 class="text-3xl font-bold text-nepal-blue mb-4">एआई सहयोगी ✨</h2>
+                <p class="text-lg mb-8">भिडियो बनाउन सुरु गर्न गाह्रो भइरहेको छ? चिन्ता नलिनुहोस्, हाम्रो एआई मेन्टरले तपाईंलाई मद्दत गर्नेछ।</p>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Idea Generator -->
+                    <div class="p-6 bg-nepal-gold/10 rounded-2xl border border-nepal-gold/20">
+                        <h3 class="text-xl font-bold mb-4">भिडियो आइडिया जेनेरेटर ✨</h3>
+                        <p class="text-sm mb-4 italic">तपाईंलाई कुन विषयमा रुचि छ? (जस्तै: कुकिङ, बगैँचा, पूजा-पाठ, कथा सुनाउने)</p>
+                        <input type="text" id="ai-topic" placeholder="आफ्नो रुचि लेख्नुहोस्..." class="w-full p-3 rounded-lg border border-gray-300 mb-4 focus:ring-2 focus:ring-nepal-red outline-none">
+                        <button onclick="generateIdeas()" class="w-full bg-nepal-red text-white font-bold py-3 rounded-xl hover:bg-red-700 transition">आइडिया खोज्नुहोस् ✨</button>
+                        <div id="ai-ideas-output" class="mt-6 space-y-3"></div>
+                    </div>
+
+                    <!-- Script Generator -->
+                    <div class="p-6 bg-nepal-blue/5 rounded-2xl border border-nepal-blue/10">
+                        <h3 class="text-xl font-bold mb-4">स्क्रिप्ट सहायक ✨</h3>
+                        <p class="text-sm mb-4 italic">कुनै एउटा आइडिया यहाँ लेख्नुहोस्, हामी तपाईंलाई के बोल्ने र कसरी खिच्ने भनेर सिकाउँछौं।</p>
+                        <textarea id="ai-script-input" placeholder="भिडियोको मुख्य कुरा यहाँ लेख्नुहोस्..." class="w-full p-3 h-24 rounded-lg border border-gray-300 mb-4 focus:ring-2 focus:ring-nepal-blue outline-none resize-none"></textarea>
+                        <button onclick="generateScript()" class="w-full bg-nepal-blue text-white font-bold py-3 rounded-xl hover:bg-blue-800 transition">स्क्रिप्ट तयार पार्नुहोस् ✨</button>
+                        <div id="ai-script-output" class="mt-6 p-4 bg-white rounded-lg border border-gray-200 text-sm whitespace-pre-wrap hidden"></div>
+                    </div>
+                </div>
+
+                <!-- AI Loading Modal -->
+                <div id="ai-loading" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[100]">
+                    <div class="bg-white p-8 rounded-2xl flex flex-col items-center">
+                        <div class="loading-spinner mb-4"></div>
+                        <p class="font-bold">एआईले सोच्दैछ... कृपया पर्खनुहोस्।</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-nepal-blue text-white py-12 mt-20">
+        <div class="container mx-auto px-4 text-center">
+            <h3 class="text-2xl font-bold mb-4">अघि बढ्नुहोस्, संसार तपाईंको कथा सुन्न पर्खिरहेको छ!</h3>
+            <p class="opacity-80">नेपाली सिर्जनाकर्ताहरूका लागि एक सानो प्रयास।</p>
+        </div>
+    </footer>
+
+    <script>
+        // API Configuration
+        const apiKey = ""; // Empty as required
+        
+        async function callGemini(prompt) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                systemInstruction: { 
+                    parts: [{ text: "तपाईं ४० देखि ६० वर्षका नेपालीहरूको लागि एक सहयोगी डिजिटल गुरु हुनुहुन्छ। सधैं सरल, सम्मानजनक र उत्साहजनक नेपाली भाषामा कुरा गर्नुहोस्। प्रविधिको जटिल शब्द प्रयोग नगर्नुहोस्।" }] 
+                }
+            };
+
+            let delay = 1000;
+            for (let i = 0; i < 5; i++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) throw new Error('API Error');
+                    const result = await response.json();
+                    return result.candidates?.[0]?.content?.parts?.[0]?.text;
+                } catch (error) {
+                    if (i === 4) throw error;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    delay *= 2;
+                }
+            }
+        }
+
+        // AI Features
+        async function generateIdeas() {
+            const topic = document.getElementById('ai-topic').value;
+            if (!topic) return alert("कृपया एउटा रुचि लेख्नुहोस्।");
+
+            const loader = document.getElementById('ai-loading');
+            const output = document.getElementById('ai-ideas-output');
+            
+            loader.classList.remove('hidden');
+            output.innerHTML = "";
+
+            const prompt = `मलाई ${topic} मा आधारित ३ वटा सरल भिडियो आइडिया दिनुहोस् जुन ४०-६० वर्षका मानिसहरूले सजिलै बनाउन सक्छन्। छोटो र स्पष्ट बुँदामा लेख्नुहोस्।`;
+
+            try {
+                const text = await callGemini(prompt);
+                const ideas = text.split('\n').filter(line => line.trim().length > 0).slice(0, 5);
+                
+                output.innerHTML = ideas.map(idea => `
+                    <div class="p-3 bg-white rounded-lg border border-nepal-gold/30 hover:shadow-md transition cursor-pointer" onclick="copyToScript('${idea.replace(/'/g, "\\'")}')">
+                        ${idea}
+                    </div>
+                `).join('');
+            } catch (error) {
+                alert("माफ गर्नुहोस्, केही समस्या आयो। कृपया फेरि प्रयास गर्नुहोस्।");
+            } finally {
+                loader.classList.add('hidden');
+            }
+        }
+
+        async function generateScript() {
+            const idea = document.getElementById('ai-script-input').value;
+            if (!idea) return alert("कृपया एउटा आइडिया लेख्नुहोस्।");
+
+            const loader = document.getElementById('ai-loading');
+            const output = document.getElementById('ai-script-output');
+            
+            loader.classList.remove('hidden');
+            output.classList.add('hidden');
+
+            const prompt = `मैले एउटा भिडियो बनाउन खोजेको छु: "${idea}"। कृपया मलाई १-२ मिनेटको सरल भिडियो स्क्रिप्ट लेखिदिनुहोस्। यसमा: १. सुरुमा के भन्ने, २. बीचमा के देखाउने र ३. अन्त्यमा कसरी टुङ्ग्याउने भनेर स्पष्ट पार्नुहोस्।`;
+
+            try {
+                const text = await callGemini(prompt);
+                output.innerText = text;
+                output.classList.remove('hidden');
+            } catch (error) {
+                alert("माफ गर्नुहोस्, स्क्रिप्ट बनाउन सकिएन।");
+            } finally {
+                loader.classList.add('hidden');
+            }
+        }
+
+        function copyToScript(text) {
+            // Clean up the string from numbering if exists
+            const cleaned = text.replace(/^\d+\.\s*/, '').replace(/^-\s*/, '');
+            document.getElementById('ai-script-input').value = cleaned;
+            window.scrollTo({
+                top: document.getElementById('ai-script-input').offsetTop - 150,
+                behavior: 'smooth'
+            });
+        }
+
+        // Navigation and Tab Logic
+        function navigate(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-active'));
+            event.target.classList.add('nav-active');
+            window.scrollTo(0, 0);
+        }
+
+        const state = { device: 'mobile', week: 1 };
+
+        function toggleDevice(type) {
+            state.device = type;
+            renderTools();
+        }
+
+        function renderTools() {
+            const data = {
+                mobile: {
+                    title: "स्मार्टफोनका लागि उत्तम एपहरू",
+                    apps: [
+                        { name: "InstaEdit", desc: "सजिलै भिडियो सम्पादन गर्न सकिन्छ।", type: "सजिलो" },
+                        { name: "InShot", desc: "सबैभन्दा सजिलो। साधारण सम्पादनका लागि उत्कृष्ट।", type: "सजिलो" },
+                        { name: "CapCut", desc: "अलि आधुनिक। रिल्स बनाउनका लागि धेरैले प्रयोग गर्छन्।", type: "मध्यम" }
+                    ]
+                },
+                pc: {
+                    title: "कम्प्युटरका लागि सफ्टवेयर",
+                    apps: [
+                        { name: "Canva", desc: "वेबसाइटमै गएर सजिलै भिडियो बनाउन सकिन्छ।", type: "सजिलो" },
+                        { name: "CapCut PC", desc: "मोबाइल जस्तै सजिलो तर ठूलो स्क्रिनमा।", type: "मध्यम" }
+                    ]
+                }
+            }[state.device];
+            
+            const container = document.getElementById('tools-display');
+            let html = `<div class="md:col-span-2 bg-white p-6 rounded-2xl shadow-sm"><h3 class="text-2xl font-bold mb-4 text-nepal-blue">${data.title}</h3><div class="grid md:grid-cols-2 gap-4">`;
+            data.apps.forEach(app => {
+                html += `<div class="card p-5 border border-gray-100"><h4 class="font-bold text-lg">${app.name}</h4><p class="text-sm text-gray-600">${app.desc}</p></div>`;
+            });
+            html += `</div></div>`;
+            container.innerHTML = html;
+        }
+
+        function renderWeek(w) {
+            const weeks = {
+                1: ["युट्युबमा ५ वटा भिडियो हेर्ने", "InShot एप इन्स्टल गर्ने", "आफ्नो सानो भिडियो खिच्ने"],
+                2: ["भिडियो एपमा हाल्ने", "नचाहिने भाग काट्न सिक्ने", "दुई भिडियो जोड्ने"],
+                3: ["भिडियोमा नाम लेख्ने", "हल्का संगीत राख्ने", "१ मिनेटको भिडियो तयार पार्ने"],
+                4: ["भिडियो सेभ गर्ने", "फेसबुकमा पठाउने", "अरुको प्रतिक्रिया लिने"]
+            };
+            const container = document.getElementById('schedule-display');
+            container.innerHTML = `<h3 class="text-xl font-bold mb-4">हप्ता ${w} को काम:</h3><ul class="space-y-3">` + 
+                weeks[w].map(t => `<li class="flex items-center gap-3"><span class="w-2 h-2 bg-nepal-red rounded-full"></span>${t}</li>`).join('') + `</ul>`;
+            
+            document.querySelectorAll('.week-btn').forEach(b => {
+                b.classList.remove('bg-nepal-red', 'text-white');
+                b.classList.add('bg-white');
+            });
+            document.getElementById('w'+w).classList.add('bg-nepal-red', 'text-white');
+        }
+
+        window.onload = () => {
+            renderTools();
+            renderWeek(1);
+            const ctx = document.getElementById('homeChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['सिक्ने', 'खिच्ने', 'सम्पादन'],
+                    datasets: [{ data: [30, 30, 40], backgroundColor: ['#F2A900', '#B11030', '#003893'], borderWidth: 0 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+            });
+        };
+    </script>
+
+    <!-- Visualization & Content Choices:
+         1. AI Idea Generator: Gemini API को प्रयोग गरेर प्रयोगकर्ताको रुचि अनुसार भिडियोका विषयहरू दिन्छ।
+         2. AI Script Assistant: छानिएको विषयलाई सरल नेपाली संवाद र दृश्यमा परिवर्तन गरिदिन्छ।
+         3. System Instructions: Gemini लाई 'नेपाली डिजिटल गुरु' को रूपमा सेट गरिएको छ ताकि यसले पाका उमेरका मानिसहरूलाई सुहाउँदो भाषा प्रयोग गरोस्।
+         4. UI Design: एआई फिचरलाई छुट्टै 'एआई सहयोगी ✨' सेक्सनमा राखिएको छ र चम्किलो (sparkle) इमोजीले हाइलाइट गरिएको छ।
+         CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+</body>
+</html>
