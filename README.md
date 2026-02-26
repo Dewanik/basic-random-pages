@@ -14,6 +14,7 @@ The goal is simple: make it easy for anyone to open and view these files directl
 
 <!-- FILE_LIST_START -->
 - [writers-research.html](writers-research.html)
+- [writers2.html](writers2.html)
 <!-- FILE_LIST_END -->
 
 This list is auto-generated from public GitHub Pages-compatible files in this repository.
