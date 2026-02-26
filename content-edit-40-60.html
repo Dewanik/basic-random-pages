@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>डिजिटल यात्रा: ४०-६० वर्षका लागि विशेष गाइड</title>
+    <title>डिजिटल यात्रा २.०: ४०-६० वर्षका लागि पूर्ण गाइड</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <!-- Chosen Palette: Himalayan Warmth - Deep Red, Golden Yellow, and Creamy White for familiarity and readability -->
+    <!-- Chosen Palette: Himalayan Heritage - Deep Crimson (#B11030), Royal Blue (#003893), Golden Sun (#F2A900), and Parchment Cream (#FDFCF0) -->
     <script>
         tailwind.config = {
             theme: {
@@ -17,9 +17,6 @@
                         'nepal-gold': '#F2A900',
                         'warm-cream': '#FDFCF0',
                         'deep-gray': '#333333'
-                    },
-                    fontFamily: {
-                        sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
                     }
                 }
             }
@@ -30,196 +27,225 @@
         .nav-active { border-bottom: 4px solid #B11030; color: #B11030; font-weight: bold; }
         .chart-container { position: relative; width: 100%; max-width: 500px; margin: auto; height: 300px; }
         .step-num { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #B11030; color: white; font-weight: bold; }
-        .card { background: white; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s; }
-        .card:hover { transform: translateY(-3px); }
-        .loading-spinner { border: 4px solid rgba(0, 0, 0, 0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: #B11030; animation: spin 1s linear infinite; }
+        .card { background: white; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: all 0.3s ease; border: 1px solid #eee; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .loading-spinner { border: 4px solid rgba(0, 0, 0, 0.1); width: 40px; height: 40px; border-radius: 50%; border-left-color: #B11030; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .animate-fade { animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #B11030; border-radius: 10px; }
     </style>
     <!-- Application Structure Plan:
-         यो एप ४०-६० वर्षका नेपाली दाजुभाइ तथा दिदीबहिनीहरूका लागि बनाइएको हो।
-         १. गृहपृष्ठ (Home): किन सिक्ने? भन्ने कुरामा केन्द्रित।
-         २. उपकरण (Tools): स्मार्टफोन र कम्प्युटर रोज्ने सुविधा।
-         ३. खोज विधि (Research): युट्युब र गुगल प्रयोग गर्ने तरिका।
-         ४. तालिका (Schedule): ३० दिनको स्पष्ट कार्यतालिका।
-         ५. प्रयोगशाला (Lab): सम्पादनका शब्दहरू चित्रमार्फत बुझाइएको।
-         ६. एआई सहयोगी (AI ✨): Gemini API को प्रयोग गरेर भिडियो आइडिया र स्क्रिप्ट जेनेरेट गर्ने नयाँ फिचर।
+         यो एप्लिकेसन ४०-६० वर्षका नेपाली प्रयोगकर्ताहरूका लागि एक 'पूर्ण डिजिटल विश्वविद्यालय' को रूपमा डिजाइन गरिएको छ।
+         १. गृहपृष्ठ (Home): मनोवैज्ञानिक प्रोत्साहन र तथ्याङ्क।
+         २. उपकरण (Tools): ग्याजेट र सफ्टवेयर छनोट।
+         ३. सुरक्षित इन्टरनेट (Learning): गुगल/युट्युब चलाउने गहिरो तरिका र अनलाइन सुरक्षा।
+         ४. बहु-कार्ययोजना (Schedules): प्रयोगकर्ताको स्तर अनुसार ३ वटा फरक सिकाई मार्गहरू (Basic, Advanced, Storyteller)।
+         ५. सम्पादन ल्याब (Lab): प्राविधिक ज्ञानको दृश्य चित्रण।
+         ६. एआई सहयोगी (AI): Gemini API मार्फत स्क्रिप्ट र आइडिया जेनेरेसन।
     -->
 </head>
 <body class="bg-warm-cream text-deep-gray font-sans">
 
     <!-- Navigation -->
-    <nav class="bg-white shadow-lg sticky top-0 z-50">
+    <nav class="bg-white shadow-xl sticky top-0 z-50">
         <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center py-4">
-                <div class="flex items-center space-x-3 mb-4 md:mb-0">
-                    <div class="w-12 h-12 bg-nepal-red rounded-full flex items-center justify-center text-white text-2xl">🇳🇵</div>
-                    <span class="text-2xl font-bold text-nepal-blue">डिजिटल यात्रा</span>
+            <div class="flex flex-col lg:flex-row justify-between items-center py-4">
+                <div class="flex items-center space-x-3 mb-4 lg:mb-0 cursor-pointer" onclick="navigate('home')">
+                    <div class="w-12 h-12 bg-nepal-red rounded-full flex items-center justify-center text-white text-2xl shadow-inner">🇳🇵</div>
+                    <span class="text-2xl font-bold text-nepal-blue">डिजिटल यात्रा २.०</span>
                 </div>
-                <div class="flex flex-wrap justify-center gap-4 text-lg" id="nav-links">
-                    <button onclick="navigate('home')" class="nav-btn nav-active pb-1">सुरुवात</button>
+                <div class="flex flex-wrap justify-center gap-3 md:gap-6 text-base md:text-lg" id="nav-links">
+                    <button onclick="navigate('home')" class="nav-btn nav-active pb-1">गृह</button>
                     <button onclick="navigate('tools')" class="nav-btn pb-1">उपकरण</button>
-                    <button onclick="navigate('research')" class="nav-btn pb-1">सिक्ने विधि</button>
+                    <button onclick="navigate('learning')" class="nav-btn pb-1">इन्टरनेट सिकाई</button>
                     <button onclick="navigate('schedule')" class="nav-btn pb-1">कार्ययोजना</button>
-                    <button onclick="navigate('lab')" class="nav-btn pb-1">सम्पादन ज्ञान</button>
-                    <button onclick="navigate('ai-helper')" class="nav-btn pb-1 text-nepal-red font-bold">एआई सहयोगी ✨</button>
+                    <button onclick="navigate('lab')" class="nav-btn pb-1">ल्याब</button>
+                    <button onclick="navigate('ai-helper')" class="nav-btn pb-1 text-nepal-red font-bold">एआई गुरु ✨</button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <main class="container mx-auto px-4 py-10 max-w-5xl">
+    <main class="container mx-auto px-4 py-8 max-w-6xl">
 
         <!-- SECTION: HOME -->
-        <section id="home" class="block space-y-8">
-            <div class="bg-white p-8 rounded-3xl shadow-sm border-l-8 border-nepal-red">
-                <h1 class="text-4xl font-bold text-nepal-blue mb-4">तपाईंको नयाँ सिर्जनात्मक यात्रा यहाँबाट सुरु हुन्छ!</h1>
-                <p class="text-xl mb-6">
-                    नमस्कार! ४० देखि ६० वर्षको उमेर भनेको ज्ञान र अनुभवको खानी हो। अब आफ्नो यो ज्ञानलाई भिडियोको माध्यमबाट संसारमाझ बाँड्ने समय आएको छ। प्रविधि सिक्न कहिल्यै ढिलो हुँदैन। हामी तपाईंलाई एकदमै सरल तरिकाले सिकाउनेछौं।
+        <section id="home" class="block animate-fade space-y-10">
+            <div class="bg-white p-8 md:p-12 rounded-[40px] shadow-sm border-l-[12px] border-nepal-red relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 text-8xl">📽️</div>
+                <h1 class="text-3xl md:text-5xl font-bold text-nepal-blue mb-6">तपाईंको अनुभवलाई डिजिटल रूप दिनुहोस्!</h1>
+                <p class="text-xl md:text-2xl mb-8 leading-relaxed max-w-3xl">
+                    नमस्ते! यो मञ्च तपाईं जस्ता पाका र अनुभवी व्यक्तित्वहरूका लागि तयार पारिएको हो। प्रविधि केवल युवाहरूका लागि मात्र होइन। तपाईंको भान्छाको स्वाद, बगैँचाको सीप, वा जीवनका कथाहरू अब भिडियोमार्फत संसारलाई देखाउने समय आयो।
                 </p>
-                <div class="grid md:grid-cols-2 gap-8 items-center">
-                    <div class="space-y-4">
-                        <h3 class="text-2xl font-semibold text-nepal-red">यस गाइडबाट तपाईंले के पाउनुहुन्छ?</h3>
-                        <ul class="space-y-3">
-                            <li class="flex items-center gap-3">
-                                <span class="text-green-600 text-2xl">✔</span> <span>मोबाइलबाटै भिडियो खिच्न र एडिट गर्न।</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <span class="text-green-600 text-2xl">✔</span> <span>युट्युबमा आफ्ना कुराहरू राख्न।</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <span class="text-green-600 text-2xl">✔</span> <span>नयाँ: एआईको मद्दतले भिडियो आइडिया पाउन ✨</span>
-                            </li>
-                        </ul>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4 bg-gray-50 p-4 rounded-2xl">
+                            <span class="text-3xl">📱</span>
+                            <span class="font-semibold">आफ्नै मोबाइलबाट प्रोफेसनल भिडियो बनाउनुहोस्।</span>
+                        </div>
+                        <div class="flex items-center gap-4 bg-gray-50 p-4 rounded-2xl">
+                            <span class="text-3xl">🔒</span>
+                            <span class="font-semibold">सुरक्षित रूपमा इन्टरनेट चलाउन सिक्नुहोस्।</span>
+                        </div>
+                        <div class="flex items-center gap-4 bg-gray-50 p-4 rounded-2xl">
+                            <span class="text-3xl">✨</span>
+                            <span class="font-semibold">एआईको मद्दतले जादुमयी स्क्रिप्ट लेख्नुहोस्।</span>
+                        </div>
                     </div>
-                    <div class="p-6 bg-gray-50 rounded-2xl">
-                        <h4 class="text-center font-bold mb-4">समयको सही सदुपयोग</h4>
+                    <div class="card p-8">
+                        <h4 class="text-center font-bold text-nepal-red mb-6">सिर्जनात्मक सिकाईको हिस्सा</h4>
                         <div class="chart-container">
                             <canvas id="homeChart"></canvas>
                         </div>
+                        <p class="text-sm text-center mt-4 text-gray-500 italic">हामी सिकाईलाई रमाइलो र व्यवस्थित बनाउँछौँ।</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- SECTION: TOOLS -->
-        <section id="tools" class="hidden space-y-8">
-            <div class="text-center">
-                <h2 class="text-3xl font-bold text-nepal-blue">तपाईंसँग कुन साधन छ?</h2>
-                <p class="mt-2">आफुसँग भएको साधन छान्नुहोस्, हामी त्यही अनुसार सिकाउनेछौं।</p>
+        <section id="tools" class="hidden animate-fade space-y-10">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-4xl font-bold text-nepal-blue">तपाईंको डिजिटल हतियार</h2>
+                <p class="text-lg mt-4">जुन साधन तपाईंलाई सजिलो लाग्छ, त्यही रोज्नुहोस्।</p>
             </div>
-
-            <div class="flex justify-center gap-6">
-                <button onclick="toggleDevice('mobile')" id="btn-mobile" class="px-8 py-4 rounded-2xl font-bold text-xl shadow-md transition-all bg-nepal-red text-white">स्मार्टफोन (Mobile)</button>
-                <button onclick="toggleDevice('pc')" id="btn-pc" class="px-8 py-4 rounded-2xl font-bold text-xl shadow-md transition-all bg-white text-gray-600">कम्प्युटर (PC/Laptop)</button>
+            <div class="flex justify-center gap-4">
+                <button onclick="toggleDevice('mobile')" id="btn-mobile" class="px-10 py-5 rounded-3xl font-bold text-xl shadow-lg transition-all bg-nepal-red text-white">स्मार्टफोन</button>
+                <button onclick="toggleDevice('pc')" id="btn-pc" class="px-10 py-5 rounded-3xl font-bold text-xl shadow-lg transition-all bg-white text-gray-600">कम्प्युटर</button>
             </div>
-
-            <div id="tools-display" class="grid md:grid-cols-2 gap-8 mt-10">
+            <div id="tools-display" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
                 <!-- Data Injected by JS -->
             </div>
         </section>
 
-        <!-- SECTION: RESEARCH -->
-        <section id="research" class="hidden space-y-8">
-            <div class="bg-white p-8 rounded-3xl shadow-sm">
-                <h2 class="text-3xl font-bold text-nepal-blue mb-6">सिक्ने तरिका: 'स्मार्ट' खोज</h2>
-                <p class="text-lg mb-8">गुगल र युट्युबमा खोज्दा सही शब्द प्रयोग गरेमा सजिला भिडियोहरू भेटिन्छन्।</p>
-                
-                <div class="grid gap-6">
-                    <div class="flex gap-5 p-6 bg-blue-50 rounded-2xl border border-blue-100">
-                        <div class="step-num">१</div>
-                        <div>
-                            <h4 class="font-bold text-xl mb-2">सही शब्द (Keywords) को प्रयोग</h4>
-                            <p>खोज्दा सधैं "for beginners" वा "Nepali" थप्नुहोस्।</p>
-                            <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div class="bg-white p-3 rounded shadow-sm text-sm italic">"InShot editing tutorial Nepali"</div>
-                                <div class="bg-white p-3 rounded shadow-sm text-sm italic">"How to use CapCut for beginners"</div>
-                            </div>
-                        </div>
+        <!-- SECTION: INTERNET LEARNING (IN-DEPTH) -->
+        <section id="learning" class="hidden animate-fade space-y-10">
+            <div class="bg-white p-8 md:p-12 rounded-[40px] shadow-md border-t-8 border-nepal-blue">
+                <h2 class="text-4xl font-bold text-nepal-blue mb-6">इन्टरनेटको गहिराईमा: सुरक्षित सिकाई</h2>
+                <p class="text-xl mb-10 text-gray-600">इन्टरनेट ज्ञानको सागर हो, तर यसलाई चलाउन जान्नु एउटा ठूलो सीप हो।</p>
+
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <!-- Google Mastery -->
+                    <div class="card p-6 border-blue-100">
+                        <div class="text-5xl mb-4">🔍</div>
+                        <h3 class="text-2xl font-bold text-nepal-blue mb-4">गुगल सर्चमा उस्ताद</h3>
+                        <ul class="space-y-4 text-base">
+                            <li class="flex items-start gap-2"><span>✅</span> <strong>नेपालीमा बोल्नुहोस्:</strong> टाइप गर्न झ्याउ लाग्छ भने माइकको आइकन थिचेर नेपालीमै बोल्नुहोस्।</li>
+                            <li class="flex items-start gap-2"><span>✅</span> <strong>विशिष्ट हुनुहोस्:</strong> "खाना" मात्र नभनी "नेपाली आलुको अचार बनाउने विधि" भन्नुहोस्।</li>
+                            <li class="flex items-start gap-2"><span>✅</span> <strong>तस्विरबाट खोज्नुहोस्:</strong> कुनै सामानको नाम थाहा छैन भने गुगल लेन्स (Google Lens) प्रयोग गर्नुहोस्।</li>
+                        </ul>
                     </div>
 
-                    <div class="flex gap-5 p-6 bg-green-50 rounded-2xl border border-green-100">
-                        <div class="step-num">२</div>
-                        <div>
-                            <h4 class="font-bold text-xl mb-2">राम्रो गुरु कसरी चिन्ने?</h4>
-                            <p>जुन भिडियोमा बिस्तारै बोलिएको छ र बटनहरू स्पष्ट देखाइएको छ, त्यही हेर्नुहोस्। धेरै छिटो बोल्ने वा हल्ला गर्ने भिडियो छोडिदिनुहोस्।</p>
-                        </div>
+                    <!-- YouTube Mastery -->
+                    <div class="card p-6 border-red-100">
+                        <div class="text-5xl mb-4">📺</div>
+                        <h3 class="text-2xl font-bold text-nepal-red mb-4">युट्युब: तपाईको विद्यालय</h3>
+                        <ul class="space-y-4 text-base">
+                            <li class="flex items-start gap-2"><span>✅</span> <strong>गति घटाउनुहोस्:</strong> भिडियो छिटो भयो भने सेटिङमा गएर Speed 0.75x बनाउनुहोस्।</li>
+                            <li class="flex items-start gap-2"><span>✅</span> <strong>क्याप्सन (CC):</strong> अंग्रेजी भिडियो छ भने 'CC' थिचेर नेपाली अनुवाद (Auto-translate) हेर्नुहोस्।</li>
+                            <li class="flex items-start gap-2"><span>✅</span> <strong>प्लेलिस्ट:</strong> मनपर्ने भिडियोहरूलाई 'Save to Playlist' गरेर पछि हेर्न मिल्ने गरी राख्नुहोस्।</li>
+                        </ul>
                     </div>
+
+                    <!-- Internet Safety -->
+                    <div class="card p-6 bg-yellow-50 border-yellow-200">
+                        <div class="text-5xl mb-4">🛡️</div>
+                        <h3 class="text-2xl font-bold text-yellow-800 mb-4">अनलाइन सुरक्षा (Safety)</h3>
+                        <ul class="space-y-4 text-base">
+                            <li class="flex items-start gap-2"><span>🚨</span> <strong>लोभमा नपर्नुहोस्:</strong> "तपाईंले चिठ्ठा जित्नुभयो" भन्ने मेसेज वा लिङ्क कहिल्यै नकाट्नुहोस्।</li>
+                            <li class="flex items-start gap-2"><span>🚨</span> <strong>ओटिपी (OTP):</strong> आफ्नो मोबाइलमा आएको कोड कसैलाई नदिनुहोस्।</li>
+                            <li class="flex items-start gap-2"><span>🚨</span> <strong>विज्ञापन चिन्नुहोस्:</strong> गुगलमा 'Ad' लेखिएको नतिजा भन्दा तलको आधिकारिक लिंकमा जानुहोस्।</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-12 p-8 bg-blue-900 text-white rounded-3xl">
+                    <h4 class="text-2xl font-bold mb-4">इन्टरनेटबाट सीप कसरी सिक्ने? (प्रो टिप)</h4>
+                    <p class="text-lg opacity-90">सधैं कुनै पनि कुरा सिक्न मन लागेमा <span class="bg-nepal-red px-2 py-1 rounded">"Step by Step Guide for Beginners"</span> शब्द थपेर खोज्नुहोस्। यसले तपाईंलाई एकदमै आधारभूत लेबलबाट सिकाउने भिडियोहरू मात्र देखाउँछ।</p>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION: SCHEDULE -->
-        <section id="schedule" class="hidden space-y-8">
+        <!-- SECTION: SCHEDULE (EXPANDED WITH TRACKS) -->
+        <section id="schedule" class="hidden animate-fade space-y-10">
             <div class="text-center">
-                <h2 class="text-3xl font-bold text-nepal-blue">३० दिनको पाइला-पाइला योजना</h2>
-                <div class="flex flex-wrap justify-center gap-3 mt-4">
-                    <button onclick="renderWeek(1)" id="w1" class="week-btn px-6 py-2 rounded-full bg-nepal-red text-white font-bold">हप्ता १</button>
-                    <button onclick="renderWeek(2)" id="w2" class="week-btn px-6 py-2 rounded-full bg-white shadow-sm">हप्ता २</button>
-                    <button onclick="renderWeek(3)" id="w3" class="week-btn px-6 py-2 rounded-full bg-white shadow-sm">हप्ता ३</button>
-                    <button onclick="renderWeek(4)" id="w4" class="week-btn px-6 py-2 rounded-full bg-white shadow-sm">हप्ता ४</button>
-                </div>
+                <h2 class="text-4xl font-bold text-nepal-blue">तपाईंको सिकाईको बाटो रोज्नुहोस्</h2>
+                <p class="text-xl mt-4 text-gray-600">तपाईं कुन स्तरमा हुनुहुन्छ? त्यही अनुसारको योजना हेर्नुहोस्।</p>
             </div>
-            <div id="schedule-display" class="bg-white p-8 rounded-3xl shadow-md min-h-[300px]">
-                <!-- Data Injected by JS -->
+
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="changeTrack('basic')" id="track-basic" class="track-btn px-8 py-3 rounded-full font-bold shadow-md bg-nepal-red text-white">१. आधारभूत (Basic)</button>
+                <button onclick="changeTrack('advanced')" id="track-advanced" class="track-btn px-8 py-3 rounded-full font-bold shadow-md bg-white">२. एड्भान्स (Advanced)</button>
+                <button onclick="changeTrack('story')" id="track-story" class="track-btn px-8 py-3 rounded-full font-bold shadow-md bg-white">३. कथावाचक (YouTube Master)</button>
+            </div>
+
+            <div id="schedule-container" class="grid lg:grid-cols-2 gap-8 items-start">
+                <!-- Injected by JS -->
             </div>
         </section>
 
         <!-- SECTION: LAB -->
-        <section id="lab" class="hidden space-y-8">
-            <div class="bg-white p-8 rounded-3xl shadow-sm border-t-8 border-nepal-gold">
-                <h2 class="text-3xl font-bold text-nepal-blue mb-4">भिडियो सम्पादन (Editing) का मुख्य कुराहरू</h2>
-                <div class="grid md:grid-cols-2 gap-10">
-                    <div>
-                        <h4 class="font-bold text-xl mb-4">१. समयरेखा (Timeline)</h4>
-                        <div class="bg-gray-800 h-24 rounded-lg flex items-center px-4 gap-2 relative overflow-hidden">
-                            <div class="bg-blue-500 h-12 w-24 rounded border border-white flex items-center justify-center text-white text-xs">क्लिप १</div>
-                            <div class="bg-blue-600 h-12 w-32 rounded border border-white flex items-center justify-center text-white text-xs">क्लिप २</div>
-                            <div class="absolute left-1/2 top-0 bottom-0 w-1 bg-red-500 shadow-lg"></div>
+        <section id="lab" class="hidden animate-fade space-y-10">
+            <div class="bg-white p-10 rounded-[40px] shadow-sm border-t-8 border-nepal-gold">
+                <h2 class="text-3xl font-bold text-nepal-blue mb-4">एडिटिङको जादु बुझौँ</h2>
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div class="card p-6">
+                        <h4 class="font-bold text-xl mb-4">लेयरिङ (Layering) भनेको के हो?</h4>
+                        <p class="text-sm mb-6">भिडियो माथि संगीत, संगीत माथि आफ्नो आवाज, र त्यसको माथि अक्षर हाल्ने प्रक्रिया।</p>
+                        <div class="space-y-2">
+                            <div class="bg-blue-200 h-8 rounded text-center text-xs flex items-center justify-center font-bold">Text (अक्षर)</div>
+                            <div class="bg-green-200 h-8 rounded text-center text-xs flex items-center justify-center font-bold">Voiceover (आवाज)</div>
+                            <div class="bg-nepal-red/20 h-12 rounded text-center text-xs flex items-center justify-center font-bold italic">Background Music (संगीत)</div>
+                            <div class="bg-gray-800 h-16 rounded text-center text-xs flex items-center justify-center text-white font-bold">Main Video (मुख्य भिडियो)</div>
                         </div>
                     </div>
-                    <div>
-                        <h4 class="font-bold text-xl mb-4">२. काट्ने (Trimming)</h4>
-                        <div class="flex items-center gap-2">
-                            <div class="h-6 bg-red-200 w-10 rounded-l"></div>
-                            <div class="h-10 bg-green-500 flex-grow rounded flex items-center justify-center text-white text-xs font-bold">राम्रो भाग</div>
-                            <div class="h-6 bg-red-200 w-10 rounded-r"></div>
+                    <div class="card p-6">
+                        <h4 class="font-bold text-xl mb-4">रङ सच्याउने (Color Grading)</h4>
+                        <div class="flex items-center gap-4 h-32">
+                            <div class="flex-1 h-full bg-gray-400 rounded-lg flex items-center justify-center text-white text-xs">पुराना / धमिलो</div>
+                            <div class="text-2xl">➡️</div>
+                            <div class="flex-1 h-full bg-orange-500 rounded-lg shadow-lg flex items-center justify-center text-white text-xs font-bold italic">चम्किलो / जीवन्त</div>
                         </div>
+                        <p class="text-xs mt-4 text-gray-500">एडिटिङ एपका 'Filter' वा 'Adjustment' बटनले भिडियोलाई यस्तो बनाउन सकिन्छ।</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- SECTION: AI HELPER ✨ -->
-        <section id="ai-helper" class="hidden space-y-8">
-            <div class="bg-white p-8 rounded-3xl shadow-sm border-t-8 border-nepal-red">
-                <h2 class="text-3xl font-bold text-nepal-blue mb-4">एआई सहयोगी ✨</h2>
-                <p class="text-lg mb-8">भिडियो बनाउन सुरु गर्न गाह्रो भइरहेको छ? चिन्ता नलिनुहोस्, हाम्रो एआई मेन्टरले तपाईंलाई मद्दत गर्नेछ।</p>
-
-                <div class="grid md:grid-cols-2 gap-8">
-                    <!-- Idea Generator -->
-                    <div class="p-6 bg-nepal-gold/10 rounded-2xl border border-nepal-gold/20">
-                        <h3 class="text-xl font-bold mb-4">भिडियो आइडिया जेनेरेटर ✨</h3>
-                        <p class="text-sm mb-4 italic">तपाईंलाई कुन विषयमा रुचि छ? (जस्तै: कुकिङ, बगैँचा, पूजा-पाठ, कथा सुनाउने)</p>
-                        <input type="text" id="ai-topic" placeholder="आफ्नो रुचि लेख्नुहोस्..." class="w-full p-3 rounded-lg border border-gray-300 mb-4 focus:ring-2 focus:ring-nepal-red outline-none">
-                        <button onclick="generateIdeas()" class="w-full bg-nepal-red text-white font-bold py-3 rounded-xl hover:bg-red-700 transition">आइडिया खोज्नुहोस् ✨</button>
-                        <div id="ai-ideas-output" class="mt-6 space-y-3"></div>
+        <section id="ai-helper" class="hidden animate-fade space-y-10">
+            <div class="bg-white p-10 rounded-[40px] shadow-sm border-t-8 border-nepal-red">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="text-5xl">✨</div>
+                    <h2 class="text-4xl font-bold text-nepal-blue">एआई मेन्टर: तपाईको व्यक्तिगत गुरु</h2>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div class="space-y-6">
+                        <div class="bg-nepal-gold/10 p-6 rounded-3xl border border-nepal-gold/30">
+                            <h3 class="text-xl font-bold mb-4">भिडियोको विषय खोज्नुहोस्</h3>
+                            <input type="text" id="ai-topic" placeholder="जस्तै: मेरो करेसाबारी, अचार बनाउने विधि..." class="w-full p-4 rounded-xl border border-gray-300 mb-4 focus:ring-4 focus:ring-nepal-red outline-none">
+                            <button onclick="generateIdeas()" class="w-full bg-nepal-red text-white font-bold py-4 rounded-2xl hover:bg-red-800 transition-all shadow-lg">आइडिया जेनेरेट गर्नुहोस् ✨</button>
+                        </div>
+                        <div id="ai-ideas-output" class="space-y-4"></div>
                     </div>
 
-                    <!-- Script Generator -->
-                    <div class="p-6 bg-nepal-blue/5 rounded-2xl border border-nepal-blue/10">
-                        <h3 class="text-xl font-bold mb-4">स्क्रिप्ट सहायक ✨</h3>
-                        <p class="text-sm mb-4 italic">कुनै एउटा आइडिया यहाँ लेख्नुहोस्, हामी तपाईंलाई के बोल्ने र कसरी खिच्ने भनेर सिकाउँछौं।</p>
-                        <textarea id="ai-script-input" placeholder="भिडियोको मुख्य कुरा यहाँ लेख्नुहोस्..." class="w-full p-3 h-24 rounded-lg border border-gray-300 mb-4 focus:ring-2 focus:ring-nepal-blue outline-none resize-none"></textarea>
-                        <button onclick="generateScript()" class="w-full bg-nepal-blue text-white font-bold py-3 rounded-xl hover:bg-blue-800 transition">स्क्रिप्ट तयार पार्नुहोस् ✨</button>
-                        <div id="ai-script-output" class="mt-6 p-4 bg-white rounded-lg border border-gray-200 text-sm whitespace-pre-wrap hidden"></div>
+                    <div class="space-y-6">
+                        <div class="bg-nepal-blue/5 p-6 rounded-3xl border border-nepal-blue/10">
+                            <h3 class="text-xl font-bold mb-4">पूर्ण भिडियो स्क्रिप्ट</h3>
+                            <textarea id="ai-script-input" placeholder="आइडिया यहाँ लेख्नुहोस्..." class="w-full p-4 h-32 rounded-xl border border-gray-300 mb-4 focus:ring-4 focus:ring-nepal-blue outline-none resize-none"></textarea>
+                            <button onclick="generateScript()" class="w-full bg-nepal-blue text-white font-bold py-4 rounded-2xl hover:bg-blue-900 transition-all shadow-lg">स्क्रिप्ट तयार पार्नुहोस् ✨</button>
+                        </div>
+                        <div id="ai-script-output" class="p-6 bg-white rounded-3xl border border-gray-200 text-base md:text-lg whitespace-pre-wrap hidden shadow-inner max-h-[400px] overflow-y-auto"></div>
                     </div>
                 </div>
 
-                <!-- AI Loading Modal -->
-                <div id="ai-loading" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[100]">
-                    <div class="bg-white p-8 rounded-2xl flex flex-col items-center">
-                        <div class="loading-spinner mb-4"></div>
-                        <p class="font-bold">एआईले सोच्दैछ... कृपया पर्खनुहोस्।</p>
+                <div id="ai-loading" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[100] backdrop-blur-sm">
+                    <div class="bg-white p-10 rounded-3xl flex flex-col items-center shadow-2xl">
+                        <div class="loading-spinner mb-6"></div>
+                        <p class="font-bold text-xl">एआई गुरु सोच्दै हुनुहुन्छ... 🧠</p>
                     </div>
                 </div>
             </div>
@@ -227,23 +253,26 @@
 
     </main>
 
-    <footer class="bg-nepal-blue text-white py-12 mt-20">
+    <footer class="bg-nepal-blue text-white py-16 mt-20">
         <div class="container mx-auto px-4 text-center">
-            <h3 class="text-2xl font-bold mb-4">अघि बढ्नुहोस्, संसार तपाईंको कथा सुन्न पर्खिरहेको छ!</h3>
-            <p class="opacity-80">नेपाली सिर्जनाकर्ताहरूका लागि एक सानो प्रयास।</p>
+            <div class="mb-8 text-5xl">🏔️🇳🇵</div>
+            <h3 class="text-3xl font-bold mb-4">तपाईंको यात्रा भर्खर सुरु भएको छ!</h3>
+            <p class="opacity-70 text-lg">हामी तपाईंलाई डिजिटल संसारमा सधैं साथ दिनेछौँ।</p>
+            <div class="mt-10 pt-10 border-t border-white/10 text-sm opacity-50">
+                &copy; २०२४ डिजिटल यात्रा मञ्च - सबै अधिकार सुरक्षित।
+            </div>
         </div>
     </footer>
 
     <script>
-        // API Configuration
-        const apiKey = ""; // Empty as required
+        const apiKey = ""; // Managed by environment
         
         async function callGemini(prompt) {
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
             const payload = {
                 contents: [{ parts: [{ text: prompt }] }],
                 systemInstruction: { 
-                    parts: [{ text: "तपाईं ४० देखि ६० वर्षका नेपालीहरूको लागि एक सहयोगी डिजिटल गुरु हुनुहुन्छ। सधैं सरल, सम्मानजनक र उत्साहजनक नेपाली भाषामा कुरा गर्नुहोस्। प्रविधिको जटिल शब्द प्रयोग नगर्नुहोस्।" }] 
+                    parts: [{ text: "तपाईं ४० देखि ६० वर्षका नेपालीहरूको लागि एक अनुभवी, आदरणीय र उत्साही डिजिटल मेन्टर हुनुहुन्छ। तपाईंका उत्तरहरू सधैं शुद्ध तर सजिलो नेपाली भाषामा हुनुपर्छ। धेरै प्राविधिक शब्दहरूलाई नेपालीमै व्याख्या गर्नुहोस्।" }] 
                 }
             };
 
@@ -260,156 +289,223 @@
                     return result.candidates?.[0]?.content?.parts?.[0]?.text;
                 } catch (error) {
                     if (i === 4) throw error;
-                    await new Promise(resolve => setTimeout(resolve, delay));
+                    await new Promise(r => setTimeout(r, delay));
                     delay *= 2;
                 }
             }
         }
 
-        // AI Features
-        async function generateIdeas() {
-            const topic = document.getElementById('ai-topic').value;
-            if (!topic) return alert("कृपया एउटा रुचि लेख्नुहोस्।");
+        const state = {
+            section: 'home',
+            device: 'mobile',
+            track: 'basic'
+        };
 
-            const loader = document.getElementById('ai-loading');
-            const output = document.getElementById('ai-ideas-output');
-            
-            loader.classList.remove('hidden');
-            output.innerHTML = "";
-
-            const prompt = `मलाई ${topic} मा आधारित ३ वटा सरल भिडियो आइडिया दिनुहोस् जुन ४०-६० वर्षका मानिसहरूले सजिलै बनाउन सक्छन्। छोटो र स्पष्ट बुँदामा लेख्नुहोस्।`;
-
-            try {
-                const text = await callGemini(prompt);
-                const ideas = text.split('\n').filter(line => line.trim().length > 0).slice(0, 5);
-                
-                output.innerHTML = ideas.map(idea => `
-                    <div class="p-3 bg-white rounded-lg border border-nepal-gold/30 hover:shadow-md transition cursor-pointer" onclick="copyToScript('${idea.replace(/'/g, "\\'")}')">
-                        ${idea}
-                    </div>
-                `).join('');
-            } catch (error) {
-                alert("माफ गर्नुहोस्, केही समस्या आयो। कृपया फेरि प्रयास गर्नुहोस्।");
-            } finally {
-                loader.classList.add('hidden');
+        const tracks = {
+            basic: {
+                title: "पहिलो पाइला: भिडियोको सुरुवात",
+                color: "nepal-red",
+                weeks: [
+                    { week: "हप्ता १", task: "मोबाइलबाट १०-१० सेकेन्डका ५ वटा क्लिप खिच्ने। युट्युबमा InShot कसरी चलाउने भनेर हेर्ने।" },
+                    { week: "हप्ता २", task: "खिचिएका भिडियोहरू जोड्ने। सुरु र अन्त्यको नचाहिने भाग हटाउने।" },
+                    { week: "हप्ता ३", task: "भिडियोमा ठूलो अक्षरमा 'नमस्ते' लेख्ने र हल्का धुन हाल्ने।" },
+                    { week: "हप्ता ४", task: "तयार भएको भिडियो सेभ गर्ने र परिवारको ग्रुपमा पठाएर प्रतिक्रिया लिने।" }
+                ]
+            },
+            advanced: {
+                title: "दोस्रो पाइला: सिर्जनात्मक सम्पादन",
+                color: "nepal-blue",
+                weeks: [
+                    { week: "हप्ता १", task: "ट्रान्जिसन (Transition) को प्रयोग गरेर दुई दृश्यलाई जादुमयी ढंगले जोड्ने।" },
+                    { week: "हप्ता २", task: "भिडियोको गति मिलाउने (Slow Motion / Speed up) ताकि भिडियो रोचक बनोस्।" },
+                    { week: "हप्ता ३", task: "कलर फिल्टर (Filters) प्रयोग गरी भिडियोलाई चम्किलो र व्यावसायिक बनाउने।" },
+                    { week: "हप्ता ४", task: "भिडियोको पृष्ठभूमि हटाउने वा 'Keyframe' एनिमेसन चलाउन सिक्ने।" }
+                ]
+            },
+            story: {
+                title: "तेस्रो पाइला: युट्युब र ब्रान्डिङ",
+                color: "nepal-gold",
+                weeks: [
+                    { week: "हप्ता १", task: "आफ्नो युट्युब च्यानल बनाउने र प्रोफाइल फोटो राम्रो राख्ने।" },
+                    { week: "हप्ता २", task: "भिडियोको लागि थम्बनेल (Thumbnail) बनाउने ताकि मानिसहरूले क्लिक गरून्।" },
+                    { week: "हप्ता ३", task: "भिडियोको विवरण (Description) र ट्याग (Tags) हालेर सर्चमा आउने बनाउने।" },
+                    { week: "हप्ता ४", task: "निरन्तर भिडियो राख्ने तालिका बनाउने र दर्शकहरूसँग कुराकानी गर्ने।" }
+                ]
             }
-        }
+        };
 
-        async function generateScript() {
-            const idea = document.getElementById('ai-script-input').value;
-            if (!idea) return alert("कृपया एउटा आइडिया लेख्नुहोस्।");
+        const toolsData = {
+            mobile: [
+                { name: "InShot", icon: "✂️", level: "सजिलो", desc: "आधारभूत सम्पादन र साना भिडियोका लागि।" },
+                { name: "CapCut", icon: "🎭", level: "मध्यम", desc: "राम्रा ट्रान्जिसन र एआई इफेक्टका लागि।" },
+                { name: "KineMaster", icon: "🎞️", level: "व्यावसायिक", desc: "धेरै लेयरमा काम गर्नका लागि।" }
+            ],
+            pc: [
+                { name: "Canva Video", icon: "🎨", level: "सजिलो", desc: "डिजाइन र भिडियो दुवैका लागि।" },
+                { name: "Clipchamp", icon: "💻", level: "मध्यम", desc: "विन्डोज कम्प्युटरमा सजिलै चल्ने।" },
+                { name: "CapCut Desktop", icon: "🔥", level: "उत्कृष्ट", desc: "कम्प्युटरमा सबैभन्दा छिटो र आधुनिक।" }
+            ]
+        };
 
-            const loader = document.getElementById('ai-loading');
-            const output = document.getElementById('ai-script-output');
-            
-            loader.classList.remove('hidden');
-            output.classList.add('hidden');
-
-            const prompt = `मैले एउटा भिडियो बनाउन खोजेको छु: "${idea}"। कृपया मलाई १-२ मिनेटको सरल भिडियो स्क्रिप्ट लेखिदिनुहोस्। यसमा: १. सुरुमा के भन्ने, २. बीचमा के देखाउने र ३. अन्त्यमा कसरी टुङ्ग्याउने भनेर स्पष्ट पार्नुहोस्।`;
-
-            try {
-                const text = await callGemini(prompt);
-                output.innerText = text;
-                output.classList.remove('hidden');
-            } catch (error) {
-                alert("माफ गर्नुहोस्, स्क्रिप्ट बनाउन सकिएन।");
-            } finally {
-                loader.classList.add('hidden');
-            }
-        }
-
-        function copyToScript(text) {
-            // Clean up the string from numbering if exists
-            const cleaned = text.replace(/^\d+\.\s*/, '').replace(/^-\s*/, '');
-            document.getElementById('ai-script-input').value = cleaned;
-            window.scrollTo({
-                top: document.getElementById('ai-script-input').offsetTop - 150,
-                behavior: 'smooth'
-            });
-        }
-
-        // Navigation and Tab Logic
         function navigate(id) {
             document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-active'));
-            event.target.classList.add('nav-active');
+            const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.textContent.includes(id === 'ai-helper' ? 'एआई' : (id === 'learning' ? 'इन्टरनेट' : (id === 'schedule' ? 'कार्ययोजना' : (id === 'tools' ? 'उपकरण' : (id === 'lab' ? 'ल्याब' : 'गृह'))))));
+            if(activeBtn) activeBtn.classList.add('nav-active');
             window.scrollTo(0, 0);
+            if (id === 'home') renderChart();
         }
-
-        const state = { device: 'mobile', week: 1 };
 
         function toggleDevice(type) {
             state.device = type;
+            const mBtn = document.getElementById('btn-mobile');
+            const pBtn = document.getElementById('btn-pc');
+            if(type === 'mobile') {
+                mBtn.classList.add('bg-nepal-red', 'text-white');
+                pBtn.classList.remove('bg-nepal-red', 'text-white');
+            } else {
+                pBtn.classList.add('bg-nepal-red', 'text-white');
+                mBtn.classList.remove('bg-nepal-red', 'text-white');
+            }
             renderTools();
         }
 
         function renderTools() {
-            const data = {
-                mobile: {
-                    title: "स्मार्टफोनका लागि उत्तम एपहरू",
-                    apps: [
-                        { name: "InstaEdit", desc: "सजिलै भिडियो सम्पादन गर्न सकिन्छ।", type: "सजिलो" },
-                        { name: "InShot", desc: "सबैभन्दा सजिलो। साधारण सम्पादनका लागि उत्कृष्ट।", type: "सजिलो" },
-                        { name: "CapCut", desc: "अलि आधुनिक। रिल्स बनाउनका लागि धेरैले प्रयोग गर्छन्।", type: "मध्यम" }
-                    ]
-                },
-                pc: {
-                    title: "कम्प्युटरका लागि सफ्टवेयर",
-                    apps: [
-                        { name: "Canva", desc: "वेबसाइटमै गएर सजिलै भिडियो बनाउन सकिन्छ।", type: "सजिलो" },
-                        { name: "CapCut PC", desc: "मोबाइल जस्तै सजिलो तर ठूलो स्क्रिनमा।", type: "मध्यम" }
-                    ]
-                }
-            }[state.device];
-            
             const container = document.getElementById('tools-display');
-            let html = `<div class="md:col-span-2 bg-white p-6 rounded-2xl shadow-sm"><h3 class="text-2xl font-bold mb-4 text-nepal-blue">${data.title}</h3><div class="grid md:grid-cols-2 gap-4">`;
-            data.apps.forEach(app => {
-                html += `<div class="card p-5 border border-gray-100"><h4 class="font-bold text-lg">${app.name}</h4><p class="text-sm text-gray-600">${app.desc}</p></div>`;
-            });
-            html += `</div></div>`;
-            container.innerHTML = html;
+            container.innerHTML = toolsData[state.device].map(tool => `
+                <div class="card p-8 text-center animate-fade">
+                    <div class="text-6xl mb-4">${tool.icon}</div>
+                    <h3 class="text-2xl font-bold text-nepal-blue mb-2">${tool.name}</h3>
+                    <div class="text-xs bg-gray-100 inline-block px-3 py-1 rounded-full mb-4 font-bold text-nepal-red">${tool.level}</div>
+                    <p class="text-gray-600">${tool.desc}</p>
+                </div>
+            `).join('');
         }
 
-        function renderWeek(w) {
-            const weeks = {
-                1: ["युट्युबमा ५ वटा भिडियो हेर्ने", "InShot एप इन्स्टल गर्ने", "आफ्नो सानो भिडियो खिच्ने"],
-                2: ["भिडियो एपमा हाल्ने", "नचाहिने भाग काट्न सिक्ने", "दुई भिडियो जोड्ने"],
-                3: ["भिडियोमा नाम लेख्ने", "हल्का संगीत राख्ने", "१ मिनेटको भिडियो तयार पार्ने"],
-                4: ["भिडियो सेभ गर्ने", "फेसबुकमा पठाउने", "अरुको प्रतिक्रिया लिने"]
-            };
-            const container = document.getElementById('schedule-display');
-            container.innerHTML = `<h3 class="text-xl font-bold mb-4">हप्ता ${w} को काम:</h3><ul class="space-y-3">` + 
-                weeks[w].map(t => `<li class="flex items-center gap-3"><span class="w-2 h-2 bg-nepal-red rounded-full"></span>${t}</li>`).join('') + `</ul>`;
-            
-            document.querySelectorAll('.week-btn').forEach(b => {
+        function changeTrack(trackKey) {
+            state.track = trackKey;
+            document.querySelectorAll('.track-btn').forEach(b => {
                 b.classList.remove('bg-nepal-red', 'text-white');
                 b.classList.add('bg-white');
             });
-            document.getElementById('w'+w).classList.add('bg-nepal-red', 'text-white');
+            document.getElementById(`track-${trackKey}`).classList.replace('bg-white', 'bg-nepal-red');
+            document.getElementById(`track-${trackKey}`).classList.add('text-white');
+            renderSchedule();
+        }
+
+        function renderSchedule() {
+            const track = tracks[state.track];
+            const container = document.getElementById('schedule-container');
+            
+            const weeksHtml = track.weeks.map((w, i) => `
+                <div class="flex gap-4 p-6 bg-white rounded-3xl border border-gray-100 shadow-sm mb-4">
+                    <div class="step-num flex-shrink-0">${i+1}</div>
+                    <div>
+                        <h5 class="font-bold text-nepal-blue text-xl">${w.week}</h5>
+                        <p class="text-gray-700 mt-2">${w.task}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = `
+                <div class="bg-gray-50 p-8 rounded-[40px] border-l-[10px] border-nepal-red h-full">
+                    <h3 class="text-3xl font-bold mb-4">${track.title}</h3>
+                    <p class="mb-8 opacity-75">तपाईंको स्तर अनुसार हामीले यो तालिका तयार पारेका छौं। हरेक हप्ता एउटा काममा मात्र ध्यान दिनुहोस्।</p>
+                    <div class="space-y-4">${weeksHtml}</div>
+                </div>
+                <div class="bg-nepal-blue p-10 rounded-[40px] text-white h-full relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 opacity-20 text-9xl">💡</div>
+                    <h4 class="text-2xl font-bold mb-6">यो लेबल किन सिक्ने?</h4>
+                    <p class="text-lg leading-relaxed mb-6">
+                        ${state.track === 'basic' ? "यदि तपाईं प्रविधिमा नयाँ हुनुहुन्छ भने, यहाँबाट सुरु गर्दा आत्मविश्वास बढ्छ।" : 
+                          state.track === 'advanced' ? "साधारण भिडियो त धेरैले बनाउँछन्, तर एड्भान्स सीपले तपाईंको भिडियोलाई अरूको भन्दा फरक र व्यावसायिक बनाउँछ।" : 
+                          "युट्युबमा मानिसहरू तपाईंको कुरा सुन्न चाहन्छन्। यो लेबलले तपाईंलाई एक कुशल कथावाचक बनाउनेछ।"}
+                    </p>
+                    <div class="p-6 bg-white/10 rounded-2xl border border-white/20">
+                        <p class="font-bold">गुरु मन्त्र:</p>
+                        <p class="italic">"गल्ती गर्न नडराउनुहोस्। जति धेरै थिच्नुहुन्छ, त्यति नै धेरै सिक्नुहुन्छ।"</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function generateIdeas() {
+            const topic = document.getElementById('ai-topic').value;
+            if(!topic) return;
+            const loader = document.getElementById('ai-loading');
+            const output = document.getElementById('ai-ideas-output');
+            loader.classList.remove('hidden');
+            try {
+                const text = await callGemini(`${topic} का लागि ३ वटा सरल तर प्रभावकारी भिडियो आइडियाहरू दिनुहोस्। हरेक आइडियामा के खिच्ने भनेर १-१ लाइन लेख्नुहोस्।`);
+                const ideas = text.split('\n').filter(l => l.trim()).slice(0, 4);
+                output.innerHTML = ideas.map(i => `
+                    <div class="p-4 bg-white rounded-2xl border border-nepal-gold/30 hover:border-nepal-gold shadow-sm cursor-pointer transition-all" onclick="copyToScript('${i.replace(/'/g, "\\'")}')">
+                        ${i}
+                    </div>
+                `).join('');
+            } catch(e) { alert("माफ गर्नुहोला, सम्पर्क हुन सकेन।"); }
+            finally { loader.classList.add('hidden'); }
+        }
+
+        async function generateScript() {
+            const idea = document.getElementById('ai-script-input').value;
+            if(!idea) return;
+            const loader = document.getElementById('ai-loading');
+            const output = document.getElementById('ai-script-output');
+            loader.classList.remove('hidden');
+            output.classList.add('hidden');
+            try {
+                const text = await callGemini(`"${idea}" विषयमा १ मिनेटको भिडियो स्क्रिप्ट लेखिदिनुहोस्। सुरुमा कसरी बोल्ने, बीचमा के देखाउने र अन्त्यमा के भन्ने भनेर सरल नेपालीमा छुट्टाइदिनुहोस्।`);
+                output.innerText = text;
+                output.classList.remove('hidden');
+                output.scrollIntoView({ behavior: 'smooth' });
+            } catch(e) { alert("माफ गर्नुहोला।"); }
+            finally { loader.classList.add('hidden'); }
+        }
+
+        function copyToScript(text) {
+            document.getElementById('ai-script-input').value = text.replace(/^\d+\.\s*/, '');
+            window.scrollTo({ top: document.getElementById('ai-script-input').offsetTop - 150, behavior: 'smooth' });
+        }
+
+        function renderChart() {
+            const canvas = document.getElementById('homeChart');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if(window.myChart) window.myChart.destroy();
+            window.myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['सिकाई', 'अभ्यास', 'सिर्जना'],
+                    datasets: [{
+                        data: [25, 45, 30],
+                        backgroundColor: ['#F2A900', '#B11030', '#003893'],
+                        borderWidth: 0,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { font: { size: 14, weight: 'bold' } } } }
+                }
+            });
         }
 
         window.onload = () => {
             renderTools();
-            renderWeek(1);
-            const ctx = document.getElementById('homeChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: ['सिक्ने', 'खिच्ने', 'सम्पादन'],
-                    datasets: [{ data: [30, 30, 40], backgroundColor: ['#F2A900', '#B11030', '#003893'], borderWidth: 0 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-            });
+            renderSchedule();
+            renderChart();
         };
     </script>
 
     <!-- Visualization & Content Choices:
-         1. AI Idea Generator: Gemini API को प्रयोग गरेर प्रयोगकर्ताको रुचि अनुसार भिडियोका विषयहरू दिन्छ।
-         2. AI Script Assistant: छानिएको विषयलाई सरल नेपाली संवाद र दृश्यमा परिवर्तन गरिदिन्छ।
-         3. System Instructions: Gemini लाई 'नेपाली डिजिटल गुरु' को रूपमा सेट गरिएको छ ताकि यसले पाका उमेरका मानिसहरूलाई सुहाउँदो भाषा प्रयोग गरोस्।
-         4. UI Design: एआई फिचरलाई छुट्टै 'एआई सहयोगी ✨' सेक्सनमा राखिएको छ र चम्किलो (sparkle) इमोजीले हाइलाइट गरिएको छ।
+         1. Multi-Track Scheduler: प्रयोगकर्ताको आवश्यकता अनुसार 'Basic' देखि 'Advanced' सम्मको फरक-फरक कार्ययोजना राखिएको छ।
+         2. Internet Learning Page: गुगल सर्च, युट्युब र अनलाइन सुरक्षाको बारेमा गहिरो जानकारी दिइएको छ।
+         3. Gemini LLM Integration: आइडिया र स्क्रिप्ट जेनेरेसनका लागि 'नेपाली डिजिटल गुरु' प्रम्प्ट प्रयोग गरिएको छ।
+         4. UI Design: ४०-६० वर्षका लागि ठूला फन्ट, प्रस्ट आइकन र नेपाली झण्डाको रङ प्रयोग गरिएको छ।
+         5. Visual Lab: लेयरिङ र कलर ग्रेडिङ जस्ता जटिल कुराहरू चित्रमार्फत सरल बनाइएको छ।
          CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
     -->
 </body>
