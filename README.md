@@ -13,6 +13,7 @@ The goal is simple: make it easy for anyone to open and view these files directl
 ## Files
 
 <!-- FILE_LIST_START -->
+- [agent-ops.html](agent-ops.html)
 - [content-edit-40-60.html](content-edit-40-60.html)
 - [lexical_analyzer/src/Readme.txt](lexical_analyzer/src/Readme.txt)
 - [lexical_analyzer/test/_out_test5_now.txt](lexical_analyzer/test/_out_test5_now.txt)
@@ -24,6 +25,7 @@ The goal is simple: make it easy for anyone to open and view these files directl
 - [lexical_analyzer/test/testsolu5.txt](lexical_analyzer/test/testsolu5.txt)
 - [lexical_analyzer/test/testsolu6.txt](lexical_analyzer/test/testsolu6.txt)
 - [lexical_analyzer/test/testsolupreproc.txt](lexical_analyzer/test/testsolupreproc.txt)
+- [test.html](test.html)
 - [writers-research.html](writers-research.html)
 - [writers2.html](writers2.html)
 <!-- FILE_LIST_END -->
