@@ -134,15 +134,18 @@
                 </p>
                 
                 <!-- Waitlist Form -->
-                <div class="max-w-md mx-auto mb-16">
-                    <form action="https://formspree.io/f/mojnoybb" method="POST" class="flex flex-col sm:flex-row gap-3">
-                        <input type="email" name="email" required placeholder="Enter work email" class="flex-1 waitlist-input px-6 py-4 rounded-2xl text-white font-medium focus:ring-2 focus:ring-indigo-500/50">
-                        <button type="submit" class="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold transition shadow-xl shadow-indigo-600/30 whitespace-nowrap">
-                            Join Waitlist
-                        </button>
-                    </form>
-                    <p class="text-[10px] text-slate-500 mt-4 uppercase tracking-[0.2em] font-bold">Join 400+ Enterprise Leaders</p>
-                </div>
+               <div class="max-w-md mx-auto mb-16">
+    <form action="https://formspree.io/f/mojnoybb" method="POST" class="flex flex-col sm:flex-row gap-3">
+        <input type="hidden" name="product_type" value="agent-ops">
+        
+        <input type="email" name="email" required placeholder="Enter work email" class="flex-1 waitlist-input px-6 py-4 rounded-2xl text-white font-medium focus:ring-2 focus:ring-indigo-500/50">
+        
+        <button type="submit" class="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold transition shadow-xl shadow-indigo-600/30 whitespace-nowrap">
+            Join Waitlist
+        </button>
+    </form>
+    <p class="text-[10px] text-slate-500 mt-4 uppercase tracking-[0.2em] font-bold">Join 400+ Enterprise Leaders</p>
+</div>
                 
                 <div class="flex flex-wrap justify-center gap-12 grayscale opacity-40 pt-8 border-t border-white/5">
                     <span class="font-black italic text-2xl tracking-tighter uppercase">Oracle</span>
@@ -235,6 +238,7 @@
             <div class="max-w-4xl mx-auto glass rounded-[40px] p-16 text-center border-indigo-500/20">
                 <h2 class="text-4xl font-black text-white mb-8 italic uppercase tracking-tighter">Secure Your Spot in the Fleet</h2>
                 <form action="https://formspree.io/f/mojnoybb" method="POST" class="max-w-md mx-auto flex flex-col sm:flex-row gap-3">
+                    <input type="hidden" name="product_type" value="agent-ops">
                     <input type="email" name="email" required placeholder="work@company.com" class="flex-1 waitlist-input px-6 py-4 rounded-2xl text-white">
                     <button type="submit" class="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold transition">Join Waitlist</button>
                 </form>
