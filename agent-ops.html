@@ -3,198 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgentOps Hub | Enterprise Governance & Fleet Control</title>
+    <title>AgentOps Hub | Enterprise AI Governance</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         :root { --brand-indigo: #6366f1; --brand-purple: #8b5cf6; --brand-cyan: #06b6d4; --bg-dark: #0a0a0f; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: #c0c0d0; overflow-x: hidden; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: #c0c0d0; overflow-x: hidden; scroll-behavior: smooth; }
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
         .gradient-text { background: linear-gradient(to right, #6366f1, #8b5cf6, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .grid-bg { background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px); background-size: 40px 40px; }
         .heatmap-cell { width: 12px; height: 12px; border-radius: 2px; transition: all 0.2s; }
-        .diff-added { background: rgba(16, 185, 129, 0.1); color: #10b981; }
-        .diff-removed { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+        .hero-glow { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100%; height: 600px; background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%); z-index: -1; }
+        .view-transition { transition: opacity 0.4s ease, transform 0.4s ease; }
     </style>
 </head>
 <body class="grid-bg">
 
-    <nav class="fixed w-full z-[60] glass border-b border-white/5">
+    <nav class="fixed w-full z-[100] glass border-b border-white/5">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="showLanding()">
                 <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
                     <i data-lucide="shield-check" class="text-white w-6 h-6"></i>
                 </div>
                 <span class="text-xl font-extrabold tracking-tighter text-white italic">AGENTOPS <span class="text-indigo-400">HUB</span></span>
             </div>
-            <div class="flex items-center gap-6">
-                <div class="hidden md:flex items-center gap-4 px-4 py-2 bg-white/5 rounded-full border border-white/10">
-                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">ROI:</span>
-                    <span class="text-[10px] font-black text-emerald-400 uppercase">1,240 Hours Saved/mo</span>
+            <div id="nav-links" class="hidden md:flex items-center gap-8">
+                <a href="#problem" class="text-xs font-black text-slate-400 hover:text-white uppercase tracking-widest">The Problem</a>
+                <a href="#pricing" class="text-xs font-black text-slate-400 hover:text-white uppercase tracking-widest">Pricing</a>
+                <button onclick="showDashboard()" class="bg-indigo-600 text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-xl shadow-indigo-500/20 hover:bg-indigo-500 transition">Enter Control Room</button>
+            </div>
+            <div id="dashboard-nav" class="hidden flex items-center gap-4">
+                <div class="px-4 py-2 bg-emerald-500/10 rounded-full border border-emerald-500/20">
+                    <span class="text-[10px] font-black text-emerald-400 uppercase tracking-widest">ROI: 1,240 hrs saved</span>
                 </div>
-                <button class="relative p-2 text-slate-400 hover:text-white transition">
-                    <i data-lucide="bell" class="w-6 h-6"></i>
-                    <span class="absolute top-0 right-0 w-2 h-2 bg-indigo-500 rounded-full border-2 border-[#0a0a0f]"></span>
-                </button>
-                <div class="h-8 w-px bg-white/10 mx-2"></div>
-                <button class="bg-indigo-600 text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-xl shadow-indigo-500/20">Control Room</button>
+                <button onclick="showLanding()" class="text-xs font-black text-slate-500 uppercase hover:text-white transition">Exit</button>
             </div>
         </div>
     </nav>
 
-    <main class="pt-32 px-8 pb-20 max-w-[1600px] mx-auto grid grid-cols-12 gap-8">
+    <div id="landing-view" class="view-transition relative">
+        <div class="hero-glow"></div>
         
-        <div class="col-span-12 lg:col-span-3 space-y-8">
-            
-            <div class="glass rounded-[32px] p-6 border-indigo-500/20">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-xs font-black text-white uppercase tracking-widest italic">Fleet Health</h3>
-                    <span class="text-[10px] text-indigo-400 font-bold">142 Active</span>
+        <section class="pt-48 pb-32 px-6 text-center">
+            <div class="max-w-4xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-widest mb-8">
+                    <span class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></span> PRE-SEED SEATS: 12 REMAINING
                 </div>
-                <div class="grid grid-cols-10 gap-1.5 mb-6">
-                    <script>
-                        for(let i=0; i<100; i++) {
-                            const colors = ['bg-emerald-500', 'bg-emerald-500', 'bg-emerald-500', 'bg-amber-500', 'bg-emerald-500', 'bg-red-500'];
-                            const color = colors[Math.floor(Math.random() * colors.length)];
-                            const opacity = color === 'bg-emerald-500' ? 'opacity-40' : 'opacity-100';
-                            document.write(`<div class="heatmap-cell ${color} ${opacity} hover:scale-125 cursor-help" title="Agent ${i+100}: Online"></div>`);
-                        }
-                    </script>
+                <h1 class="text-6xl md:text-8xl font-black text-white mb-8 leading-tight tracking-tighter">
+                    Stop Agent <br/><span class="gradient-text">Configuration Drift.</span>
+                </h1>
+                <p class="text-xl text-slate-400 max-w-2xl mx-auto mb-12 leading-relaxed">
+                    The first unified governance layer for enterprise AI fleets. Centralize deployment, sync context, and enforce human-in-the-loop approvals.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mb-16">
+                    <button onclick="showDashboard()" class="px-10 py-5 bg-indigo-600 text-white rounded-2xl font-black text-lg shadow-2xl shadow-indigo-600/40 hover:scale-105 transition">Launch Mission Control</button>
+                    <button class="px-10 py-5 glass text-white rounded-2xl font-black text-lg hover:bg-white/5 transition">Book Technical Demo</button>
                 </div>
-                <div class="flex justify-between text-[9px] font-bold uppercase tracking-tighter text-slate-500">
-                    <div class="flex items-center gap-1"><span class="w-2 h-2 bg-emerald-500 rounded-full"></span> Healthy</div>
-                    <div class="flex items-center gap-1"><span class="w-2 h-2 bg-amber-500 rounded-full"></span> Drift</div>
-                    <div class="flex items-center gap-1"><span class="w-2 h-2 bg-red-500 rounded-full"></span> Critical</div>
+                <div class="pt-12 border-t border-white/5">
+                    <p class="text-[10px] font-black text-slate-600 uppercase tracking-[0.4em] mb-8">Waitlist Includes Leaders from</p>
+                    <div class="flex flex-wrap justify-center gap-12 opacity-40 grayscale">
+                        <span class="font-black italic text-xl tracking-tighter">DATADOG</span>
+                        <span class="font-black italic text-xl tracking-tighter">SNOWFLAKE</span>
+                        <span class="font-black italic text-xl tracking-tighter">ANTHROPIC</span>
+                        <span class="font-black italic text-xl tracking-tighter">GOLDMAN SACHS</span>
+                    </div>
                 </div>
             </div>
+        </section>
 
+        <section id="problem" class="py-24 px-6 bg-white/[0.01]">
+            <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
+                <div class="p-10 rounded-[40px] glass border-red-500/10">
+                    <i data-lucide="alert-circle" class="w-8 h-8 text-red-500 mb-6"></i>
+                    <h3 class="text-xl font-black text-white uppercase italic mb-4">40% Cycle Waste</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Engineers spend nearly half their time manually aggregating logs across 5+ disparate model providers.</p>
+                </div>
+                <div class="p-10 rounded-[40px] glass border-amber-500/10">
+                    <i data-lucide="git-branch" class="w-8 h-8 text-amber-500 mb-6"></i>
+                    <h3 class="text-xl font-black text-white uppercase italic mb-4">Configuration Drift</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Fragmented prompt versions and outdated business context lead to "rogue" agent behavior.</p>
+                </div>
+                <div class="p-10 rounded-[40px] glass border-indigo-500/10">
+                    <i data-lucide="user-check" class="w-8 h-8 text-indigo-500 mb-6"></i>
+                    <h3 class="text-xl font-black text-white uppercase italic mb-4">Governance Gap</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Enterprise scale requires immutable audit trails and HITL gatekeepers before execution.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="pricing" class="py-32 px-6">
+            <div class="max-w-7xl mx-auto text-center mb-20">
+                <h2 class="text-4xl font-black text-white italic tracking-tight mb-4">Infrastructure-Grade Pricing</h2>
+                <p class="text-slate-500 uppercase text-[10px] font-black tracking-widest">Built for the $52B Agent Economy</p>
+            </div>
+            <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
+                <div class="p-12 rounded-[48px] glass border-white/5">
+                    <h4 class="text-xs font-black text-slate-500 uppercase tracking-widest mb-2">The Pilot</h4>
+                    <div class="text-5xl font-black text-white mb-6">$149<span class="text-lg text-slate-600 font-normal">/mo</span></div>
+                    <ul class="space-y-4 mb-10 text-sm text-slate-400 italic">
+                        <li>• Up to 3 Active Agents</li>
+                        <li>• 7-Day Context Retention</li>
+                        <li>• Basic Telemetry Stream</li>
+                    </ul>
+                    <button onclick="showDashboard()" class="w-full py-5 bg-white/5 border border-white/10 rounded-2xl font-black text-white hover:bg-white/10 transition">Start Pilot</button>
+                </div>
+                <div class="p-12 rounded-[48px] glass border-indigo-500/30 bg-indigo-500/[0.02] relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-indigo-600 text-white text-[10px] font-black px-6 py-2 rounded-bl-2xl uppercase italic">Most Popular</div>
+                    <h4 class="text-xs font-black text-indigo-400 uppercase tracking-widest mb-2">The Orchestrator</h4>
+                    <div class="text-5xl font-black text-white mb-6">$599<span class="text-lg text-slate-600 font-normal">/mo</span></div>
+                    <ul class="space-y-4 mb-10 text-sm text-slate-300 italic">
+                        <li>• Up to 15 Active Agents</li>
+                        <li>• 30-Day Context Sync Engine</li>
+                        <li>• Multi-Seat HITL Approvals</li>
+                        <li>• SOC2 Compliance Logs</li>
+                    </ul>
+                    <button onclick="showDashboard()" class="w-full py-5 bg-indigo-600 text-white rounded-2xl font-black text-white shadow-xl shadow-indigo-600/20 hover:bg-indigo-500 transition">Get Started</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="dashboard-view" class="view-transition hidden pt-32 px-8 pb-20 max-w-[1600px] mx-auto grid grid-cols-12 gap-8">
+        
+        <div class="col-span-12 lg:col-span-3 space-y-8">
+            <div class="glass rounded-[32px] p-6 border-indigo-500/20">
+                <h3 class="text-xs font-black text-white uppercase tracking-widest italic mb-6">Fleet Health</h3>
+                <div class="grid grid-cols-10 gap-1.5 mb-6" id="heatmap-container"></div>
+                <div class="flex justify-between text-[9px] font-bold uppercase tracking-tighter text-slate-500">
+                    <div><span class="w-2 h-2 bg-emerald-500 rounded-full inline-block mr-1"></span> Healthy</div>
+                    <div><span class="w-2 h-2 bg-amber-500 rounded-full inline-block mr-1"></span> Drift</div>
+                </div>
+            </div>
             <div class="glass rounded-[32px] p-6">
-                <h3 class="text-xs font-black text-white uppercase tracking-widest italic mb-6">Context Sources</h3>
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between p-3 bg-white/5 rounded-2xl border border-white/5">
-                        <div class="flex items-center gap-3">
-                            <i data-lucide="database" class="w-4 h-4 text-cyan-400"></i>
-                            <span class="text-[11px] font-bold text-slate-300">Snowflake</span>
-                        </div>
-                        <span class="text-[9px] text-emerald-500 font-black">SYNCED 2m ago</span>
+                <h3 class="text-xs font-black text-white uppercase tracking-widest italic mb-6">Context Sync</h3>
+                <div class="space-y-3">
+                    <div class="p-3 bg-white/5 rounded-xl flex justify-between items-center border border-white/5">
+                        <span class="text-[10px] font-bold text-slate-400">Snowflake</span>
+                        <span class="text-[9px] text-emerald-500 font-black">ACTIVE</span>
                     </div>
-                    <div class="flex items-center justify-between p-3 bg-white/5 rounded-2xl border border-white/5">
-                        <div class="flex items-center gap-3">
-                            <i data-lucide="slack" class="w-4 h-4 text-purple-400"></i>
-                            <span class="text-[11px] font-bold text-slate-300">Slack (HQ)</span>
-                        </div>
-                        <span class="text-[9px] text-emerald-500 font-black">SYNCED 45s ago</span>
-                    </div>
-                    <div class="flex items-center justify-between p-3 bg-white/5 rounded-2xl border border-white/5">
-                        <div class="flex items-center gap-3">
-                            <i data-lucide="github" class="w-4 h-4 text-white"></i>
-                            <span class="text-[11px] font-bold text-slate-300">Github PRs</span>
-                        </div>
-                        <span class="text-[9px] text-amber-500 font-black">DRIFT DETECTED</span>
+                    <div class="p-3 bg-white/5 rounded-xl flex justify-between items-center border border-white/5">
+                        <span class="text-[10px] font-bold text-slate-400">Jira API</span>
+                        <span class="text-[9px] text-amber-500 font-black">DRIFTED</span>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="col-span-12 lg:col-span-6 space-y-8">
-            
-            <div class="glass rounded-[40px] p-8 border-indigo-500/10">
-                <div class="flex items-center gap-4 mb-8">
-                    <h2 class="text-2xl font-black text-white italic tracking-tighter uppercase">Governance Library</h2>
-                    <div class="h-px bg-white/5 flex-1"></div>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-4">
-                    <button class="p-6 rounded-3xl bg-indigo-600/10 border border-indigo-500/20 text-left hover:bg-indigo-600/20 transition group">
-                        <i data-lucide="refresh-ccw" class="w-6 h-6 text-indigo-500 mb-4"></i>
-                        <h4 class="text-sm font-black text-white uppercase italic">Sync Fleet Context</h4>
-                        <p class="text-[10px] text-slate-500 mt-1">Force update v2.4.1 across all 142 nodes.</p>
-                    </button>
-                    <button class="p-6 rounded-3xl bg-white/5 border border-white/10 text-left hover:bg-white/10 transition">
-                        <i data-lucide="file-search" class="w-6 h-6 text-cyan-500 mb-4"></i>
-                        <h4 class="text-sm font-black text-white uppercase italic">Audit Run Log</h4>
-                        <p class="text-[10px] text-slate-500 mt-1">Export SOC2 compliant logs for Q1.</p>
-                    </button>
-                </div>
-            </div>
-
             <div class="glass rounded-[40px] p-8 border-amber-500/20 bg-amber-500/[0.02]">
                 <div class="flex justify-between items-center mb-8">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 bg-amber-500/20 rounded-lg flex items-center justify-center text-amber-500">
-                            <i data-lucide="user-check" class="w-5 h-5"></i>
-                        </div>
-                        <h2 class="text-xl font-black text-white italic tracking-tighter uppercase">Pending Approvals</h2>
-                    </div>
-                    <span class="px-3 py-1 bg-amber-500/20 text-amber-500 text-[10px] font-black rounded-full">4 ACTION REQUIRED</span>
+                    <h2 class="text-xl font-black text-white italic tracking-tighter uppercase">Pending HITL Approvals</h2>
+                    <span class="px-3 py-1 bg-amber-500/20 text-amber-500 text-[10px] font-black rounded-full">ACTION REQ</span>
                 </div>
-
-                <div class="bg-black/40 rounded-3xl border border-white/5 overflow-hidden">
-                    <div class="p-4 border-b border-white/5 flex justify-between items-center">
-                        <span class="text-[10px] font-black text-slate-500 uppercase">Agent: CustomerSuccess-Alpha</span>
-                        <span class="text-[10px] font-mono text-slate-600">REQ_ID: 9928-X</span>
+                <div class="bg-black/40 rounded-3xl p-6 border border-white/5">
+                    <p class="text-[10px] font-mono text-slate-500 mb-4">Agent: GTM-Bot-4 // Action: Refund $499</p>
+                    <div class="grid grid-cols-2 gap-4 font-mono text-[10px] mb-6">
+                        <div class="p-3 bg-red-500/5 text-red-400 rounded-lg border border-red-500/10">- Policy: Max $50</div>
+                        <div class="p-3 bg-emerald-500/5 text-emerald-400 rounded-lg border border-emerald-500/10">+ Override: VIP Status</div>
                     </div>
-                    <div class="p-6">
-                        <p class="text-xs text-slate-400 mb-4 font-bold uppercase italic">Proposed Action: Issue Refund</p>
-                        <div class="grid grid-cols-2 gap-4 font-mono text-[11px] leading-relaxed">
-                            <div class="p-4 rounded-xl bg-red-500/5 border border-red-500/10 text-red-400">
-                                <span class="block text-[9px] font-black mb-2 uppercase opacity-50">Current Context (v1.0)</span>
-                                - policy: "No refunds over $50"
-                            </div>
-                            <div class="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10 text-emerald-400">
-                                <span class="block text-[9px] font-black mb-2 uppercase opacity-50">Agent Intent (Proposed)</span>
-                                + action: "Refund $499.00"<br/>
-                                + reason: "VIP churn risk high"
-                            </div>
-                        </div>
-                        <div class="mt-8 flex gap-3">
-                            <button class="flex-1 py-4 bg-emerald-600 text-white rounded-2xl font-black text-xs italic uppercase hover:bg-emerald-500 transition shadow-lg shadow-emerald-500/20">Fix & Release</button>
-                            <button class="px-8 py-4 bg-red-600/20 text-red-500 rounded-2xl font-black text-xs italic uppercase hover:bg-red-600/30 transition">Reject</button>
-                        </div>
-                    </div>
+                    <button class="w-full py-4 bg-emerald-600 text-white rounded-xl font-black text-xs uppercase italic">Fix & Release</button>
                 </div>
             </div>
         </div>
 
-        <div class="col-span-12 lg:col-span-3 space-y-8">
-            
-            <div class="glass rounded-[32px] p-6 h-[400px] flex flex-col">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-xs font-black text-white uppercase tracking-widest italic">Live Telemetry</h3>
-                    <div class="flex gap-1">
-                        <button class="w-6 h-6 rounded bg-red-500/20 text-red-500 flex items-center justify-center text-[8px] font-black">ERR</button>
-                        <button class="w-6 h-6 rounded bg-white/5 text-slate-500 flex items-center justify-center text-[8px] font-black">INF</button>
-                    </div>
-                </div>
-                <div class="flex-1 font-mono text-[10px] space-y-2 overflow-y-auto text-slate-500 leading-tight">
-                    <div><span class="text-indigo-500">[09:42:01]</span> <span class="text-emerald-500">SYNC:</span> Heartbeat Node_88...</div>
-                    <div class="text-amber-400"><span class="text-indigo-500">[09:42:04]</span> <span class="font-bold">WARN:</span> Log drift on Node_12...</div>
-                    <div><span class="text-indigo-500">[09:42:05]</span> <span class="text-emerald-500">AUTH:</span> User 402 Approved Refund...</div>
-                    <div class="text-red-500"><span class="text-indigo-500">[09:42:10]</span> <span class="font-bold">FAIL:</span> API 401 Unauthorized (Anthropic)...</div>
-                </div>
-            </div>
-
-            <div class="glass rounded-[32px] p-6 border-white/10">
-                <h3 class="text-xs font-black text-slate-500 uppercase tracking-widest italic mb-6">Compliance & Audit</h3>
-                <div class="space-y-3">
-                    <button class="w-full flex items-center gap-3 p-3 bg-white/5 rounded-xl text-[10px] font-black uppercase text-slate-300 hover:bg-white/10 transition">
-                        <i data-lucide="file-text" class="w-4 h-4 text-indigo-400"></i> Generate SOC2 Log
-                    </button>
-                    <button class="w-full flex items-center gap-3 p-3 bg-white/5 rounded-xl text-[10px] font-black uppercase text-slate-300 hover:bg-white/10 transition">
-                        <i data-lucide="shield" class="w-4 h-4 text-indigo-400"></i> PII Scrubber Active
-                    </button>
+        <div class="col-span-12 lg:col-span-3">
+            <div class="glass rounded-[32px] p-6 h-[500px] flex flex-col">
+                <h3 class="text-xs font-black text-white uppercase tracking-widest italic mb-6">Live Audit Trace</h3>
+                <div class="flex-1 font-mono text-[9px] space-y-2 text-slate-500 overflow-y-auto">
+                    <div>[09:12:01] <span class="text-indigo-500">TRC:</span> Node_1 Heartbeat</div>
+                    <div class="text-amber-400">[09:12:04] <span class="font-bold">DRIFT:</span> Schema Mismatch</div>
+                    <div>[09:12:08] <span class="text-emerald-500">SYNC:</span> Context v2.4 Pushed</div>
                 </div>
             </div>
         </div>
-    </main>
-
-    <footer class="max-w-7xl mx-auto px-6 py-10 border-t border-white/5 text-center">
-        <p class="text-[10px] font-black text-slate-600 uppercase tracking-[0.4em]">Waitlist Includes Leaders from: <span class="text-slate-400">Datadog • Snowflake • Anthropic • Goldman Sachs</span></p>
-    </footer>
+    </div>
 
     <script>
         lucide.createIcons();
+
+        function showDashboard() {
+            document.getElementById('landing-view').classList.add('opacity-0', 'scale-95', 'hidden');
+            document.getElementById('nav-links').classList.add('hidden');
+            
+            const dash = document.getElementById('dashboard-view');
+            dash.classList.remove('hidden');
+            setTimeout(() => {
+                dash.classList.remove('opacity-0', 'scale-95');
+                dash.classList.add('opacity-100', 'scale-100');
+                document.getElementById('dashboard-nav').classList.remove('hidden');
+            }, 50);
+
+            // Generate Heatmap on Load
+            const container = document.getElementById('heatmap-container');
+            container.innerHTML = '';
+            for(let i=0; i<60; i++) {
+                const colors = ['bg-emerald-500', 'bg-emerald-500', 'bg-amber-500', 'bg-emerald-500', 'bg-emerald-500', 'bg-red-500'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                container.innerHTML += `<div class="heatmap-cell ${color} opacity-40 hover:opacity-100 transition-all cursor-help"></div>`;
+            }
+        }
+
+        function showLanding() {
+            location.reload(); // Simple way to reset state for demo
+        }
     </script>
 </body>
 </html>
