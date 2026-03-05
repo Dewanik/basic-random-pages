@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgentOps Hub | The Unified Command Layer for Enterprise AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --brand-indigo: #6366f1;
+            --brand-purple: #8b5cf6;
+            --brand-cyan: #06b6d4;
+            --bg-dark: #0a0a0f;
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg-dark);
+            color: #c0c0d0;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        .glass { 
+            background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+        }
+
+        .agent-card { 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .agent-card:hover { 
+            transform: translateY(-4px); 
+            border-color: var(--brand-indigo); 
+            box-shadow: 0 20px 40px -10px rgba(99, 102, 241, 0.3); 
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #6366f1, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .pricing-card-highlight {
+            border: 2px solid var(--brand-indigo);
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
+        }
+
+        #detailSidebar {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Task Expansion Logic */
+        .thinking-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out, opacity 0.3s ease;
+            opacity: 0;
+        }
+        .thinking-item.expanded .thinking-content {
+            max-height: 500px;
+            padding-top: 1rem;
+            opacity: 1;
+        }
+        .thinking-item.expanded .chevron-icon {
+            transform: rotate(180deg);
+        }
+
+        .terminal-scroll::-webkit-scrollbar { width: 4px; }
+        .terminal-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+
+        .modal-overlay {
+            background: rgba(2, 6, 23, 0.98);
+            backdrop-filter: blur(12px);
+        }
+
+        .grid-bg {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), 
+                              linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        .waitlist-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .waitlist-input:focus {
+            border-color: var(--brand-indigo);
+            background: rgba(255, 255, 255, 0.08);
+            outline: none;
+        }
+    </style>
+</head>
+<body class="sidebar-closed">
+
+    <!-- NAVIGATION -->
+    <nav class="fixed w-full z-[60] glass border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="location.reload()">
+                <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                    <i data-lucide="layout-grid" class="text-white w-6 h-6"></i>
+                </div>
+                <span class="text-xl font-extrabold tracking-tighter text-white italic">AGENTOPS <span class="text-indigo-400">HUB</span></span>
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#features" class="text-sm font-semibold text-slate-400 hover:text-white transition">The Edge</a>
+                <a href="#pricing" class="text-sm font-semibold text-slate-400 hover:text-white transition">Pricing</a>
+                <button onclick="showApp()" class="bg-indigo-600 text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-indigo-500 transition active:scale-95 shadow-xl shadow-indigo-500/20">Enter Control Room</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- LANDING PAGE -->
+    <div id="landing-view">
+        <!-- Hero Section -->
+        <section class="relative pt-48 pb-32 px-6 grid-bg overflow-hidden">
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-indigo-600/10 blur-[120px] rounded-full -z-10"></div>
+            <div class="max-w-5xl mx-auto text-center relative z-10">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-widest mb-8">
+                    <span class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></span> Pre-Seed Waiting List Active
+                </div>
+                <h1 class="text-6xl md:text-8xl font-black text-white mb-8 leading-tight tracking-tighter">
+                    Unify Your <br/><span class="gradient-text">AI Fleet.</span>
+                </h1>
+                <p class="text-xl text-slate-400 max-w-2xl mx-auto mb-12 leading-relaxed">
+                    Stop the "Context-Switching Tax." Centralize deployment, sync context, and gain unified visibility over every agent in your enterprise.
+                </p>
+                
+                <!-- Waitlist Form -->
+                <div class="max-w-md mx-auto mb-16">
+                    <form action="https://formspree.io/f/mojnoybb" method="POST" class="flex flex-col sm:flex-row gap-3">
+                        <input type="email" name="email" required placeholder="Enter work email" class="flex-1 waitlist-input px-6 py-4 rounded-2xl text-white font-medium focus:ring-2 focus:ring-indigo-500/50">
+                        <button type="submit" class="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold transition shadow-xl shadow-indigo-600/30 whitespace-nowrap">
+                            Join Waitlist
+                        </button>
+                    </form>
+                    <p class="text-[10px] text-slate-500 mt-4 uppercase tracking-[0.2em] font-bold">Join 400+ Enterprise Leaders</p>
+                </div>
+                
+                <div class="flex flex-wrap justify-center gap-12 grayscale opacity-40 pt-8 border-t border-white/5">
+                    <span class="font-black italic text-2xl tracking-tighter uppercase">Oracle</span>
+                    <span class="font-black italic text-2xl tracking-tighter uppercase">Salesforce</span>
+                    <span class="font-black italic text-2xl tracking-tighter uppercase">Datadog</span>
+                    <span class="font-black italic text-2xl tracking-tighter uppercase">Snowflake</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Pain Section (Mockup Requirements) -->
+        <section id="features" class="py-24 px-6 border-y border-white/5 bg-slate-950/20">
+            <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-12">
+                <div class="p-8 rounded-3xl glass hover:border-indigo-500/30 transition-all">
+                    <div class="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400 mb-6">
+                        <i data-lucide="layers"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 italic">Context-Switching Tax</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Fragmented management leads to 40% waste in engineering cycles. We provide a single pane of glass.</p>
+                </div>
+                <div class="p-8 rounded-3xl glass hover:border-purple-500/30 transition-all">
+                    <div class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-400 mb-6">
+                        <i data-lucide="refresh-cw"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 italic">Configuration Drift</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Automate the sharing of business context across agents. Ensure consistent behavior at scale.</p>
+                </div>
+                <div class="p-8 rounded-3xl glass hover:border-cyan-500/30 transition-all">
+                    <div class="w-12 h-12 bg-cyan-500/10 rounded-xl flex items-center justify-center text-cyan-400 mb-6">
+                        <i data-lucide="eye"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 italic">The Visibility Gap</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Full audit trails for agent decisions. Gain observability into every cognitive step and human approval.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRICING SECTION -->
+        <section id="pricing" class="py-32 px-6">
+            <div class="max-w-7xl mx-auto text-center mb-20">
+                <h2 class="text-4xl font-black text-white italic tracking-tight mb-4">Tiered Scale Subscription</h2>
+                <p class="text-slate-500">The first unified management platform for the $52B agent economy.</p>
+            </div>
+            
+            <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+                <!-- Starter -->
+                <div class="p-10 rounded-[32px] glass flex flex-col">
+                    <h4 class="text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Starter</h4>
+                    <div class="text-4xl font-black text-white mb-4">$299<span class="text-sm text-slate-500 font-normal">/mo</span></div>
+                    <p class="text-sm text-slate-400 mb-8 italic">Pilot fleet orchestration.</p>
+                    <ul class="space-y-4 mb-10 flex-1 text-xs">
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-indigo-500"></i> 5 Active Agents</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-indigo-500"></i> 10GB Data Processed</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-indigo-500"></i> Basic Monitoring</li>
+                    </ul>
+                    <button onclick="showApp()" class="w-full py-4 border border-white/10 rounded-2xl font-bold text-white hover:bg-white/5 transition">Join Pilot</button>
+                </div>
+
+                <!-- Growth -->
+                <div class="p-10 rounded-[32px] glass pricing-card-highlight flex flex-col relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-indigo-600 text-white text-[10px] font-black px-4 py-1 rounded-bl-xl uppercase tracking-widest">Scaling</div>
+                    <h4 class="text-xs font-black text-indigo-400 uppercase tracking-widest mb-2">Growth</h4>
+                    <div class="text-4xl font-black text-white mb-4">$999<span class="text-sm text-slate-500 font-normal">/mo</span></div>
+                    <p class="text-sm text-slate-400 mb-8 italic">Full context synchronization.</p>
+                    <ul class="space-y-4 mb-10 flex-1 text-xs">
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-indigo-500"></i> 20 Active Agents</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-indigo-500"></i> 50GB Data Processed</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-indigo-500"></i> Advanced Drift Protection</li>
+                    </ul>
+                    <button onclick="showApp()" class="w-full py-4 bg-indigo-600 rounded-2xl font-bold text-white hover:bg-indigo-500 transition shadow-xl shadow-indigo-600/20">Upgrade Now</button>
+                </div>
+
+                <!-- Enterprise -->
+                <div class="p-10 rounded-[32px] glass flex flex-col">
+                    <h4 class="text-xs font-black text-purple-400 uppercase tracking-widest mb-2">Enterprise</h4>
+                    <div class="text-4xl font-black text-white mb-4">Custom</div>
+                    <p class="text-sm text-slate-400 mb-8 italic">Custom HITL workflows.</p>
+                    <ul class="space-y-4 mb-10 flex-1 text-xs">
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-indigo-500"></i> Unlimited Agents</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-indigo-500"></i> Governance Guardrails</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-indigo-500"></i> Priority Support</li>
+                    </ul>
+                    <button onclick="showApp()" class="w-full py-4 border border-white/10 rounded-2xl font-bold text-white hover:bg-white/5 transition">Talk to Sales</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom CTA -->
+        <section class="py-24 px-6 bg-slate-900/40">
+            <div class="max-w-4xl mx-auto glass rounded-[40px] p-16 text-center border-indigo-500/20">
+                <h2 class="text-4xl font-black text-white mb-8 italic uppercase tracking-tighter">Secure Your Spot in the Fleet</h2>
+                <form action="https://formspree.io/f/mojnoybb" method="POST" class="max-w-md mx-auto flex flex-col sm:flex-row gap-3">
+                    <input type="email" name="email" required placeholder="work@company.com" class="flex-1 waitlist-input px-6 py-4 rounded-2xl text-white">
+                    <button type="submit" class="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold transition">Join Waitlist</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <!-- DASHBOARD VIEW -->
+    <div id="dashboard-view" class="hidden min-h-screen pt-20 flex flex-col transition-opacity duration-500 overflow-hidden">
+        <header class="p-8 border-b border-white/5 flex items-center justify-between bg-[#0a0a0f] sticky top-20 z-40">
+            <div>
+                <h2 class="text-3xl font-black text-white italic tracking-tighter uppercase">Mission Control</h2>
+                <div class="flex items-center gap-2 mt-1">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                    <p class="text-[10px] text-slate-500 font-black uppercase tracking-[0.2em]">Fleet Synchronized • v2.4.1</p>
+                </div>
+            </div>
+            <div class="flex gap-4">
+                <button onclick="toggleSidebar()" class="p-3 bg-slate-900 text-slate-400 rounded-xl hover:text-white border border-white/10 transition">
+                    <i data-lucide="panel-right" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-1 flex overflow-hidden relative">
+            <!-- Center Stage -->
+            <div class="flex-1 overflow-y-auto p-10 pb-40">
+                <!-- GRAND TASK INPUT -->
+                <div class="max-w-4xl mx-auto mb-20">
+                    <div class="text-center mb-6">
+                        <p class="text-[10px] font-black text-indigo-500 uppercase tracking-[0.4em]">Fleet-Wide Orchestration: [GRAND TASK]</p>
+                    </div>
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-3xl blur opacity-10 group-focus-within:opacity-40 transition"></div>
+                        <div class="relative bg-slate-950 border border-white/10 rounded-2xl p-6 flex flex-col gap-4 shadow-2xl">
+                            <textarea id="grandTaskInput" placeholder="Define the objective: 'Analyze GTM drift and summarize outreach gaps'..." 
+                                      class="bg-transparent border-none text-xl text-white placeholder:text-slate-800 focus:outline-none h-24 resize-none leading-relaxed font-medium text-center"></textarea>
+                            <div class="flex justify-center border-t border-white/5 pt-4">
+                                <button onclick="runGrandTask()" class="bg-indigo-600 text-white px-10 py-3 rounded-xl font-black text-sm hover:bg-indigo-500 transition active:scale-95 shadow-xl shadow-indigo-600/20 flex items-center gap-3">
+                                    <i data-lucide="zap" class="w-4 h-4 fill-white"></i> LAUNCH MISSION
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ORCHESTRATION LIST (Requirement: Only one clickable) -->
+                <div class="max-w-4xl mx-auto mb-16">
+                    <div class="flex items-center gap-4 mb-6">
+                        <h4 class="text-[11px] font-black text-slate-500 uppercase tracking-widest whitespace-nowrap">Active Orchestrations</h4>
+                        <div class="h-px bg-white/5 w-full"></div>
+                    </div>
+                    <div class="space-y-3">
+                        <!-- Clickable Orchestration -->
+                        <div onclick="selectAgent('GTM Sentiment Analysis', 'ORCH-402-DELTA')" class="group p-4 rounded-2xl glass border-indigo-500/20 bg-indigo-500/5 flex items-center justify-between cursor-pointer hover:border-indigo-500/40 transition">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 bg-indigo-600/10 rounded-xl flex items-center justify-center text-indigo-500">
+                                    <i data-lucide="activity" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-black text-white uppercase italic">GTM Sentiment Analysis</p>
+                                    <p class="text-[9px] text-indigo-400 font-bold uppercase tracking-widest">In Progress • 3 Agents Engaged</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-6">
+                                <div class="text-right">
+                                    <p class="text-[9px] text-slate-500 font-mono">ID: ORCH-402</p>
+                                    <p class="text-[9px] text-slate-500 font-mono">Runtime: 12.4s</p>
+                                </div>
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-600 group-hover:text-white transition"></i>
+                            </div>
+                        </div>
+                        <!-- Static Placeholder -->
+                        <div class="p-4 rounded-2xl glass border-white/5 opacity-50 flex items-center justify-between cursor-not-allowed">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-slate-600">
+                                    <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-black text-slate-500 uppercase italic">Weekly Leads Audit</p>
+                                    <p class="text-[9px] text-emerald-500 font-bold uppercase tracking-widest">Completed • 04/02/2024</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AGENT GRID -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <div onclick="selectAgent('Scraping Master', 'Agent 1')" class="agent-card p-10 rounded-[40px] cursor-pointer group">
+                        <i data-lucide="search" class="w-10 h-10 text-indigo-500 mb-8"></i>
+                        <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Agent 1</p>
+                        <h3 class="text-2xl font-black text-white italic tracking-tighter uppercase">Scraping Master</h3>
+                    </div>
+                    <div onclick="selectAgent('Research Master', 'Agent 2')" class="agent-card p-10 rounded-[40px] cursor-pointer group bg-indigo-500/5">
+                        <i data-lucide="brain" class="w-10 h-10 text-purple-400 mb-8"></i>
+                        <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Agent 2</p>
+                        <h3 class="text-2xl font-black text-white italic tracking-tighter uppercase">Research Master</h3>
+                    </div>
+                    <div onclick="selectAgent('Display Master', 'Agent 3')" class="agent-card p-10 rounded-[40px] cursor-pointer group">
+                        <i data-lucide="file-text" class="w-10 h-10 text-cyan-400 mb-8"></i>
+                        <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Agent 3</p>
+                        <h3 class="text-2xl font-black text-white italic tracking-tighter uppercase leading-none">Display + <br/>Summarizer</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DETAIL SIDEBAR -->
+            <aside id="detailSidebar" class="fixed right-0 top-20 bottom-0 w-full md:w-[500px] border-l border-white/5 bg-[#0a0a0f] flex flex-col z-50 translate-x-full shadow-2xl">
+                <div class="p-8 border-b border-white/5 flex justify-between items-center bg-slate-950/40">
+                    <div>
+                        <h3 id="sideAgentName" class="text-xl font-black text-white italic tracking-tighter uppercase">Research Master</h3>
+                        <p id="sideAgentID" class="text-[10px] text-indigo-500 font-black uppercase tracking-widest mt-1">Status: Active Run</p>
+                    </div>
+                    <button onclick="toggleSidebar()" class="text-slate-500 hover:text-white p-2 bg-slate-900 rounded-lg">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                
+                <div class="flex-1 overflow-y-auto p-8 space-y-12 terminal-scroll pb-32">
+                    <!-- Logs Section -->
+                    <section>
+                        <div class="flex justify-between items-center mb-6">
+                            <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Telemetry Stream</h4>
+                            <button onclick="expandLogs()" class="text-[10px] text-indigo-400 font-black hover:text-white uppercase tracking-widest flex items-center gap-1 transition">
+                                <i data-lucide="maximize" class="w-3 h-3"></i> Extend
+                            </button>
+                        </div>
+                        <div id="sideLogs" class="bg-black/60 rounded-2xl p-5 font-mono text-[10px] h-40 border border-white/5 overflow-y-auto leading-relaxed terminal-scroll text-slate-500">
+                            <div class="mb-1 italic">[04:12:01] Broadcast directive block_A...</div>
+                            <div class="mb-1 italic">[04:12:02] Token buffer allocated (Node_B)...</div>
+                            <div class="mb-1 italic">[04:12:05] Kernel v2.4 initialized...</div>
+                            <div class="mb-1 italic text-indigo-400 animate-pulse">_ Streaming telemetry active...</div>
+                        </div>
+                    </section>
+
+                    <!-- Thinking (Expandable for EACH task) -->
+                    <section>
+                        <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-6">Cognitive Chain</h4>
+                        <div class="space-y-4">
+                            <!-- Task 1 -->
+                            <div class="thinking-item glass rounded-2xl border border-white/10 overflow-hidden" onclick="toggleThinking(this)">
+                                <div class="p-5 flex justify-between items-center cursor-pointer hover:bg-white/5 transition">
+                                    <div class="flex items-center gap-4">
+                                        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500"></i>
+                                        <span class="text-xs font-black text-white italic uppercase">Market Trend Analysis</span>
+                                    </div>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500 transition chevron-icon"></i>
+                                </div>
+                                <div class="thinking-content px-5 pb-5">
+                                    <div class="p-4 bg-black/40 rounded-xl border border-white/5 space-y-3">
+                                        <p class="text-[11px] text-slate-400 italic leading-relaxed">"Retrieved raw data from Scraping Master. Identifying pattern drift in current GTM strategies for Q3..."</p>
+                                        <div class="flex gap-4 pt-2 border-t border-white/5">
+                                            <div class="text-[9px] text-indigo-500 font-black italic">GPT-4o • Conf: 98%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Task 2 -->
+                            <div class="thinking-item glass rounded-2xl border border-white/10 overflow-hidden" onclick="toggleThinking(this)">
+                                <div class="p-5 flex justify-between items-center cursor-pointer hover:bg-white/5 transition">
+                                    <div class="flex items-center gap-4">
+                                        <i data-lucide="loader" class="w-5 h-5 text-amber-500 animate-spin"></i>
+                                        <span class="text-xs font-black text-white italic uppercase">Drift Synthesis</span>
+                                    </div>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500 transition chevron-icon"></i>
+                                </div>
+                                <div class="thinking-content px-5 pb-5">
+                                    <div class="p-4 bg-black/40 rounded-xl border border-white/5 space-y-3">
+                                        <p class="text-[11px] text-slate-400 italic leading-relaxed">"Reasoning: Comparing current output against v2.4 guardrails. Detecting logic divergence in 'Sales Outreach' agent."</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Response -->
+                    <section>
+                        <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-4">Terminal Output (Response)</h4>
+                        <div class="p-6 rounded-2xl bg-indigo-950/20 border border-indigo-500/20 relative shadow-inner">
+                            <i data-lucide="quote" class="absolute top-4 right-4 text-white/5 w-12 h-12"></i>
+                            <p class="text-sm text-slate-200 leading-loose italic font-medium relative z-10">
+                                "Analysis complete. Detected drift. Recommendation: Resync all outreach agents to context v2.4.1. Audit ready."
+                            </p>
+                            <div class="mt-6 flex gap-3">
+                                <button class="px-4 py-2 bg-indigo-600/20 text-indigo-400 rounded-lg text-[10px] font-black uppercase hover:bg-indigo-600 hover:text-white transition">Copy JSON</button>
+                                <button class="px-4 py-2 bg-white/5 text-slate-500 rounded-lg text-[10px] font-black uppercase hover:text-white transition">Approve</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- FULLSCREEN MODAL -->
+    <div id="fullLogModal" class="hidden fixed inset-0 z-[100] modal-overlay flex flex-col p-10">
+        <div class="flex justify-between items-center mb-10">
+            <div>
+                <h3 class="text-4xl font-black text-white italic tracking-tighter uppercase">Fleet Telemetry Audit</h3>
+                <p class="text-xs text-indigo-500 font-black uppercase tracking-widest mt-2">Audit Session: ORCH-402-DELTA</p>
+            </div>
+            <button onclick="closeLogs()" class="p-4 bg-white/5 rounded-2xl hover:bg-white/10 transition text-white">
+                <i data-lucide="x" class="w-8 h-8"></i>
+            </button>
+        </div>
+        <div id="fullLogScreen" class="flex-1 bg-black/80 border border-white/10 rounded-3xl p-10 font-mono text-sm overflow-y-auto terminal-scroll leading-relaxed text-slate-500 space-y-2">
+            <!-- Populated via JS -->
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 translate-y-20 opacity-0 bg-white text-black px-10 py-4 rounded-2xl shadow-2xl transition-all duration-500 z-[100] font-black text-sm italic tracking-tight uppercase">
+        Broadcast Synchronized.
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function showApp() {
+            const landing = document.getElementById('landing-view');
+            const dashboard = document.getElementById('dashboard-view');
+            landing.classList.add('opacity-0');
+            setTimeout(() => {
+                landing.classList.add('hidden');
+                dashboard.classList.remove('hidden');
+                dashboard.classList.add('opacity-100');
+                window.scrollTo(0,0);
+                lucide.createIcons();
+            }, 300);
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('detailSidebar');
+            sidebar.classList.toggle('translate-x-full');
+        }
+
+        function selectAgent(name, id) {
+            document.getElementById('sideAgentName').innerText = name;
+            document.getElementById('sideAgentID').innerText = `ID: ${id}`;
+            const sidebar = document.getElementById('detailSidebar');
+            sidebar.classList.remove('translate-x-full');
+            showToast(`${name} Synced.`);
+        }
+
+        function toggleThinking(el) {
+            el.classList.toggle('expanded');
+        }
+
+        function expandLogs() {
+            const modal = document.getElementById('fullLogModal');
+            const screen = document.getElementById('fullLogScreen');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+
+            let logData = "";
+            for(let i=0; i<100; i++) {
+                const ts = new Date().toLocaleTimeString();
+                logData += `<div><span class="text-slate-800">[${ts}]</span> <span class="text-indigo-600 font-bold uppercase tracking-tighter">TRC_AUDIT:</span> <span class="italic text-slate-400">Node_7 responding to directive block_${i}... OK.</span></div>`;
+            }
+            screen.innerHTML = logData;
+            screen.scrollTop = screen.scrollHeight;
+        }
+
+        function closeLogs() {
+            document.getElementById('fullLogModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function runGrandTask() {
+            const input = document.getElementById('grandTaskInput');
+            if (!input.value.trim()) return;
+            showToast("GRAND TASK BROADCASTED TO FLEET.");
+            input.value = "";
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
