@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nepali Literati Link - Connect, Share, Discover</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fcfaf7; }
+        .hero-gradient { background: linear-gradient(135deg, #e76f51 0%, #2a9d8f 100%); }
+        .card-shadow { box-shadow: 0 10px 30px -5px rgba(0,0,0,0.1); transition: transform 0.3s ease; }
+        .card-shadow:hover { transform: translateY(-5px); }
+        .modal-overlay { background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px); }
+        .btn-primary { background-color: #e76f51; color: white; transition: background 0.3s; }
+        .btn-primary:hover { background-color: #d65d40; }
+        .step-active { border-color: #e76f51; color: #e76f51; }
+        .nepal-flag-border { border-left: 4px solid #dc2626; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #e76f51; border-radius: 10px; }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-white border-b sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">L</div>
+                <h1 class="text-2xl font-bold text-emerald-800 tracking-tight">Nepali Literati Link</h1>
+            </div>
+            <nav class="hidden md:flex space-x-8 font-semibold text-slate-600">
+                <a href="#how-it-works" class="hover:text-orange-600">How it Works</a>
+                <a href="#homestays" class="hover:text-orange-600">Find Homestays</a>
+                <a href="#library" class="hover:text-orange-600">Bookshelf</a>
+                <a href="#" class="btn-primary px-6 py-2 rounded-full">Sign In</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero-gradient text-white py-16 px-4">
+        <div class="container mx-auto text-center max-w-4xl">
+            <p class="uppercase tracking-widest text-sm font-bold mb-4 opacity-90">Bringing Books & People Together</p>
+            <h2 class="text-5xl md:text-6xl font-bold mb-6">Connect • Share • Discover</h2>
+            <p class="text-xl mb-10 opacity-90">The first digital network of community libraries in Nepal. Join a movement to preserve knowledge and enhance travel through the power of literature.</p>
+            <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4">
+                <button onclick="document.getElementById('homestays').scrollIntoView({behavior: 'smooth'})" class="bg-white text-emerald-800 font-bold px-8 py-4 rounded-xl shadow-lg hover:bg-slate-50">Explore Homestays</button>
+                <button class="bg-emerald-900 bg-opacity-30 border border-white text-white font-bold px-8 py-4 rounded-xl hover:bg-opacity-40">Request a Book</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Stepper -->
+    <section id="how-it-works" class="py-16 container mx-auto px-4">
+        <h3 class="text-3xl font-bold text-center mb-12">How It Works?</h3>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="text-center group">
+                <div class="w-16 h-16 bg-white border-2 border-slate-200 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold group-hover:border-orange-500 transition-colors">1</div>
+                <h4 class="text-xl font-bold mb-2">Browse</h4>
+                <p class="text-slate-500">Find community libraries on our interactive map across Nepal.</p>
+            </div>
+            <div class="text-center group">
+                <div class="w-16 h-16 bg-white border-2 border-slate-200 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold group-hover:border-orange-500 transition-colors">2</div>
+                <h4 class="text-xl font-bold mb-2">Request</h4>
+                <p class="text-slate-500">Find the book you want and request it for your upcoming stay.</p>
+            </div>
+            <div class="text-center group">
+                <div class="w-16 h-16 bg-white border-2 border-slate-200 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold group-hover:border-orange-500 transition-colors">3</div>
+                <h4 class="text-xl font-bold mb-2">Exchange</h4>
+                <p class="text-slate-500">"Take a Book, Leave a Book" to keep the knowledge flowing.</p>
+            </div>
+            <div class="text-center group">
+                <div class="w-16 h-16 bg-white border-2 border-slate-200 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold group-hover:border-orange-500 transition-colors">4</div>
+                <h4 class="text-xl font-bold mb-2">Enjoy</h4>
+                <p class="text-slate-500">Read in the mountains and share your experience with the community.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Homestays Grid -->
+    <section id="homestays" class="bg-slate-50 py-16">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-10">
+                <div>
+                    <h3 class="text-3xl font-bold mb-2">Featured Homestay Libraries</h3>
+                    <p class="text-slate-500">Hand-picked stays with the best local collections.</p>
+                </div>
+                <div class="flex space-x-2 mt-4 md:mt-0">
+                    <button class="bg-white px-4 py-2 border rounded-lg text-sm font-semibold">Kathmandu Valley</button>
+                    <button class="bg-white px-4 py-2 border rounded-lg text-sm font-semibold">Annapurna Region</button>
+                    <button class="bg-white px-4 py-2 border rounded-lg text-sm font-semibold">Eastern Hills</button>
+                </div>
+            </div>
+
+            <div id="homestay-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Data injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Library / Catalog Section -->
+    <section id="library" class="py-16 container mx-auto px-4">
+        <div class="bg-emerald-800 rounded-3xl p-8 md:p-12 text-white flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-8 md:mb-0">
+                <h3 class="text-3xl font-bold mb-6">Explore the Digital Catalog</h3>
+                <p class="text-emerald-100 text-lg mb-8">Browse 500+ titles scattered across our network. From Nepali classics to international travelogues.</p>
+                <div class="relative max-w-md">
+                    <input type="text" placeholder="Search by title, author, or location..." class="w-full px-6 py-4 rounded-xl text-slate-800 focus:outline-none shadow-lg">
+                    <button class="absolute right-3 top-3 bg-orange-600 px-4 py-1 rounded-lg">Search</button>
+                </div>
+            </div>
+            <div class="md:w-1/2 grid grid-cols-2 gap-4">
+                <div class="bg-white bg-opacity-10 p-4 rounded-2xl border border-white border-opacity-20">
+                    <div class="text-3xl font-bold mb-1">12</div>
+                    <div class="text-emerald-200 text-sm">Active Homestays</div>
+                </div>
+                <div class="bg-white bg-opacity-10 p-4 rounded-2xl border border-white border-opacity-20">
+                    <div class="text-3xl font-bold mb-1">542</div>
+                    <div class="text-emerald-200 text-sm">Books in Network</div>
+                </div>
+                <div class="bg-white bg-opacity-10 p-4 rounded-2xl border border-white border-opacity-20">
+                    <div class="text-3xl font-bold mb-1">89</div>
+                    <div class="text-emerald-200 text-sm">Pending Exchanges</div>
+                </div>
+                <div class="bg-white bg-opacity-10 p-4 rounded-2xl border border-white border-opacity-20">
+                    <div class="text-3xl font-bold mb-1">20+</div>
+                    <div class="text-emerald-200 text-sm">Cultural Activities</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 px-4">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+            <div class="col-span-1 md:col-span-1">
+                <h5 class="text-white font-bold mb-4">Nepali Literati Link</h5>
+                <p class="text-sm">Bringing books and people together across the heart of Nepal. Connect, Share, and Discover.</p>
+            </div>
+            <div>
+                <h5 class="text-white font-bold mb-4">Quick Links</h5>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-white">Our Mission</a></li>
+                    <li><a href="#" class="hover:text-white">Partner with Us</a></li>
+                    <li><a href="#" class="hover:text-white">Safety & Guidelines</a></li>
+                    <li><a href="#" class="hover:text-white">Member Pricing</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="text-white font-bold mb-4">Contact</h5>
+                <ul class="space-y-2 text-sm">
+                    <li>Email: info@nepaliliterati.com</li>
+                    <li>Location: Kathmandu, Nepal</li>
+                    <li>Follow us: @nepaliliterati</li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="text-white font-bold mb-4">Newsletter</h5>
+                <div class="flex">
+                    <input type="text" placeholder="Your email" class="bg-slate-800 border-none rounded-l-lg px-4 py-2 w-full">
+                    <button class="bg-emerald-600 px-4 rounded-r-lg text-white">Join</button>
+                </div>
+            </div>
+        </div>
+        <div class="container mx-auto border-t border-slate-800 pt-8 text-center text-xs">
+            © 2024 Nepali Literati Link. All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- Homestay Detail Modal -->
+    <div id="detail-modal" class="fixed inset-0 z-[100] hidden modal-overlay flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl relative">
+            <button onclick="closeModal()" class="absolute top-6 right-6 bg-slate-100 hover:bg-slate-200 p-2 rounded-full transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            
+            <div id="modal-content" class="p-8">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Feedback Overlay -->
+    <div id="success-feedback" class="fixed top-10 left-1/2 -translate-x-1/2 bg-emerald-600 text-white px-8 py-4 rounded-full shadow-2xl z-[150] transition-all transform scale-0 opacity-0">
+        Action Successful! Check your profile for details.
+    </div>
+
+    <script>
+        const homestays = [
+            {
+                id: 1,
+                name: "Panauti Community Library",
+                location: "Panauti, Kavre",
+                price: 25,
+                rating: 4.9,
+                img: "https://images.unsplash.com/photo-1544735038-35ed0853754e?auto=format&fit=crop&q=80&w=600",
+                description: "Experience the ancient Newari culture. Our library features rare manuscripts and local history books. Guests can join rice planting and clay pottery workshops.",
+                includes: ["Private Bedroom", "Homemade Dal Bhat (Dinner & Breakfast)", "Traditional Newari Tea", "Unlimited Library Access", "Filtered Water"],
+                activities: [
+                    { id: 'a1', title: "Ranjana Lipi Workshop", desc: "Learn the ancient Newari script with local calligraphy masters.", time: "Daily 3:00 PM", price: 10 },
+                    { id: 'a2', title: "Pottery in Thimi", desc: "A hands-on experience at the famous pottery square.", time: "Sat/Sun 10:00 AM", price: 15 },
+                    { id: 'a3', title: "Poetry Night by the River", desc: "Listen to local poets share their work under the moonlight.", time: "Fridays 7:00 PM", price: 0 }
+                ]
+            },
+            {
+                id: 2,
+                name: "Himalayan Book Nest",
+                location: "Dhankuta, Eastern Nepal",
+                price: 20,
+                rating: 4.8,
+                img: "https://images.unsplash.com/photo-1548263514-06758509e685?auto=format&fit=crop&q=80&w=600",
+                description: "Located in the orange town of Dhankuta. A quiet hilltop retreat with a massive collection of mountain lore and hiking guides.",
+                includes: ["Shared or Private Rooms", "Mountain View Garden", "Organic Village Feast", "Solar Hot Shower", "Hiking Map Access"],
+                activities: [
+                    { id: 'a4', title: "Orange Farm Heritage Walk", desc: "Explore Dhankuta's famous orange gardens and heritage trails.", time: "Daily 7:00 AM", price: 8 },
+                    { id: 'a5', title: "Traditional Magar Dance", desc: "Enjoy folk songs and dances performed by the community.", time: "Evenings on Request", price: 5 },
+                    { id: 'a6', title: "Aathpahariya Rai Feast", desc: "A celebratory meal featuring local rhythms and flavors.", time: "Weekends", price: 12 }
+                ]
+            },
+            {
+                id: 3,
+                name: "Fewa Lake Reader's Inn",
+                location: "Sarangkot, Pokhara",
+                price: 35,
+                rating: 4.7,
+                img: "https://images.unsplash.com/photo-1544735038-35ed0853754e?auto=format&fit=crop&q=80&w=600",
+                description: "Wake up to Annapurna reflections. Our library is focused on wellness, yoga, and meditation literature.",
+                includes: ["Lake View Balcony", "Yoga Deck Access", "Healthy Vegan Meals", "Meditation Library", "Guided Morning Hike"],
+                activities: [
+                    { id: 'a7', title: "Yoga & Reading", desc: "A guided session of gentle yoga followed by meditative reading.", time: "Daily 6:30 AM", price: 15 },
+                    { id: 'a8', title: "Sarangkot Sunrise Walk", desc: "Guided trek to the viewpoint for the ultimate sunrise.", time: "Daily 5:00 AM", price: 10 },
+                    { id: 'a9', title: "Village Coffee Adventure", desc: "Visit local coffee farmers and learn about the process.", time: "Daily 2:00 PM", price: 7 }
+                ]
+            }
+        ];
+
+        function renderGrid() {
+            const grid = document.getElementById('homestay-grid');
+            grid.innerHTML = homestays.map(h => `
+                <div class="bg-white rounded-3xl overflow-hidden card-shadow cursor-pointer border border-slate-100" onclick="openModal(${h.id})">
+                    <div class="relative h-48">
+                        <img src="${h.img}" alt="${h.name}" class="w-full h-full object-cover">
+                        <div class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-xs font-bold shadow-sm">
+                            ★ ${h.rating}
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-xs font-bold text-orange-600 mb-1 uppercase tracking-wider">${h.location}</div>
+                        <h4 class="text-xl font-bold mb-2">${h.name}</h4>
+                        <p class="text-slate-500 text-sm line-clamp-2 mb-4">${h.description}</p>
+                        <div class="flex justify-between items-center pt-4 border-t border-slate-50">
+                            <div>
+                                <span class="text-lg font-bold">$${h.price}</span>
+                                <span class="text-slate-400 text-xs">/ night stay</span>
+                            </div>
+                            <button class="bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-emerald-700 transition-colors">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openModal(id) {
+            const h = homestays.find(item => item.id === id);
+            const content = document.getElementById('modal-content');
+            
+            content.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <img src="${h.img}" class="w-full h-80 object-cover rounded-2xl mb-6 shadow-lg">
+                        <h2 class="text-3xl font-bold mb-2">${h.name}</h2>
+                        <div class="text-orange-600 font-semibold mb-4 flex items-center">
+                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path></svg>
+                            ${h.location}
+                        </div>
+                        <p class="text-slate-600 leading-relaxed mb-6">${h.description}</p>
+                        
+                        <div class="bg-emerald-50 rounded-2xl p-6 mb-6">
+                            <h4 class="font-bold text-emerald-800 mb-4">Included in Night Stay ($${h.price}):</h4>
+                            <ul class="space-y-3">
+                                ${h.includes.map(inc => `
+                                    <li class="flex items-center text-emerald-700 text-sm">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                        ${inc}
+                                    </li>
+                                `).join('')}
+                            </ul>
+                            <button onclick="bookingSim('stay')" class="w-full btn-primary mt-6 py-4 rounded-xl font-bold shadow-lg">Book Night Stay</button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                        <h3 class="text-xl font-bold mb-6 flex items-center">
+                            <svg class="w-6 h-6 mr-2 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            Scheduled Activities & Events
+                        </h3>
+                        <div class="space-y-4">
+                            ${h.activities.map(act => `
+                                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm group hover:border-orange-200 transition-colors">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h5 class="font-bold text-slate-800">${act.title}</h5>
+                                        <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-[10px] font-bold uppercase">
+                                            ${act.price === 0 ? 'Free' : '$'+act.price}
+                                        </span>
+                                    </div>
+                                    <p class="text-xs text-slate-500 mb-3">${act.desc}</p>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-[10px] font-semibold text-slate-400 uppercase flex items-center">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                            ${act.time}
+                                        </span>
+                                        <button onclick="bookingSim('activity')" class="text-orange-600 font-bold text-xs hover:underline">Schedule</button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="mt-8 pt-8 border-t border-slate-200">
+                            <h4 class="font-bold mb-4">Library Spotlight</h4>
+                            <div class="flex space-x-4 overflow-x-auto pb-4">
+                                <div class="min-w-[100px] h-36 bg-slate-200 rounded-lg flex flex-col items-center justify-center p-2 text-center text-[10px]">
+                                    <div class="w-12 h-1 bg-emerald-600 mb-2"></div>
+                                    <strong>Palpasa Cafe</strong>
+                                    <span class="text-slate-500">Narayan Wagle</span>
+                                </div>
+                                <div class="min-w-[100px] h-36 bg-slate-200 rounded-lg flex flex-col items-center justify-center p-2 text-center text-[10px]">
+                                    <div class="w-12 h-1 bg-blue-600 mb-2"></div>
+                                    <strong>Battles of the Newar</strong>
+                                    <span class="text-slate-500">History</span>
+                                </div>
+                                <div class="min-w-[100px] h-36 bg-slate-200 rounded-lg flex flex-col items-center justify-center p-2 text-center text-[10px]">
+                                    <div class="w-12 h-1 bg-orange-600 mb-2"></div>
+                                    <strong>The Snow Leopard</strong>
+                                    <span class="text-slate-500">P. Matthiessen</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('detail-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('detail-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function bookingSim(type) {
+            const feedback = document.getElementById('success-feedback');
+            feedback.innerText = type === 'stay' ? 'Your homestay booking is confirmed!' : 'Activity scheduled! See you there.';
+            feedback.classList.remove('scale-0', 'opacity-0');
+            feedback.classList.add('scale-100', 'opacity-100');
+            
+            setTimeout(() => {
+                feedback.classList.remove('scale-100', 'opacity-100');
+                feedback.classList.add('scale-0', 'opacity-0');
+            }, 3000);
+            
+            closeModal();
+        }
+
+        // Close modal on click outside
+        document.getElementById('detail-modal').addEventListener('click', (e) => {
+            if(e.target.id === 'detail-modal') closeModal();
+        });
+
+        window.onload = renderGrid;
+    </script>
+</body>
+</html>
+
