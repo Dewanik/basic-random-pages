@@ -2,378 +2,306 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nepali Literati Link - Connect, Share, Discover</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nepali Literati Link | Discover Nepal</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fcfaf7; }
-        .hero-gradient { background: linear-gradient(135deg, #e76f51 0%, #2a9d8f 100%); }
-        .card-shadow { box-shadow: 0 10px 30px -5px rgba(0,0,0,0.1); transition: transform 0.3s ease; }
-        .card-shadow:hover { transform: translateY(-5px); }
-        .modal-overlay { background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px); }
-        .btn-primary { background-color: #e76f51; color: white; transition: background 0.3s; }
-        .btn-primary:hover { background-color: #d65d40; }
-        .step-active { border-color: #e76f51; color: #e76f51; }
-        .nepal-flag-border { border-left: 4px solid #dc2626; }
+        :root {
+            --nepal-red: #DC2626;
+            --nepal-blue: #1E3A8A;
+            --nepal-gold: #F59E0B;
+        }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #F8F9FA;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .nepali-font { font-family: 'Noto Sans Devanagari', sans-serif; }
         
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #e76f51; border-radius: 10px; }
+        .safe-bottom { padding-bottom: calc(env(safe-area-inset-bottom) + 80px); }
+        
+        /* Mobile Bottom Nav Shadow */
+        .nav-shadow { box-shadow: 0 -4px 12px rgba(0,0,0,0.05); }
+        
+        /* Hide scrollbars but allow scrolling */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .active-tab { color: var(--nepal-red); border-top: 3px solid var(--nepal-red); }
+
+        /* Animation for modal */
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        .slide-up { animation: slideUp 0.3s ease-out; }
+
+        .adventure-gradient {
+            background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%);
+        }
     </style>
 </head>
-<body class="text-slate-800">
+<body class="text-slate-900 overflow-x-hidden">
 
-    <!-- Header -->
-    <header class="bg-white border-b sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">L</div>
-                <h1 class="text-2xl font-bold text-emerald-800 tracking-tight">Nepali Literati Link</h1>
+    <!-- Mobile Top Header -->
+    <header class="bg-white px-5 py-4 flex justify-between items-center sticky top-0 z-40 border-b border-slate-100">
+        <div>
+            <p class="text-[10px] font-bold text-red-600 uppercase tracking-widest nepali-font">नमस्ते नमस्ते</p>
+            <h1 class="text-xl font-bold text-slate-900">Literati Link</h1>
+        </div>
+        <div class="flex items-center space-x-3">
+            <button class="p-2 bg-slate-50 rounded-full">
+                <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </button>
+            <div class="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border-2 border-white shadow-sm">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User">
             </div>
-            <nav class="hidden md:flex space-x-8 font-semibold text-slate-600">
-                <a href="#how-it-works" class="hover:text-orange-600">How it Works</a>
-                <a href="#homestays" class="hover:text-orange-600">Find Homestays</a>
-                <a href="#library" class="hover:text-orange-600">Bookshelf</a>
-                <a href="#" class="btn-primary px-6 py-2 rounded-full">Sign In</a>
-            </nav>
         </div>
     </header>
 
-    <!-- Hero -->
-    <section class="hero-gradient text-white py-16 px-4">
-        <div class="container mx-auto text-center max-w-4xl">
-            <p class="uppercase tracking-widest text-sm font-bold mb-4 opacity-90">Bringing Books & People Together</p>
-            <h2 class="text-5xl md:text-6xl font-bold mb-6">Connect • Share • Discover</h2>
-            <p class="text-xl mb-10 opacity-90">The first digital network of community libraries in Nepal. Join a movement to preserve knowledge and enhance travel through the power of literature.</p>
-            <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4">
-                <button onclick="document.getElementById('homestays').scrollIntoView({behavior: 'smooth'})" class="bg-white text-emerald-800 font-bold px-8 py-4 rounded-xl shadow-lg hover:bg-slate-50">Explore Homestays</button>
-                <button class="bg-emerald-900 bg-opacity-30 border border-white text-white font-bold px-8 py-4 rounded-xl hover:bg-opacity-40">Request a Book</button>
-            </div>
-        </div>
-    </section>
+    <main class="safe-bottom">
+        
+        <!-- Welcome Section -->
+        <section class="px-5 pt-6 pb-2">
+            <h2 class="text-2xl font-bold nepali-font mb-1">खोज्नुहोस् र अनुभव गर्नुहोस्</h2>
+            <p class="text-slate-500 text-sm">Discover local stays & mountain stories.</p>
+        </section>
 
-    <!-- How It Works Stepper -->
-    <section id="how-it-works" class="py-16 container mx-auto px-4">
-        <h3 class="text-3xl font-bold text-center mb-12">How It Works?</h3>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div class="text-center group">
-                <div class="w-16 h-16 bg-white border-2 border-slate-200 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold group-hover:border-orange-500 transition-colors">1</div>
-                <h4 class="text-xl font-bold mb-2">Browse</h4>
-                <p class="text-slate-500">Find community libraries on our interactive map across Nepal.</p>
-            </div>
-            <div class="text-center group">
-                <div class="w-16 h-16 bg-white border-2 border-slate-200 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold group-hover:border-orange-500 transition-colors">2</div>
-                <h4 class="text-xl font-bold mb-2">Request</h4>
-                <p class="text-slate-500">Find the book you want and request it for your upcoming stay.</p>
-            </div>
-            <div class="text-center group">
-                <div class="w-16 h-16 bg-white border-2 border-slate-200 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold group-hover:border-orange-500 transition-colors">3</div>
-                <h4 class="text-xl font-bold mb-2">Exchange</h4>
-                <p class="text-slate-500">"Take a Book, Leave a Book" to keep the knowledge flowing.</p>
-            </div>
-            <div class="text-center group">
-                <div class="w-16 h-16 bg-white border-2 border-slate-200 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold group-hover:border-orange-500 transition-colors">4</div>
-                <h4 class="text-xl font-bold mb-2">Enjoy</h4>
-                <p class="text-slate-500">Read in the mountains and share your experience with the community.</p>
-            </div>
-        </div>
-    </section>
+        <!-- Category Horizontal Scroll -->
+        <section class="overflow-x-auto no-scrollbar flex space-x-3 px-5 py-4">
+            <button class="shrink-0 px-5 py-2.5 rounded-2xl bg-red-600 text-white text-xs font-bold shadow-md shadow-red-200">All</button>
+            <button class="shrink-0 px-5 py-2.5 rounded-2xl bg-white text-slate-600 text-xs font-bold border border-slate-100">🏔️ Trekking</button>
+            <button class="shrink-0 px-5 py-2.5 rounded-2xl bg-white text-slate-600 text-xs font-bold border border-slate-100">🏺 Heritage</button>
+            <button class="shrink-0 px-5 py-2.5 rounded-2xl bg-white text-slate-600 text-xs font-bold border border-slate-100">🌿 Farm Stay</button>
+        </section>
 
-    <!-- Homestays Grid -->
-    <section id="homestays" class="bg-slate-50 py-16">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-10">
-                <div>
-                    <h3 class="text-3xl font-bold mb-2">Featured Homestay Libraries</h3>
-                    <p class="text-slate-500">Hand-picked stays with the best local collections.</p>
-                </div>
-                <div class="flex space-x-2 mt-4 md:mt-0">
-                    <button class="bg-white px-4 py-2 border rounded-lg text-sm font-semibold">Kathmandu Valley</button>
-                    <button class="bg-white px-4 py-2 border rounded-lg text-sm font-semibold">Annapurna Region</button>
-                    <button class="bg-white px-4 py-2 border rounded-lg text-sm font-semibold">Eastern Hills</button>
-                </div>
-            </div>
+        <!-- Featured Adventures (Vertical Feed) -->
+        <section class="px-5 space-y-6" id="adventure-feed">
+            <!-- Data Injected Here -->
+        </section>
 
-            <div id="homestay-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Data injected by JS -->
+        <!-- Pustakalaya (Library) Banner -->
+        <section class="px-5 mt-10">
+            <div class="bg-blue-900 rounded-[2rem] p-6 text-white relative overflow-hidden">
+                <div class="relative z-10">
+                    <h3 class="text-xl font-bold mb-2">Pustakalaya Network</h3>
+                    <p class="text-blue-100 text-xs mb-4 leading-relaxed max-w-[70%]">Exchange your mountain stories. Take a book from the Himalayas, leave a piece of yours behind.</p>
+                    <button class="bg-amber-400 text-blue-900 px-4 py-2 rounded-xl text-xs font-bold">View Bookshelf</button>
+                </div>
+                <div class="absolute -right-4 -bottom-4 opacity-20">
+                    <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 20 20"><path d="M9 4.804A7.909 7.909 0 0111 2c.66 0 1.291.104 1.882.296A4.958 4.958 0 0113.5 2.25c.66 0 1.291.104 1.882.296A4.958 4.958 0 0116.5 2.25c.66 0 1.291.104 1.882.296A7.909 7.909 0 0111 20V4.804z"></path></svg>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Interactive Library / Catalog Section -->
-    <section id="library" class="py-16 container mx-auto px-4">
-        <div class="bg-emerald-800 rounded-3xl p-8 md:p-12 text-white flex flex-col md:flex-row items-center">
-            <div class="md:w-1/2 mb-8 md:mb-0">
-                <h3 class="text-3xl font-bold mb-6">Explore the Digital Catalog</h3>
-                <p class="text-emerald-100 text-lg mb-8">Browse 500+ titles scattered across our network. From Nepali classics to international travelogues.</p>
-                <div class="relative max-w-md">
-                    <input type="text" placeholder="Search by title, author, or location..." class="w-full px-6 py-4 rounded-xl text-slate-800 focus:outline-none shadow-lg">
-                    <button class="absolute right-3 top-3 bg-orange-600 px-4 py-1 rounded-lg">Search</button>
-                </div>
-            </div>
-            <div class="md:w-1/2 grid grid-cols-2 gap-4">
-                <div class="bg-white bg-opacity-10 p-4 rounded-2xl border border-white border-opacity-20">
-                    <div class="text-3xl font-bold mb-1">12</div>
-                    <div class="text-emerald-200 text-sm">Active Homestays</div>
-                </div>
-                <div class="bg-white bg-opacity-10 p-4 rounded-2xl border border-white border-opacity-20">
-                    <div class="text-3xl font-bold mb-1">542</div>
-                    <div class="text-emerald-200 text-sm">Books in Network</div>
-                </div>
-                <div class="bg-white bg-opacity-10 p-4 rounded-2xl border border-white border-opacity-20">
-                    <div class="text-3xl font-bold mb-1">89</div>
-                    <div class="text-emerald-200 text-sm">Pending Exchanges</div>
-                </div>
-                <div class="bg-white bg-opacity-10 p-4 rounded-2xl border border-white border-opacity-20">
-                    <div class="text-3xl font-bold mb-1">20+</div>
-                    <div class="text-emerald-200 text-sm">Cultural Activities</div>
-                </div>
-            </div>
-        </div>
-    </section>
+    </main>
 
-    <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-400 py-12 px-4">
-        <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-            <div class="col-span-1 md:col-span-1">
-                <h5 class="text-white font-bold mb-4">Nepali Literati Link</h5>
-                <p class="text-sm">Bringing books and people together across the heart of Nepal. Connect, Share, and Discover.</p>
-            </div>
-            <div>
-                <h5 class="text-white font-bold mb-4">Quick Links</h5>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="#" class="hover:text-white">Our Mission</a></li>
-                    <li><a href="#" class="hover:text-white">Partner with Us</a></li>
-                    <li><a href="#" class="hover:text-white">Safety & Guidelines</a></li>
-                    <li><a href="#" class="hover:text-white">Member Pricing</a></li>
-                </ul>
-            </div>
-            <div>
-                <h5 class="text-white font-bold mb-4">Contact</h5>
-                <ul class="space-y-2 text-sm">
-                    <li>Email: info@nepaliliterati.com</li>
-                    <li>Location: Kathmandu, Nepal</li>
-                    <li>Follow us: @nepaliliterati</li>
-                </ul>
-            </div>
-            <div>
-                <h5 class="text-white font-bold mb-4">Newsletter</h5>
-                <div class="flex">
-                    <input type="text" placeholder="Your email" class="bg-slate-800 border-none rounded-l-lg px-4 py-2 w-full">
-                    <button class="bg-emerald-600 px-4 rounded-r-lg text-white">Join</button>
-                </div>
-            </div>
-        </div>
-        <div class="container mx-auto border-t border-slate-800 pt-8 text-center text-xs">
-            © 2024 Nepali Literati Link. All Rights Reserved.
-        </div>
-    </footer>
+    <!-- Bottom Navigation Bar (Mobile) -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white nav-shadow border-t border-slate-100 px-6 py-3 flex justify-between items-center z-50">
+        <button class="flex flex-col items-center space-y-1 text-red-600">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+            <span class="text-[10px] font-bold">Explore</span>
+        </button>
+        <button class="flex flex-col items-center space-y-1 text-slate-400">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
+            <span class="text-[10px] font-bold">Map</span>
+        </button>
+        <button class="flex flex-col items-center space-y-1 text-slate-400">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+            <span class="text-[10px] font-bold">Library</span>
+        </button>
+        <button class="flex flex-col items-center space-y-1 text-slate-400">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+            <span class="text-[10px] font-bold">Me</span>
+        </button>
+    </nav>
 
-    <!-- Homestay Detail Modal -->
-    <div id="detail-modal" class="fixed inset-0 z-[100] hidden modal-overlay flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl relative">
-            <button onclick="closeModal()" class="absolute top-6 right-6 bg-slate-100 hover:bg-slate-200 p-2 rounded-full transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-            
-            <div id="modal-content" class="p-8">
-                <!-- Injected via JS -->
+    <!-- Mobile Action Sheet / Modal -->
+    <div id="action-sheet" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeSheet()"></div>
+        <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-[3rem] slide-up max-h-[92vh] overflow-y-auto">
+            <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto my-4"></div>
+            <div id="sheet-content" class="px-6 pb-12">
+                <!-- Content Injected -->
             </div>
         </div>
     </div>
 
-    <!-- Success Feedback Overlay -->
-    <div id="success-feedback" class="fixed top-10 left-1/2 -translate-x-1/2 bg-emerald-600 text-white px-8 py-4 rounded-full shadow-2xl z-[150] transition-all transform scale-0 opacity-0">
-        Action Successful! Check your profile for details.
+    <!-- Success Toast -->
+    <div id="toast" class="fixed top-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-2xl shadow-2xl z-[100] transform scale-0 opacity-0 transition-all duration-300 text-sm font-bold">
+        Namaste! Booking Confirmed.
     </div>
 
     <script>
-        const homestays = [
+        const experiences = [
             {
                 id: 1,
-                name: "Panauti Community Library",
-                location: "Panauti, Kavre",
-                price: 25,
+                name: "The Potter's Courtyard",
+                nepaliName: "कुमालेको आँगन",
+                locality: "Bhaktapur",
+                region: "Kathmandu Valley",
+                price: 32,
                 rating: 4.9,
-                img: "https://images.unsplash.com/photo-1544735038-35ed0853754e?auto=format&fit=crop&q=80&w=600",
-                description: "Experience the ancient Newari culture. Our library features rare manuscripts and local history books. Guests can join rice planting and clay pottery workshops.",
-                includes: ["Private Bedroom", "Homemade Dal Bhat (Dinner & Breakfast)", "Traditional Newari Tea", "Unlimited Library Access", "Filtered Water"],
-                activities: [
-                    { id: 'a1', title: "Ranjana Lipi Workshop", desc: "Learn the ancient Newari script with local calligraphy masters.", time: "Daily 3:00 PM", price: 10 },
-                    { id: 'a2', title: "Pottery in Thimi", desc: "A hands-on experience at the famous pottery square.", time: "Sat/Sun 10:00 AM", price: 15 },
-                    { id: 'a3', title: "Poetry Night by the River", desc: "Listen to local poets share their work under the moonlight.", time: "Fridays 7:00 PM", price: 0 }
-                ]
+                img: "https://images.unsplash.com/photo-1582650625119-3a31f8fa2699?auto=format&fit=crop&q=80&w=800",
+                description: "Experience the timeless rhythm of pottery wheels and the smell of fresh clay in the heart of the world's best-preserved medieval city.",
+                includes: ["Boutique Heritage Room", "Traditional Samay Baji Dinner", "Local Raksi Tasting", "Clay Pottery Lesson"],
+                events: [
+                    { title: "Morning Wheel Throwing", time: "09:00 AM", cost: 10 },
+                    { title: "Heritage Walk (Hidden Lanes)", time: "04:30 PM", cost: 5 },
+                    { title: "Ranjana Lipi Workshop", time: "06:00 PM", cost: 12 }
+                ],
+                books: ["Newar Art History", "The Living Goddess", "Malla Chronicles"]
             },
             {
                 id: 2,
-                name: "Himalayan Book Nest",
-                location: "Dhankuta, Eastern Nepal",
-                price: 20,
+                name: "Ghurmi River Farm",
+                nepaliName: "घुर्मी नदी फार्म",
+                locality: "Dhankuta",
+                region: "Eastern Hills",
+                price: 25,
                 rating: 4.8,
-                img: "https://images.unsplash.com/photo-1548263514-06758509e685?auto=format&fit=crop&q=80&w=600",
-                description: "Located in the orange town of Dhankuta. A quiet hilltop retreat with a massive collection of mountain lore and hiking guides.",
-                includes: ["Shared or Private Rooms", "Mountain View Garden", "Organic Village Feast", "Solar Hot Shower", "Hiking Map Access"],
-                activities: [
-                    { id: 'a4', title: "Orange Farm Heritage Walk", desc: "Explore Dhankuta's famous orange gardens and heritage trails.", time: "Daily 7:00 AM", price: 8 },
-                    { id: 'a5', title: "Traditional Magar Dance", desc: "Enjoy folk songs and dances performed by the community.", time: "Evenings on Request", price: 5 },
-                    { id: 'a6', title: "Aathpahariya Rai Feast", desc: "A celebratory meal featuring local rhythms and flavors.", time: "Weekends", price: 12 }
-                ]
+                img: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&q=80&w=800",
+                description: "A sanctuary for those who love organic farming and river adventures. The Eastern hills offer a climate like no other.",
+                includes: ["Farmhouse Stay", "Seed-to-Plate Dining", "River Fishing Gear", "Sunrise Ridge Hike"],
+                events: [
+                    { title: "Organic Tea Harvest", time: "07:00 AM", cost: 0 },
+                    { title: "Fly Fishing Lesson", time: "11:00 AM", cost: 15 },
+                    { title: "Firewood Cooking Class", time: "05:00 PM", cost: 8 }
+                ],
+                books: ["Himalayan Flora Guide", "Eastern Trails", "Soil & Soul"]
             },
             {
                 id: 3,
-                name: "Fewa Lake Reader's Inn",
-                location: "Sarangkot, Pokhara",
-                price: 35,
-                rating: 4.7,
-                img: "https://images.unsplash.com/photo-1544735038-35ed0853754e?auto=format&fit=crop&q=80&w=600",
-                description: "Wake up to Annapurna reflections. Our library is focused on wellness, yoga, and meditation literature.",
-                includes: ["Lake View Balcony", "Yoga Deck Access", "Healthy Vegan Meals", "Meditation Library", "Guided Morning Hike"],
-                activities: [
-                    { id: 'a7', title: "Yoga & Reading", desc: "A guided session of gentle yoga followed by meditative reading.", time: "Daily 6:30 AM", price: 15 },
-                    { id: 'a8', title: "Sarangkot Sunrise Walk", desc: "Guided trek to the viewpoint for the ultimate sunrise.", time: "Daily 5:00 AM", price: 10 },
-                    { id: 'a9', title: "Village Coffee Adventure", desc: "Visit local coffee farmers and learn about the process.", time: "Daily 2:00 PM", price: 7 }
-                ]
+                name: "Annapurna Peak Inn",
+                nepaliName: "अन्नपूर्ण शिखर इन",
+                locality: "Ghandruk",
+                region: "Annapurna Region",
+                price: 40,
+                rating: 4.9,
+                img: "https://images.unsplash.com/photo-1544735038-35ed0853754e?auto=format&fit=crop&q=80&w=800",
+                description: "Watch the sun touch Machhapuchhre from your window. Ghandruk is the Gateway to the Annapurnas.",
+                includes: ["Mountain View Balcony", "Gurung Cultural Attire Demo", "Sherpa Tea Service", "Stone House Experience"],
+                events: [
+                    { title: "Sunrise View Trek", time: "05:15 AM", cost: 6 },
+                    { title: "Traditional Gurung Dance", time: "07:30 PM", cost: 4 },
+                    { title: "Himalayan Photography Tour", time: "03:00 PM", cost: 20 }
+                ],
+                books: ["Annapurna by Herzog", "Sherpa Stories", "Mountain Medicine"]
             }
         ];
 
-        function renderGrid() {
-            const grid = document.getElementById('homestay-grid');
-            grid.innerHTML = homestays.map(h => `
-                <div class="bg-white rounded-3xl overflow-hidden card-shadow cursor-pointer border border-slate-100" onclick="openModal(${h.id})">
-                    <div class="relative h-48">
-                        <img src="${h.img}" alt="${h.name}" class="w-full h-full object-cover">
-                        <div class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-xs font-bold shadow-sm">
-                            ★ ${h.rating}
+        function renderFeed() {
+            const feed = document.getElementById('adventure-feed');
+            feed.innerHTML = experiences.map(exp => `
+                <div class="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-slate-100 active:scale-[0.98] transition-all" onclick="openSheet(${exp.id})">
+                    <div class="relative h-64">
+                        <img src="${exp.img}" alt="${exp.name}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 adventure-gradient"></div>
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter shadow-lg">${exp.locality}</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 right-4">
+                            <h3 class="text-white text-lg font-bold nepali-font mb-0.5">${exp.nepaliName}</h3>
+                            <p class="text-white/80 text-xs font-medium">${exp.name}</p>
+                        </div>
+                        <div class="absolute bottom-4 right-4 bg-white/20 backdrop-blur-md px-3 py-1 rounded-xl">
+                            <span class="text-white text-xs font-bold">★ ${exp.rating}</span>
                         </div>
                     </div>
-                    <div class="p-6">
-                        <div class="text-xs font-bold text-orange-600 mb-1 uppercase tracking-wider">${h.location}</div>
-                        <h4 class="text-xl font-bold mb-2">${h.name}</h4>
-                        <p class="text-slate-500 text-sm line-clamp-2 mb-4">${h.description}</p>
-                        <div class="flex justify-between items-center pt-4 border-t border-slate-50">
-                            <div>
-                                <span class="text-lg font-bold">$${h.price}</span>
-                                <span class="text-slate-400 text-xs">/ night stay</span>
+                    <div class="p-5 flex justify-between items-center">
+                        <div class="flex items-center space-x-2">
+                            <div class="flex -space-x-2">
+                                <div class="w-6 h-6 rounded-full border-2 border-white bg-slate-200"></div>
+                                <div class="w-6 h-6 rounded-full border-2 border-white bg-slate-300"></div>
                             </div>
-                            <button class="bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-emerald-700 transition-colors">Book Now</button>
+                            <span class="text-[10px] text-slate-400 font-bold uppercase">12+ People Recently Stayed</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-slate-400 font-bold block leading-none">STARTING</span>
+                            <span class="text-lg font-bold">$${exp.price}</span>
                         </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        function openModal(id) {
-            const h = homestays.find(item => item.id === id);
-            const content = document.getElementById('modal-content');
-            
+        function openSheet(id) {
+            const exp = experiences.find(e => e.id === id);
+            const content = document.getElementById('sheet-content');
+
             content.innerHTML = `
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="flex justify-between items-start mb-6">
                     <div>
-                        <img src="${h.img}" class="w-full h-80 object-cover rounded-2xl mb-6 shadow-lg">
-                        <h2 class="text-3xl font-bold mb-2">${h.name}</h2>
-                        <div class="text-orange-600 font-semibold mb-4 flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path></svg>
-                            ${h.location}
-                        </div>
-                        <p class="text-slate-600 leading-relaxed mb-6">${h.description}</p>
-                        
-                        <div class="bg-emerald-50 rounded-2xl p-6 mb-6">
-                            <h4 class="font-bold text-emerald-800 mb-4">Included in Night Stay ($${h.price}):</h4>
-                            <ul class="space-y-3">
-                                ${h.includes.map(inc => `
-                                    <li class="flex items-center text-emerald-700 text-sm">
-                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                        ${inc}
-                                    </li>
-                                `).join('')}
-                            </ul>
-                            <button onclick="bookingSim('stay')" class="w-full btn-primary mt-6 py-4 rounded-xl font-bold shadow-lg">Book Night Stay</button>
-                        </div>
+                        <h2 class="text-2xl font-bold nepali-font text-slate-900">${exp.nepaliName}</h2>
+                        <p class="text-slate-400 text-sm font-medium">${exp.name} • ${exp.locality}</p>
                     </div>
-                    
-                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-                        <h3 class="text-xl font-bold mb-6 flex items-center">
-                            <svg class="w-6 h-6 mr-2 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                            Scheduled Activities & Events
-                        </h3>
-                        <div class="space-y-4">
-                            ${h.activities.map(act => `
-                                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm group hover:border-orange-200 transition-colors">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <h5 class="font-bold text-slate-800">${act.title}</h5>
-                                        <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-[10px] font-bold uppercase">
-                                            ${act.price === 0 ? 'Free' : '$'+act.price}
-                                        </span>
-                                    </div>
-                                    <p class="text-xs text-slate-500 mb-3">${act.desc}</p>
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-[10px] font-semibold text-slate-400 uppercase flex items-center">
-                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                            ${act.time}
-                                        </span>
-                                        <button onclick="bookingSim('activity')" class="text-orange-600 font-bold text-xs hover:underline">Schedule</button>
-                                    </div>
-                                </div>
-                            `).join('')}
+                    <div class="bg-red-50 text-red-600 px-3 py-1 rounded-xl text-xs font-bold">$${exp.price}/night</div>
+                </div>
+
+                <p class="text-slate-600 text-sm leading-relaxed mb-8">${exp.description}</p>
+
+                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Included in Night Stay</h4>
+                <div class="grid grid-cols-1 gap-3 mb-8">
+                    ${exp.includes.map(inc => `
+                        <div class="flex items-center p-4 bg-slate-50 rounded-2xl">
+                            <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-4 text-xs">✨</div>
+                            <span class="text-sm font-semibold text-slate-700">${inc}</span>
                         </div>
-                        
-                        <div class="mt-8 pt-8 border-t border-slate-200">
-                            <h4 class="font-bold mb-4">Library Spotlight</h4>
-                            <div class="flex space-x-4 overflow-x-auto pb-4">
-                                <div class="min-w-[100px] h-36 bg-slate-200 rounded-lg flex flex-col items-center justify-center p-2 text-center text-[10px]">
-                                    <div class="w-12 h-1 bg-emerald-600 mb-2"></div>
-                                    <strong>Palpasa Cafe</strong>
-                                    <span class="text-slate-500">Narayan Wagle</span>
+                    `).join('')}
+                </div>
+
+                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Scheduled Adventures</h4>
+                <div class="space-y-3 mb-8">
+                    ${exp.events.map(ev => `
+                        <div class="flex items-center justify-between p-4 border border-slate-100 rounded-2xl active:bg-slate-50" onclick="showToast()">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex flex-col items-center justify-center mr-4">
+                                    <span class="text-[8px] font-bold uppercase">Event</span>
+                                    <span class="text-xs font-bold">📅</span>
                                 </div>
-                                <div class="min-w-[100px] h-36 bg-slate-200 rounded-lg flex flex-col items-center justify-center p-2 text-center text-[10px]">
-                                    <div class="w-12 h-1 bg-blue-600 mb-2"></div>
-                                    <strong>Battles of the Newar</strong>
-                                    <span class="text-slate-500">History</span>
-                                </div>
-                                <div class="min-w-[100px] h-36 bg-slate-200 rounded-lg flex flex-col items-center justify-center p-2 text-center text-[10px]">
-                                    <div class="w-12 h-1 bg-orange-600 mb-2"></div>
-                                    <strong>The Snow Leopard</strong>
-                                    <span class="text-slate-500">P. Matthiessen</span>
+                                <div>
+                                    <h5 class="text-sm font-bold text-slate-800">${ev.title}</h5>
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase">${ev.time}</p>
                                 </div>
                             </div>
+                            <span class="text-sm font-bold text-slate-900">${ev.cost === 0 ? 'FREE' : '$'+ev.cost}</span>
                         </div>
+                    `).join('')}
+                </div>
+
+                <div class="bg-blue-50 p-6 rounded-[2.5rem] mb-8 border border-blue-100">
+                    <h4 class="text-blue-900 font-bold text-sm mb-3">Library Preview 📚</h4>
+                    <div class="flex flex-wrap gap-2">
+                        ${exp.books.map(b => `<span class="bg-white px-3 py-1.5 rounded-xl text-[10px] font-bold text-blue-800 border border-blue-100 shadow-sm">${b}</span>`).join('')}
                     </div>
                 </div>
+
+                <button class="w-full py-5 bg-red-600 text-white rounded-[2rem] font-bold shadow-xl shadow-red-200 active:scale-95 transition-transform" onclick="showToast()">Book This Experience</button>
             `;
 
-            document.getElementById('detail-modal').classList.remove('hidden');
+            document.getElementById('action-sheet').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
 
-        function closeModal() {
-            document.getElementById('detail-modal').classList.add('hidden');
+        function closeSheet() {
+            document.getElementById('action-sheet').classList.add('hidden');
             document.body.style.overflow = 'auto';
         }
 
-        function bookingSim(type) {
-            const feedback = document.getElementById('success-feedback');
-            feedback.innerText = type === 'stay' ? 'Your homestay booking is confirmed!' : 'Activity scheduled! See you there.';
-            feedback.classList.remove('scale-0', 'opacity-0');
-            feedback.classList.add('scale-100', 'opacity-100');
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('scale-0', 'opacity-0');
+            toast.classList.add('scale-100', 'opacity-100');
             
             setTimeout(() => {
-                feedback.classList.remove('scale-100', 'opacity-100');
-                feedback.classList.add('scale-0', 'opacity-0');
-            }, 3000);
-            
-            closeModal();
+                toast.classList.remove('scale-100', 'opacity-100');
+                toast.classList.add('scale-0', 'opacity-0');
+                closeSheet();
+            }, 2000);
         }
 
-        // Close modal on click outside
-        document.getElementById('detail-modal').addEventListener('click', (e) => {
-            if(e.target.id === 'detail-modal') closeModal();
-        });
-
-        window.onload = renderGrid;
+        window.onload = renderFeed;
     </script>
 </body>
 </html>
