@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Creative Boost</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Noto+Serif+Devanagari:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap"
+      rel="stylesheet"
+    >
+    <link href="styles/style.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <main class="studio-shell">
+      <header class="hero">
+        <h1>Creative Boost</h1>
+        <p>Paste your poem, story, or literary piece (Hindi/Nepali/any language). Get a styled shareable preview, smart growth ideas via Gemini, and a quick video animation you can download.</p>
+      </header>
+
+      <section class="composer">
+        <label for="writingInput">Your writing (poem, story, caption, etc.)</label>
+        <textarea
+          id="writingInput"
+          placeholder="Paste your writing here..."
+          rows="8"
+        ></textarea>
+
+        <div class="controls">
+          <button id="previewBtn" type="button">Preview design</button>
+          <button id="exportBtn" type="button" class="ghost">Export image</button>
+          <button id="quickVideoBtn" type="button" class="ghost">Quick video preview</button>
+          <button id="fullVideoBtn" type="button" class="ghost">Make full video</button>
+          <select id="modelSelect" aria-label="Model select">
+            <option value="gemini-1.5-flash" selected>Gemini 1.5</option>
+            <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+            <option value="openai-gpt-4o-mini">OpenAI GPT-4o mini</option>
+          </select>
+          <input id="apiKeyInput" type="password" placeholder="API key (for Gemini/OpenAI)">
+        </div>
+
+        <div class="author-controls">
+          <input id="authorNameInput" type="text" placeholder="Author name (for preview footer)">
+          <input id="authorPhotoInput" type="file" accept="image/*" aria-label="Author photo upload">
+        </div>
+
+        <div class="style-controls">
+          <select id="themeSelect" aria-label="Preview theme">
+            <option value="auto" selected>Theme: Auto</option>
+            <option value="neutral">Theme: Classic Paper</option>
+            <option value="reflective">Theme: Reflective Mist</option>
+            <option value="hopeful">Theme: Golden Hope</option>
+            <option value="intimate">Theme: Rose Memoir</option>
+            <option value="lyrical">Theme: Monsoon Lyrical</option>
+            <option value="forest">Theme: Forest Letter</option>
+            <option value="noir">Theme: Noir Ink</option>
+            <option value="sunset">Theme: Sunset Journal</option>
+          </select>
+          <input id="moodInput" type="text" placeholder="Custom mood (optional)">
+          <input id="hashtagsInput" type="text" placeholder="Custom hashtags (optional, e.g. #poetry #hindi)">
+        </div>
+
+        <p class="tip"><strong>Tip:</strong> Leave the API key blank to skip</p>
+      </section>
+
+      <section class="result-grid">
+        <article class="card result-block">
+          <h2>Shareable Preview</h2>
+          <div id="previewPages" class="preview-pages"></div>
+          <p id="videoStatus" class="status-note">Video preview idle.</p>
+        </article>
+
+        <article class="card result-block">
+          <h2>Structured Output</h2>
+          <pre id="resultText">1) Theme
+- Add your writing above and click "Preview design".</pre>
+          <button id="copyBtn" type="button" class="ghost copy-btn">Copy Output</button>
+        </article>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="scripts/app.js"></script>
+  </body>
+</html>

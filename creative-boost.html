@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creative Boost – Poetry/Story Designer</title>
+  <style>
+    :root {
+      --bg: #0b0f1f;
+      --card: rgba(255, 255, 255, 0.12);
+      --card2: rgba(255, 255, 255, 0.08);
+      --text: #f6f7ff;
+      --accent: #8d4fff;
+      --muted: rgba(255, 255, 255, 0.7);
+      --shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+      --radius: 18px;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background: radial-gradient(circle at top, #1c0c42 0%, #071420 55%, #050609 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem 4rem;
+    }
+
+    header {
+      text-align: center;
+      max-width: 900px;
+      margin-bottom: 1.8rem;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      letter-spacing: -0.02em;
+      background: linear-gradient(92deg, #ff7dba, #8d4fff, #2ad1ff);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    p.lead {
+      margin: 0.7rem auto 0;
+      max-width: 720px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .grid {
+      display: grid;
+      gap: 1.2rem;
+      width: min(1100px, 100%);
+      grid-template-columns: 1fr;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: var(--radius);
+      padding: 1.3rem;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--muted);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 200px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(10, 12, 24, 0.75);
+      color: var(--text);
+      padding: 1rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      resize: vertical;
+      outline: none;
+      transition: border 0.15s ease;
+    }
+
+    textarea:focus {
+      border-color: rgba(141, 79, 255, 0.75);
+      box-shadow: 0 0 0 3px rgba(141, 79, 255, 0.18);
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      margin-top: 0.8rem;
+    }
+
+    .controls button,
+    .controls input,
+    .controls select {
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 999px;
+      padding: 0.75rem 1rem;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform 0.15s ease, background 0.15s ease, border 0.15s ease;
+    }
+
+    .controls button:hover {
+      background: rgba(141, 79, 255, 0.18);
+      transform: translateY(-1px);
+    }
+
+    .controls button:active {
+      transform: translateY(0);
+    }
+
+    .controls input:focus,
+    .controls select:focus {
+      outline: none;
+      border-color: rgba(141, 79, 255, 0.8);
+      box-shadow: 0 0 0 3px rgba(141, 79, 255, 0.22);
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .status {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 0.6rem;
+    }
+
+    .status strong {
+      color: var(--text);
+    }
+
+    .output {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .poem-frame {
+      background: linear-gradient(135deg, rgba(220, 149, 255, 0.18), rgba(47, 210, 255, 0.15));
+      border-radius: 30px;
+      padding: 1.7rem 1.7rem 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 16px 50px rgba(0, 0, 0, 0.42);
+      position: relative;
+      overflow: hidden;
+      min-height: 240px;
+    }
+
+    .poem-frame::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.14), transparent 55%),
+        radial-gradient(circle at 80% 70%, rgba(141, 79, 255, 0.16), transparent 50%);
+      pointer-events: none;
+    }
+
+    .poem-content {
+      position: relative;
+      z-index: 1;
+      color: var(--text);
+      font-size: clamp(1.1rem, 2vw, 1.6rem);
+      line-height: 1.6;
+      max-width: 910px;
+      margin: 0 auto;
+      white-space: pre-wrap;
+      letter-spacing: 0.02em;
+    }
+
+    .poem-content span.line {
+      display: block;
+      margin: 0.25rem 0;
+    }
+
+    .poem-content span.line:nth-child(odd) {
+      opacity: 0.92;
+    }
+
+    .poem-meta {
+      margin-top: 1.1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .poem-meta .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-weight: 600;
+    }
+
+    .suggestions {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .suggestions li {
+      background: rgba(255, 255, 255, 0.07);
+      padding: 0.9rem 1rem;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      list-style: none;
+    }
+
+    .suggestions li::marker {
+      content: "→";
+      color: rgba(141, 79, 255, 0.9);
+      font-weight: 800;
+      margin-right: 0.5rem;
+    }
+
+    .help {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.6;
+      margin-top: 0.8rem;
+    }
+
+    .help a {
+      color: rgba(141, 79, 255, 0.85);
+      text-decoration: underline;
+    }
+
+    @media (max-width: 720px) {
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Creative Boost</h1>
+    <p class="lead">
+      Paste your poem, story, or literary piece (Hindi/Nepali/any language). Get a styled shareable preview, smart growth ideas via Gemini, and a quick video animation you can download.
+    </p>
+  </header>
+
+  <main class="grid">
+    <section class="card">
+      <label for="writingInput">Your writing (poem, story, caption, etc.)</label>
+      <textarea id="writingInput" placeholder="Type or paste your text here..." spellcheck="false"></textarea>
+
+      <div class="controls">
+        <button id="renderBtn">Preview design</button>
+        <button id="exportImageBtn">Export image</button>
+        <button id="previewVideoBtn">Quick video preview</button>
+        <button id="exportVideoBtn" disabled>Make full video</button>
+        <select id="modelSelect" title="Gemini or LLM model to use for suggestions">
+          <option value="gemini-1.5" selected>Gemini 1.5</option>
+          <option value="gemini-1">Gemini 1</option>
+          <option value="gpt-4o-mini">gpt-4o-mini (OpenAI)</option>
+        </select>
+        <input id="apiKey" type="password" placeholder="API key (for Gemini/OpenAI)" autocomplete="new-password" />
+      </div>
+
+      <div class="status" id="statusArea">
+        <strong>Tip:</strong> Leave the API key blank to skip 
