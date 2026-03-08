@@ -15,8 +15,11 @@ The goal is simple: make it easy for anyone to open and view these files directl
 <!-- FILE_LIST_START -->
 - [agent-ops.html](agent-ops.html)
 - [content-edit-40-60.html](content-edit-40-60.html)
+- [creative-boost.html](creative-boost.html)
 - [literary-link-mockup.html](literary-link-mockup.html)
 - [test.html](test.html)
+- [writer-preview/index.html](writer-preview/index.html)
+- [writer-preview/styles/style.css](writer-preview/styles/style.css)
 - [writers-research.html](writers-research.html)
 - [writers2.html](writers2.html)
 <!-- FILE_LIST_END -->
