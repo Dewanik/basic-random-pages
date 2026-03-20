@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Middletown Nepali Home Bakery Roadmap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; transition: background-color 0.3s; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .lang-ne { display: none; }
+        body.nepali .lang-en { display: none; }
+        body.nepali .lang-ne { display: block; }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Language Toggle & Top Bar -->
+    <div class="bg-indigo-950 text-white px-6 py-2 flex justify-between items-center sticky top-0 z-50">
+        <div class="text-xs font-mono opacity-70">PA DEPT AGRI COMPLIANCE: LFE-2024-MID</div>
+        <button onclick="toggleLanguage()" class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold py-1 px-4 rounded-full transition-all flex items-center gap-2 shadow-lg">
+            <span>🌐</span>
+            <span class="lang-en">Change to Nepali (नेपाली)</span>
+            <span class="lang-ne">Switch to English (अंग्रेजी)</span>
+        </button>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 py-12 px-6 text-center">
+        <h1 class="text-4xl md:text-6xl font-black text-indigo-950 mb-4 tracking-tighter">
+            <span class="lang-en">Home Bakery Roadmap</span>
+            <span class="lang-ne">होम बेकरी रोडम्याप</span>
+        </h1>
+        <p class="text-slate-500 text-lg md:text-xl max-w-3xl mx-auto font-medium">
+            <span class="lang-en">A professional legal framework for starting a Nepali kitchen in Middletown, PA.</span>
+            <span class="lang-ne">मिडलटाउन, PA मा नेपाली भान्छा सुरु गर्नको लागि एक व्यावसायिक कानूनी ढाँचा।</span>
+        </p>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="bg-white/80 backdrop-blur-md sticky top-[44px] z-40 border-b border-slate-200 overflow-x-auto">
+        <div class="max-w-6xl mx-auto flex justify-center">
+            <button onclick="openTab(event, 'summary')" class="tab-link px-6 py-4 font-bold border-b-2 border-indigo-600 text-indigo-600">
+                <span class="lang-en">Business Case</span><span class="lang-ne">व्यवसाय सारांश</span>
+            </button>
+            <button onclick="openTab(event, 'legal')" class="tab-link px-6 py-4 font-bold text-slate-400 hover:text-indigo-600 transition border-b-2 border-transparent">
+                <span class="lang-en">Legal Steps</span><span class="lang-ne">कानूनी चरणहरू</span>
+            </button>
+            <button onclick="openTab(event, 'menu')" class="tab-link px-6 py-4 font-bold text-slate-400 hover:text-indigo-600 transition border-b-2 border-transparent">
+                <span class="lang-en">The Menu</span><span class="lang-ne">मेनु र निर्णय</span>
+            </button>
+            <button onclick="openTab(event, 'quality')" class="tab-link px-6 py-4 font-bold text-slate-400 hover:text-indigo-600 transition border-b-2 border-transparent">
+                <span class="lang-en">Food Safety</span><span class="lang-ne">खाद्य सुरक्षा</span>
+            </button>
+            <button onclick="openTab(event, 'online')" class="tab-link px-6 py-4 font-bold text-slate-400 hover:text-indigo-600 transition border-b-2 border-transparent">
+                <span class="lang-en">Operations</span><span class="lang-ne">सञ्चालन</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto p-4 md:p-10">
+
+        <!-- TAB 1: BUSINESS CASE -->
+        <section id="summary" class="tab-content active space-y-8">
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-200">
+                    <h2 class="text-2xl font-bold mb-4 text-indigo-950">
+                        <span class="lang-en">Why Start Small?</span><span class="lang-ne">सानोबाट किन सुरु गर्ने?</span>
+                    </h2>
+                    <p class="text-slate-600 mb-6">
+                        <span class="lang-en">Opening a restaurant costs $100k+. Starting a "Limited Food Establishment" (LFE) at home costs less than $500 and lets us test the Middletown market with zero risk.</span>
+                        <span class="lang-ne">रेस्टुरेन्ट खोल्न $१ लाख भन्दा बढी खर्च हुन्छ। घरमा "Limited Food Establishment" (LFE) सुरु गर्न $५०० भन्दा कम खर्च हुन्छ र यसले कुनै जोखिम बिना बजार परीक्षण गर्न दिन्छ।</span>
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center p-4 bg-indigo-50 rounded-xl">
+                            <span class="font-bold text-indigo-900"><span class="lang-en">Overhead Cost</span><span class="lang-ne">सञ्चालन लागत</span></span>
+                            <span class="text-indigo-600 font-mono">$0 / month (Home)</span>
+                        </div>
+                        <div class="flex justify-between items-center p-4 bg-green-50 rounded-xl">
+                            <span class="font-bold text-green-900"><span class="lang-en">Profit Margin</span><span class="lang-ne">नाफाको प्रतिशत</span></span>
+                            <span class="text-green-600 font-mono">~65% (High)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-indigo-900 text-white rounded-3xl p-8 shadow-xl">
+                    <h2 class="text-2xl font-bold mb-4 text-orange-400">
+                        <span class="lang-en">The Goal</span><span class="lang-ne">हाम्रो लक्ष्य</span>
+                    </h2>
+                    <ul class="space-y-4 text-indigo-100">
+                        <li class="flex gap-3">
+                            <span class="text-orange-400 font-bold">01.</span>
+                            <span><span class="lang-en">Complete 100% legal registration by Month 2.</span><span class="lang-ne">दोस्रो महिनासम्म १००% कानूनी दर्ता पूरा गर्ने।</span></span>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="text-orange-400 font-bold">02.</span>
+                            <span><span class="lang-en">Launch Pustakari & Titaura on Facebook/DoorDash.</span><span class="lang-ne">फेसबुक र डोरड्याशमा पुष्टकारी र तितौरा सुरु गर्ने।</span></span>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="text-orange-400 font-bold">03.</span>
+                            <span><span class="lang-en">Save profits to rent a commercial kitchen for Momos.</span><span class="lang-ne">ममको लागि व्यावसायिक भान्छा भाडामा लिन नाफा बचत गर्ने।</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: LEGAL STEPS -->
+        <section id="legal" class="tab-content space-y-8">
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200">
+                <h2 class="text-2xl font-bold mb-8 text-indigo-950 flex items-center gap-2">
+                    <span>📜</span>
+                    <span class="lang-en">Compliance Checklist</span><span class="lang-ne">अनुपालन चेकलिस्ट</span>
+                </h2>
+                
+                <div class="space-y-6">
+                    <!-- Local -->
+                    <div class="border-l-4 border-blue-500 pl-6 py-2">
+                        <h3 class="font-black text-indigo-900 text-lg uppercase tracking-tight">
+                            <span class="lang-en">Local: Middletown Borough</span><span class="lang-ne">स्थानीय: मिडलटाउन बरो</span>
+                        </h3>
+                        <p class="text-slate-500 text-sm mb-3">
+                            <span class="lang-en">Code Section: Zoning for Home Occupation</span><span class="lang-ne">कोड खण्ड: घरमा व्यवसायको लागि जोनिङ</span>
+                        </p>
+                        <ul class="space-y-2 text-slate-600">
+                            <li class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                <span class="lang-en">Apply for a $50 Home Occupation Permit at 60 W Emaus St.</span>
+                                <span class="lang-ne">$५० को होम अकुपेसन परमिटको लागि आवेदन दिनुहोस्।</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- State -->
+                    <div class="border-l-4 border-orange-500 pl-6 py-2">
+                        <h3 class="font-black text-indigo-900 text-lg uppercase tracking-tight">
+                            <span class="lang-en">State: PA Dept. of Agriculture</span><span class="lang-ne">राज्य: पेन्सिलभेनिया कृषि विभाग</span>
+                        </h3>
+                        <p class="text-slate-500 text-sm mb-3">
+                            <span class="lang-en">Regulation: 7 Pa. Code Chapter 46</span><span class="lang-ne">नियम: ७ पा. कोड अध्याय ४६</span>
+                        </p>
+                        <ul class="space-y-2 text-slate-600">
+                            <li class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
+                                <span class="lang-en">Form "Application for Limited Food Establishment" ($35).</span>
+                                <span class="lang-ne">"Application for Limited Food Establishment" फारम ($३५)।</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
+                                <span class="lang-en">Water Activity Test ($50/product) if item moisture is questionable.</span>
+                                <span class="lang-ne">यदि उत्पादनको आर्द्रता शंकास्पद छ भने पानी गतिविधि परीक्षण ($५०/उत्पादन)।</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Federal -->
+                    <div class="border-l-4 border-green-500 pl-6 py-2">
+                        <h3 class="font-black text-indigo-900 text-lg uppercase tracking-tight">
+                            <span class="lang-en">Federal: IRS & Tax</span><span class="lang-ne">संघीय: IRS र कर</span>
+                        </h3>
+                        <ul class="space-y-2 text-slate-600">
+                            <li class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                <span class="lang-en">Obtain EIN for separate business banking.</span>
+                                <span class="lang-ne">व्यावसायिक बैंकिङको लागि EIN प्राप्त गर्नुहोस्।</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                <span class="lang-en">Apply for PA Sales Tax License (to buy ingredients wholesale).</span>
+                                <span class="lang-ne">PA सेल्स ट्याक्स लाइसेन्स लिनुहोस् (सामग्री थोकमा किन्नको लागि)।</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: THE MENU -->
+        <section id="menu" class="tab-content space-y-8">
+            <div class="bg-indigo-950 text-white rounded-3xl p-8 mb-10 shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-8 opacity-10 text-9xl">🥘</div>
+                <h2 class="text-3xl font-black mb-10 text-center tracking-tight">
+                    <span class="lang-en">Product Safety Decision Flow</span><span class="lang-ne">उत्पादन सुरक्षा निर्णय प्रवाह</span>
+                </h2>
+                
+                <div class="flex flex-col items-center gap-6">
+                    <div class="w-full max-w-md p-6 bg-indigo-900 rounded-2xl border border-indigo-700 text-center">
+                        <p class="font-bold mb-2 uppercase text-xs text-indigo-400 tracking-widest">Question 1</p>
+                        <p class="text-lg">
+                            <span class="lang-en">Does it contain meat, fish, or poultry?</span>
+                            <span class="lang-ne">के यसमा मासु वा माछा छ?</span>
+                        </p>
+                        <div class="flex gap-4 mt-4 justify-center">
+                            <div class="px-4 py-2 bg-red-600 rounded-lg text-xs font-bold">YES ➔ PROHIBITED</div>
+                            <div class="px-4 py-2 bg-green-600 rounded-lg text-xs font-bold">NO ➔ CONTINUE</div>
+                        </div>
+                    </div>
+
+                    <div class="w-px h-10 bg-indigo-700"></div>
+
+                    <div class="w-full max-w-md p-6 bg-indigo-900 rounded-2xl border border-indigo-700 text-center">
+                        <p class="font-bold mb-2 uppercase text-xs text-indigo-400 tracking-widest">Question 2</p>
+                        <p class="text-lg">
+                            <span class="lang-en">Is the Water Activity (a<sub>w</sub>) < 0.85?</span>
+                            <span class="lang-ne">के यो पूर्ण रूपमा सुकेको छ?</span>
+                        </p>
+                        <p class="text-xs text-indigo-400 mt-2 italic">(Shelf-stable, no fridge needed)</p>
+                        <div class="flex gap-4 mt-4 justify-center">
+                            <div class="px-4 py-2 bg-red-600 rounded-lg text-xs font-bold">NO ➔ PROHIBITED</div>
+                            <div class="px-4 py-2 bg-green-600 rounded-lg text-xs font-bold">YES ➔ APPROVED</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+                <table class="w-full text-left">
+                    <thead class="bg-slate-50 border-b border-slate-200">
+                        <tr>
+                            <th class="px-6 py-4 font-bold text-indigo-900"><span class="lang-en">Item</span><span class="lang-ne">उत्पादन</span></th>
+                            <th class="px-6 py-4 font-bold text-indigo-900"><span class="lang-en">Market Potential</span><span class="lang-ne">बजार सम्भावना</span></th>
+                            <th class="px-6 py-4 font-bold text-indigo-900"><span class="lang-en">Home Legal?</span><span class="lang-ne">कानूनी?</span></th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr>
+                            <td class="px-6 py-4 font-bold">Pustakari / पुष्टकारी</td>
+                            <td class="px-6 py-4 text-slate-500 text-sm">High: No local competition in PA.</td>
+                            <td class="px-6 py-4"><span class="text-green-600 font-bold">YES ✅</span></td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-bold">Titaura / तितौरा</td>
+                            <td class="px-6 py-4 text-slate-500 text-sm">Very High: Popular with younger generation.</td>
+                            <td class="px-6 py-4"><span class="text-green-600 font-bold">YES ✅</span></td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-bold">Nimki & Bhujiya / निम्की</td>
+                            <td class="px-6 py-4 text-slate-500 text-sm">Steady: Daily snack for many families.</td>
+                            <td class="px-6 py-4"><span class="text-green-600 font-bold">YES ✅</span></td>
+                        </tr>
+                        <tr class="bg-red-50">
+                            <td class="px-6 py-4 font-bold text-red-800">Momo / मम</td>
+                            <td class="px-6 py-4 text-red-500 text-sm">Demand is huge, but risk is high.</td>
+                            <td class="px-6 py-4"><span class="text-red-600 font-bold">NO ❌</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- TAB 4: FOOD SAFETY -->
+        <section id="quality" class="tab-content space-y-8">
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200">
+                    <h3 class="text-2xl font-bold mb-6 text-indigo-950">
+                        <span class="lang-en">Operational Rules</span><span class="lang-ne">सञ्चालनका नियमहरू</span>
+                    </h3>
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <span class="text-3xl">🧼</span>
+                            <div>
+                                <h4 class="font-bold"><span class="lang-en">Dual-Use Prevention</span><span class="lang-ne">दोहोरो प्रयोग रोकथाम</span></h4>
+                                <p class="text-sm text-slate-500"><span class="lang-en">You cannot prepare family dinner and business food at the same time. Must have specific production hours.</span><span class="lang-ne">तपाईंले परिवारको खाना र व्यापारिक खाना एकै समयमा बनाउन पाउनुहुन्न।</span></p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <span class="text-3xl">🗄️</span>
+                            <div>
+                                <h4 class="font-bold"><span class="lang-en">Dedicated Storage</span><span class="lang-ne">छुट्टै भण्डारण</span></h4>
+                                <p class="text-sm text-slate-500"><span class="lang-en">Ingredients must be in sealed containers on a shelf used ONLY for the business.</span><span class="lang-ne">सामग्रीहरू व्यापारको लागि मात्र प्रयोग हुने सेल्फमा सिल गरिएका कन्टेनरहरूमा हुनुपर्छ।</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200">
+                    <h3 class="text-2xl font-bold mb-6 text-indigo-950">
+                        <span class="lang-en">The Inspection Prep</span><span class="lang-ne">अनुगमनको तयारी</span>
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="p-4 bg-slate-50 rounded-xl flex justify-between">
+                            <span class="lang-en">Refrigerator Thermometer</span><span class="lang-ne">फ्रिजको थर्मोमिटर</span>
+                            <span class="text-green-600 font-bold">REQUIRED</span>
+                        </li>
+                        <li class="p-4 bg-slate-50 rounded-xl flex justify-between">
+                            <span class="lang-en">Chlorine Test Strips</span><span class="lang-ne">क्लोरिन परीक्षण स्ट्रिप्स</span>
+                            <span class="text-green-600 font-bold">REQUIRED</span>
+                        </li>
+                        <li class="p-4 bg-slate-50 rounded-xl flex justify-between">
+                            <span class="lang-en">Employee Handwashing Sign</span><span class="lang-ne">हात धुने संकेत</span>
+                            <span class="text-green-600 font-bold">REQUIRED</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: OPERATIONS -->
+        <section id="online" class="tab-content">
+            <div class="bg-white p-10 rounded-3xl shadow-sm border border-slate-200">
+                <h2 class="text-3xl font-bold mb-10 text-indigo-950 text-center">
+                    <span class="lang-en">Sales Strategy & Cost Control</span><span class="lang-ne">बिक्री रणनीति र लागत नियन्त्रण</span>
+                </h2>
+                
+                <div class="grid md:grid-cols-3 gap-6 mb-12">
+                    <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200">
+                        <h4 class="font-bold mb-2">Facebook (Direct)</h4>
+                        <p class="text-xs text-slate-500 mb-4">No commissions. Best for "Pre-Order" batches on Saturdays.</p>
+                        <div class="text-xl font-bold text-indigo-600">0% Commission</div>
+                    </div>
+                    <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200">
+                        <h4 class="font-bold mb-2">DoorDash / Uber</h4>
+                        <p class="text-xs text-slate-500 mb-4">Immediate delivery. Good for visibility but takes a cut.</p>
+                        <div class="text-xl font-bold text-orange-600">25-30% Commission</div>
+                    </div>
+                    <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200">
+                        <h4 class="font-bold mb-2">Etsy / Web</h4>
+                        <p class="text-xs text-slate-500 mb-4">Best for Titaura which is lightweight and easy to ship via USPS.</p>
+                        <div class="text-xl font-bold text-green-600">5-10% Commission</div>
+                    </div>
+                </div>
+
+                <div class="bg-indigo-900 text-white p-8 rounded-2xl">
+                    <h3 class="text-xl font-bold mb-6 flex items-center justify-between">
+                        <span class="lang-en">Detailed Financial Projection</span><span class="lang-ne">विस्तृत वित्तीय प्रक्षेपण</span>
+                        <span class="text-xs text-indigo-300 font-normal italic">*Based on 50 units/week</span>
+                    </h3>
+                    <div class="space-y-3 font-mono text-sm">
+                        <div class="flex justify-between border-b border-indigo-800 pb-2">
+                            <span>Ingredients (Sugar, Khuwa, Lapsi)</span>
+                            <span>$120.00</span>
+                        </div>
+                        <div class="flex justify-between border-b border-indigo-800 pb-2">
+                            <span>Packaging (Bags, Seals, Labels)</span>
+                            <span>$40.00</span>
+                        </div>
+                        <div class="flex justify-between border-b border-indigo-800 pb-2">
+                            <span>Marketing (Facebook Boost)</span>
+                            <span>$20.00</span>
+                        </div>
+                        <div class="flex justify-between pt-4 text-green-400 font-bold text-lg">
+                            <span>Total Estimated Weekly Profit</span>
+                            <span>+$320.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-12 text-slate-400 text-xs border-t mt-20">
+        <p>© 2024 Middletown Nepali Community Initiative</p>
+        <p>FOR PLANNING PURPOSES ONLY • SUBJECT TO PA DEPT OF AGRICULTURE APPROVAL</p>
+    </footer>
+
+    <script>
+        function toggleLanguage() {
+            document.body.classList.toggle('nepali');
+        }
+
+        function openTab(evt, tabName) {
+            let i, tabContent, tabLinks;
+            tabContent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabContent.length; i++) {
+                tabContent[i].style.display = "none";
+                tabContent[i].classList.remove("active");
+            }
+            tabLinks = document.getElementsByClassName("tab-link");
+            for (i = 0; i < tabLinks.length; i++) {
+                tabLinks[i].classList.remove("border-indigo-600", "text-indigo-600");
+                tabLinks[i].classList.add("text-slate-400", "border-transparent");
+            }
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.remove("text-slate-400", "border-transparent");
+            evt.currentTarget.classList.add("border-indigo-600", "text-indigo-600");
+        }
+    </script>
+</body>
+</html>
