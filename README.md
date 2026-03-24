@@ -18,6 +18,7 @@ The goal is simple: make it easy for anyone to open and view these files directl
 - [content-edit-40-60.html](content-edit-40-60.html)
 - [creative-boost.html](creative-boost.html)
 - [literary-link-mockup.html](literary-link-mockup.html)
+- [small_savings.html](small_savings.html)
 - [test.html](test.html)
 - [writer-preview/index.html](writer-preview/index.html)
 - [writer-preview/styles/style.css](writer-preview/styles/style.css)
