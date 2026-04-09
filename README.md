@@ -21,6 +21,7 @@ The goal is simple: make it easy for anyone to open and view these files directl
 - [literary-link-mockup.html](literary-link-mockup.html)
 - [small_savings.html](small_savings.html)
 - [test.html](test.html)
+- [tracker.html](tracker.html)
 - [writer-preview/index.html](writer-preview/index.html)
 - [writer-preview/styles/style.css](writer-preview/styles/style.css)
 - [writers-research.html](writers-research.html)
