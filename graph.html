@@ -3,27 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GraphCluster PWA</title>
+    <title>GraphCluster Pro</title>
     
     <link rel="manifest" href="data:application/manifest+json,{'name':'GraphCluster','short_name':'Graph','start_url':'.','display':'standalone','background_color':'#ffffff','theme_color':'#2563eb'}">
-    <meta name="theme-color" content="#2563eb">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { touch-action: none; overflow: hidden; background: #f8fafc; }
-        .node { transition: opacity 0.3s ease; cursor: pointer; }
-        .link { stroke: #cbd5e1; stroke-width: 2; transition: opacity 0.3s ease; }
+        body { touch-action: none; overflow: hidden; background: #f1f5f9; font-family: sans-serif; }
+        .node { cursor: pointer; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1)); }
+        .link { stroke: #cbd5e1; stroke-width: 2; transition: opacity 0.3s; }
         .hidden-cluster { opacity: 0 !important; pointer-events: none; }
-        .cluster-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
         #canvas { width: 100vw; height: 100vh; }
+        .editor-sheet { transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .editor-sheet.active { transform: translateY(0); }
     </style>
 </head>
 <body class="flex flex-col">
 
-    <header class="bg-blue-600 text-white p-4 shadow-lg z-10 flex justify-between items-center">
-        <h1 class="font-bold text-lg">GraphCluster</h1>
-        <button onclick="addNode()" class="bg-white text-blue-600 px-4 py-1 rounded-full text-sm font-bold shadow-sm">+ Node</button>
+    <header class="bg-blue-600 text-white p-4 shadow-md z-30 flex justify-between items-center">
+        <div>
+            <h1 class="font-bold text-lg leading-none">GraphCluster</h1>
+            <span class="text-[10px] opacity-80">Tap node to edit • Drag to move</span>
+        </div>
+        <div class="flex gap-2">
+            <button onclick="addNewCluster()" class="bg-blue-500 hover:bg-blue-400 text-white px-3 py-1 rounded-lg text-xs font-bold border border-blue-400">New Cluster</button>
+            <button onclick="addNode()" class="bg-white text-blue-600 px-4 py-1 rounded-lg text-xs font-bold shadow-sm">+ Node</button>
+        </div>
     </header>
 
     <svg id="canvas">
@@ -31,42 +35,61 @@
         <g id="nodes-group"></g>
     </svg>
 
-    <div class="fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-[0_-5px_20px_rgba(0,0,0,0.1)] p-5 z-20 transition-transform translate-y-0" id="controls">
-        <div class="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4"></div>
-        <h2 class="text-gray-500 text-xs uppercase tracking-widest font-bold mb-4">Your Clusters</h2>
-        
-        <div id="cluster-list" class="flex gap-3 overflow-x-auto pb-2">
+    <div class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t p-4 pb-8 z-10">
+        <p class="text-[10px] font-bold text-gray-400 uppercase mb-2 tracking-widest">Visibility Filters</p>
+        <div id="cluster-list" class="flex gap-2 overflow-x-auto"></div>
+    </div>
+
+    <div id="editor" class="editor-sheet fixed inset-0 z-40 flex flex-col justify-end">
+        <div class="bg-black/20 h-full w-full" onclick="closeEditor()"></div>
+        <div class="bg-white rounded-t-3xl p-6 shadow-2xl max-h-[80vh] overflow-y-auto">
+            <div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6"></div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Node Name</label>
+                    <input type="text" id="edit-name" class="w-full border-2 border-gray-100 rounded-xl p-3 focus:border-blue-500 outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Cluster</label>
+                    <select id="edit-cluster" class="w-full border-2 border-gray-100 rounded-xl p-3 outline-none"></select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Notes</label>
+                    <textarea id="edit-notes" rows="4" class="w-full border-2 border-gray-100 rounded-xl p-3 outline-none" placeholder="Write something about this node..."></textarea>
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button onclick="saveNode()" class="flex-1 bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-blue-200">Save Changes</button>
+                    <button onclick="deleteNode()" class="bg-red-50 text-red-500 font-bold px-6 py-3 rounded-xl">Delete</button>
+                </div>
             </div>
+        </div>
     </div>
 
     <script>
-        // --- DATA STATE ---
+        // --- State Management ---
         let nodes = [
-            { id: 1, x: 100, y: 200, cluster: 'A', label: 'Node 1' },
-            { id: 2, x: 200, y: 300, cluster: 'A', label: 'Node 2' },
-            { id: 3, x: 300, y: 150, cluster: 'B', label: 'Node 3' },
-            { id: 4, x: 250, y: 400, cluster: 'C', label: 'Node 4' },
+            { id: 1, x: 150, y: 200, cluster: 'General', label: 'Main Concept', notes: 'This is the starting point.' }
         ];
-        let links = [
-            { source: 1, target: 2 },
-            { source: 2, target: 3 },
-            { source: 3, target: 4 }
-        ];
-        
-        const clusterColors = { 'A': '#ef4444', 'B': '#22c55e', 'C': '#eab308', 'D': '#8b5cf6' };
+        let links = [];
+        let clusters = { 'General': '#3b82f6' };
         let hiddenClusters = new Set();
+        let activeNodeId = null;
 
-        const svg = document.getElementById('canvas');
         const nodesGroup = document.getElementById('nodes-group');
         const linksGroup = document.getElementById('links-group');
         const clusterList = document.getElementById('cluster-list');
+        const editor = document.getElementById('editor');
 
-        // --- RENDER LOGIC ---
+        // --- Core Logic ---
         function render() {
             nodesGroup.innerHTML = '';
             linksGroup.innerHTML = '';
             
-            // Draw Links
+            // Render Links
             links.forEach(link => {
                 const s = nodes.find(n => n.id === link.source);
                 const t = nodes.find(n => n.id === link.target);
@@ -80,77 +103,126 @@
                 linksGroup.appendChild(line);
             });
 
-            // Draw Nodes
+            // Render Nodes
             nodes.forEach(node => {
-                const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
                 const isHidden = hiddenClusters.has(node.cluster);
+                const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
                 g.setAttribute("class", `node ${isHidden ? 'hidden-cluster' : ''}`);
                 g.setAttribute("transform", `translate(${node.x}, ${node.y})`);
                 
                 const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                circle.setAttribute("r", 25);
-                circle.setAttribute("fill", clusterColors[node.cluster] || '#94a3b8');
-                circle.setAttribute("stroke", "white");
+                circle.setAttribute("r", 30);
+                circle.setAttribute("fill", clusters[node.cluster] || '#94a3b8');
+                circle.setAttribute("stroke", "#fff");
                 circle.setAttribute("stroke-width", "3");
-                
-                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                text.textContent = node.label;
-                text.setAttribute("dy", 40);
-                text.setAttribute("text-anchor", "middle");
-                text.setAttribute("class", "text-[10px] font-bold fill-gray-600");
 
-                g.appendChild(circle);
-                g.appendChild(text);
+                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                text.textContent = node.label.length > 10 ? node.label.substring(0, 8) + '..' : node.label;
+                text.setAttribute("dy", 5);
+                text.setAttribute("text-anchor", "middle");
+                text.setAttribute("class", "text-[10px] font-bold fill-white pointer-events-none");
+
+                g.append(circle, text);
                 
-                // Simple Touch Drag Logic
-                g.addEventListener('touchstart', (e) => handleDrag(e, node));
-                g.addEventListener('mousedown', (e) => handleDrag(e, node));
+                // Events
+                let dragTriggered = false;
+                g.addEventListener('mousedown', (e) => { dragTriggered = false; handleDrag(e, node); });
+                g.addEventListener('touchstart', (e) => { dragTriggered = false; handleDrag(e, node); });
+                g.addEventListener('click', () => { if(!dragTriggered) openEditor(node); });
                 
                 nodesGroup.appendChild(g);
             });
 
-            renderClusterControls();
+            renderClusterButtons();
         }
 
-        function renderClusterControls() {
-            const clusters = [...new Set(nodes.map(n => n.cluster))];
+        function renderClusterButtons() {
             clusterList.innerHTML = '';
-            clusters.forEach(c => {
+            Object.keys(clusters).forEach(name => {
                 const btn = document.createElement('button');
-                const isHidden = hiddenClusters.has(c);
-                btn.className = `flex items-center gap-2 px-4 py-2 rounded-xl border-2 whitespace-nowrap transition ${isHidden ? 'bg-gray-100 border-gray-200 text-gray-400' : 'bg-white border-blue-100 text-gray-800 shadow-sm'}`;
-                btn.innerHTML = `<span class="cluster-dot" style="background:${clusterColors[c]}"></span> Cluster ${c}`;
-                btn.onclick = () => toggleCluster(c);
+                const isHidden = hiddenClusters.has(name);
+                btn.className = `flex items-center gap-2 px-4 py-2 rounded-xl border-2 whitespace-nowrap transition text-sm font-medium ${isHidden ? 'bg-gray-100 border-gray-200 text-gray-400' : 'bg-white border-blue-50 text-gray-800 shadow-sm'}`;
+                btn.innerHTML = `<span style="width:10px;height:10px;border-radius:50%;background:${clusters[name]}"></span> ${name}`;
+                btn.onclick = () => {
+                    if (hiddenClusters.has(name)) hiddenClusters.delete(name);
+                    else hiddenClusters.add(name);
+                    render();
+                };
                 clusterList.appendChild(btn);
             });
         }
 
-        // --- INTERACTIONS ---
-        function toggleCluster(clusterId) {
-            if (hiddenClusters.has(clusterId)) hiddenClusters.delete(clusterId);
-            else hiddenClusters.add(clusterId);
+        // --- Node Operations ---
+        function addNode() {
+            const id = Date.now();
+            const lastNode = nodes[nodes.length - 1];
+            const newNode = {
+                id: id,
+                x: window.innerWidth / 2,
+                y: window.innerHeight / 2,
+                cluster: Object.keys(clusters)[0],
+                label: 'New Node',
+                notes: ''
+            };
+            nodes.push(newNode);
+            if(lastNode) links.push({ source: lastNode.id, target: id });
+            render();
+            openEditor(newNode);
+        }
+
+        function addNewCluster() {
+            const name = prompt("Enter new cluster name:");
+            if (name && !clusters[name]) {
+                const colors = ['#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4'];
+                clusters[name] = colors[Object.keys(clusters).length % colors.length];
+                render();
+            }
+        }
+
+        function openEditor(node) {
+            activeNodeId = node.id;
+            document.getElementById('edit-name').value = node.label;
+            document.getElementById('edit-notes').value = node.notes || '';
+            
+            const select = document.getElementById('edit-cluster');
+            select.innerHTML = '';
+            Object.keys(clusters).forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = opt.textContent = c;
+                if(c === node.cluster) opt.selected = true;
+                select.appendChild(opt);
+            });
+
+            editor.classList.add('active');
+        }
+
+        function saveNode() {
+            const node = nodes.find(n => n.id === activeNodeId);
+            if (node) {
+                node.label = document.getElementById('edit-name').value;
+                node.notes = document.getElementById('edit-notes').value;
+                node.cluster = document.getElementById('edit-cluster').value;
+            }
+            closeEditor();
             render();
         }
 
-        function addNode() {
-            const id = nodes.length + 1;
-            const clusters = ['A', 'B', 'C', 'D'];
-            nodes.push({
-                id: id,
-                x: Math.random() * (window.innerWidth - 100) + 50,
-                y: Math.random() * (window.innerHeight - 300) + 100,
-                cluster: clusters[Math.floor(Math.random() * clusters.length)],
-                label: `Node ${id}`
-            });
-            if (id > 1) links.push({ source: id - 1, target: id });
-            render();
+        function deleteNode() {
+            if(confirm("Delete this node?")) {
+                nodes = nodes.filter(n => n.id !== activeNodeId);
+                links = links.filter(l => l.source !== activeNodeId && l.target !== activeNodeId);
+                closeEditor();
+                render();
+            }
         }
+
+        function closeEditor() { editor.classList.remove('active'); activeNodeId = null; }
 
         function handleDrag(e, node) {
             const move = (event) => {
                 const touch = event.touches ? event.touches[0] : event;
                 node.x = touch.clientX;
-                node.y = touch.clientY - 60; // Offset for header
+                node.y = touch.clientY - 60;
                 render();
             };
             const stop = () => {
@@ -163,18 +235,7 @@
             window.addEventListener('touchend', stop);
         }
 
-        // --- OFFLINE / PWA SERVICE WORKER ---
-        if ('serviceWorker' in navigator) {
-            const swCode = `
-                self.addEventListener('install', e => e.waitUntil(caches.open('v1').then(c => c.addAll(['.']))));
-                self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));
-            `;
-            const blob = new Blob([swCode], {type: 'text/javascript'});
-            const swUrl = URL.createObjectURL(blob);
-            navigator.serviceWorker.register(swUrl);
-        }
-
-        // Initial Render
+        // Initialize
         render();
     </script>
 </body>
