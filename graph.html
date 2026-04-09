@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GraphCluster PWA</title>
+    
+    <link rel="manifest" href="data:application/manifest+json,{'name':'GraphCluster','short_name':'Graph','start_url':'.','display':'standalone','background_color':'#ffffff','theme_color':'#2563eb'}">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { touch-action: none; overflow: hidden; background: #f8fafc; }
+        .node { transition: opacity 0.3s ease; cursor: pointer; }
+        .link { stroke: #cbd5e1; stroke-width: 2; transition: opacity 0.3s ease; }
+        .hidden-cluster { opacity: 0 !important; pointer-events: none; }
+        .cluster-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+        #canvas { width: 100vw; height: 100vh; }
+    </style>
+</head>
+<body class="flex flex-col">
+
+    <header class="bg-blue-600 text-white p-4 shadow-lg z-10 flex justify-between items-center">
+        <h1 class="font-bold text-lg">GraphCluster</h1>
+        <button onclick="addNode()" class="bg-white text-blue-600 px-4 py-1 rounded-full text-sm font-bold shadow-sm">+ Node</button>
+    </header>
+
+    <svg id="canvas">
+        <g id="links-group"></g>
+        <g id="nodes-group"></g>
+    </svg>
+
+    <div class="fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-[0_-5px_20px_rgba(0,0,0,0.1)] p-5 z-20 transition-transform translate-y-0" id="controls">
+        <div class="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4"></div>
+        <h2 class="text-gray-500 text-xs uppercase tracking-widest font-bold mb-4">Your Clusters</h2>
+        
+        <div id="cluster-list" class="flex gap-3 overflow-x-auto pb-2">
+            </div>
+    </div>
+
+    <script>
+        // --- DATA STATE ---
+        let nodes = [
+            { id: 1, x: 100, y: 200, cluster: 'A', label: 'Node 1' },
+            { id: 2, x: 200, y: 300, cluster: 'A', label: 'Node 2' },
+            { id: 3, x: 300, y: 150, cluster: 'B', label: 'Node 3' },
+            { id: 4, x: 250, y: 400, cluster: 'C', label: 'Node 4' },
+        ];
+        let links = [
+            { source: 1, target: 2 },
+            { source: 2, target: 3 },
+            { source: 3, target: 4 }
+        ];
+        
+        const clusterColors = { 'A': '#ef4444', 'B': '#22c55e', 'C': '#eab308', 'D': '#8b5cf6' };
+        let hiddenClusters = new Set();
+
+        const svg = document.getElementById('canvas');
+        const nodesGroup = document.getElementById('nodes-group');
+        const linksGroup = document.getElementById('links-group');
+        const clusterList = document.getElementById('cluster-list');
+
+        // --- RENDER LOGIC ---
+        function render() {
+            nodesGroup.innerHTML = '';
+            linksGroup.innerHTML = '';
+            
+            // Draw Links
+            links.forEach(link => {
+                const s = nodes.find(n => n.id === link.source);
+                const t = nodes.find(n => n.id === link.target);
+                if (!s || !t) return;
+                
+                const isHidden = hiddenClusters.has(s.cluster) || hiddenClusters.has(t.cluster);
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", s.x); line.setAttribute("y1", s.y);
+                line.setAttribute("x2", t.x); line.setAttribute("y2", t.y);
+                line.setAttribute("class", `link ${isHidden ? 'hidden-cluster' : ''}`);
+                linksGroup.appendChild(line);
+            });
+
+            // Draw Nodes
+            nodes.forEach(node => {
+                const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                const isHidden = hiddenClusters.has(node.cluster);
+                g.setAttribute("class", `node ${isHidden ? 'hidden-cluster' : ''}`);
+                g.setAttribute("transform", `translate(${node.x}, ${node.y})`);
+                
+                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circle.setAttribute("r", 25);
+                circle.setAttribute("fill", clusterColors[node.cluster] || '#94a3b8');
+                circle.setAttribute("stroke", "white");
+                circle.setAttribute("stroke-width", "3");
+                
+                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                text.textContent = node.label;
+                text.setAttribute("dy", 40);
+                text.setAttribute("text-anchor", "middle");
+                text.setAttribute("class", "text-[10px] font-bold fill-gray-600");
+
+                g.appendChild(circle);
+                g.appendChild(text);
+                
+                // Simple Touch Drag Logic
+                g.addEventListener('touchstart', (e) => handleDrag(e, node));
+                g.addEventListener('mousedown', (e) => handleDrag(e, node));
+                
+                nodesGroup.appendChild(g);
+            });
+
+            renderClusterControls();
+        }
+
+        function renderClusterControls() {
+            const clusters = [...new Set(nodes.map(n => n.cluster))];
+            clusterList.innerHTML = '';
+            clusters.forEach(c => {
+                const btn = document.createElement('button');
+                const isHidden = hiddenClusters.has(c);
+                btn.className = `flex items-center gap-2 px-4 py-2 rounded-xl border-2 whitespace-nowrap transition ${isHidden ? 'bg-gray-100 border-gray-200 text-gray-400' : 'bg-white border-blue-100 text-gray-800 shadow-sm'}`;
+                btn.innerHTML = `<span class="cluster-dot" style="background:${clusterColors[c]}"></span> Cluster ${c}`;
+                btn.onclick = () => toggleCluster(c);
+                clusterList.appendChild(btn);
+            });
+        }
+
+        // --- INTERACTIONS ---
+        function toggleCluster(clusterId) {
+            if (hiddenClusters.has(clusterId)) hiddenClusters.delete(clusterId);
+            else hiddenClusters.add(clusterId);
+            render();
+        }
+
+        function addNode() {
+            const id = nodes.length + 1;
+            const clusters = ['A', 'B', 'C', 'D'];
+            nodes.push({
+                id: id,
+                x: Math.random() * (window.innerWidth - 100) + 50,
+                y: Math.random() * (window.innerHeight - 300) + 100,
+                cluster: clusters[Math.floor(Math.random() * clusters.length)],
+                label: `Node ${id}`
+            });
+            if (id > 1) links.push({ source: id - 1, target: id });
+            render();
+        }
+
+        function handleDrag(e, node) {
+            const move = (event) => {
+                const touch = event.touches ? event.touches[0] : event;
+                node.x = touch.clientX;
+                node.y = touch.clientY - 60; // Offset for header
+                render();
+            };
+            const stop = () => {
+                window.removeEventListener('mousemove', move);
+                window.removeEventListener('touchmove', move);
+            };
+            window.addEventListener('mousemove', move);
+            window.addEventListener('touchmove', move);
+            window.addEventListener('mouseup', stop);
+            window.addEventListener('touchend', stop);
+        }
+
+        // --- OFFLINE / PWA SERVICE WORKER ---
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                self.addEventListener('install', e => e.waitUntil(caches.open('v1').then(c => c.addAll(['.']))));
+                self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));
+            `;
+            const blob = new Blob([swCode], {type: 'text/javascript'});
+            const swUrl = URL.createObjectURL(blob);
+            navigator.serviceWorker.register(swUrl);
+        }
+
+        // Initial Render
+        render();
+    </script>
+</body>
+</html>
