@@ -3,68 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GraphCluster Smooth</title>
+    <title>GraphCluster Pro Max</title>
     
     <link rel="manifest" href="data:application/manifest+json,{'name':'GraphCluster','short_name':'Graph','start_url':'.','display':'standalone','background_color':'#f8fafc','theme_color':'#2563eb'}">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { touch-action: none; overflow: hidden; background: #f8fafc; font-family: system-ui, sans-serif; user-select: none; }
+        body { touch-action: none; overflow: hidden; background: #f8fafc; font-family: system-ui, sans-serif; user-select: none; -webkit-user-select: none; }
         
-        /* Smooth UI Transitions */
-        .node { cursor: grab; transition: filter 0.2s; }
-        .node:active { cursor: grabbing; filter: drop-shadow(0 8px 10px rgba(0,0,0,0.15)); }
-        .node circle { transition: r 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-        .node:active circle { r: 35; } /* Grow slightly when dragging */
+        /* Hardware Acceleration & Smooth Transitions */
+        .node { cursor: grab; will-change: transform; }
+        .node:active { cursor: grabbing; }
+        .node circle { transition: r 0.2s cubic-bezier(0.4, 0, 0.2, 1), filter 0.2s; }
+        .node:active circle { r: 35; filter: drop-shadow(0 8px 10px rgba(0,0,0,0.2)); }
         
-        .link { stroke: #cbd5e1; stroke-width: 2.5; stroke-linecap: round; transition: opacity 0.3s; }
+        .link { stroke: #cbd5e1; stroke-width: 2.5; stroke-linecap: round; will-change: d; transition: opacity 0.3s; }
         .hidden-element { opacity: 0 !important; pointer-events: none; }
         
-        #canvas { width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 1; }
+        #canvas { width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 1; cursor: grab; }
+        #canvas:active { cursor: grabbing; }
         
         .editor-sheet { transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.3, 1, 0.3, 1); }
         .editor-sheet.active { transform: translateY(0); }
         
-        /* Floating Action Button */
-        .fab { position: fixed; bottom: 85px; right: 20px; z-index: 20; transition: transform 0.2s; }
+        /* Floating Controls */
+        .fab { position: fixed; bottom: 95px; right: 20px; z-index: 20; transition: transform 0.2s; }
         .fab:active { transform: scale(0.9); }
+        
+        .zoom-controls { position: fixed; left: 20px; bottom: 95px; z-index: 20; display: flex; flex-direction: column; gap: 8px; }
+        .zoom-btn { background: white; border: 1px solid #e2e8f0; width: 40px; height: 40px; border-radius: 12px; font-size: 20px; font-weight: bold; color: #475569; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .zoom-btn:active { background: #f1f5f9; transform: scale(0.95); }
     </style>
 </head>
 <body class="flex flex-col">
 
-    <header class="bg-white/90 backdrop-blur-md text-gray-800 p-4 shadow-sm z-30 flex justify-between items-center border-b border-gray-200 absolute top-0 w-full">
-        <div class="flex flex-col">
-            <h1 class="font-extrabold text-lg text-blue-600 tracking-tight">GraphCluster</h1>
-            <div class="flex items-center gap-2 mt-1">
-                <span class="text-xs font-bold text-gray-400 uppercase">Adding to:</span>
-                <select id="active-cluster-select" onchange="changeActiveCluster()" class="bg-gray-100 text-sm font-bold px-2 py-1 rounded-md outline-none border-none text-gray-700"></select>
+    <header class="bg-white/95 backdrop-blur-md p-3 shadow-sm z-30 flex flex-col gap-2 border-b border-gray-200 absolute top-0 w-full">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Scene:</span>
+                <select id="scene-select" onchange="switchScene()" class="bg-blue-50 text-blue-700 text-sm font-extrabold px-2 py-1 rounded-md outline-none border border-blue-100"></select>
             </div>
+            <button onclick="addScene()" class="bg-gray-100 text-gray-600 px-3 py-1.5 rounded-lg text-xs font-bold active:bg-gray-200">+ New Scene</button>
         </div>
-        <button onclick="addNewCluster()" class="bg-blue-50 text-blue-600 px-3 py-2 rounded-xl text-xs font-bold border border-blue-100 active:bg-blue-100">+ New Cluster</button>
+        
+        <div class="flex justify-between items-center border-t border-gray-100 pt-2">
+            <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Cluster:</span>
+                <select id="active-cluster-select" onchange="changeActiveCluster()" class="bg-gray-50 text-gray-700 text-xs font-bold px-2 py-1 rounded-md outline-none"></select>
+            </div>
+            <button onclick="addNewCluster()" class="text-blue-500 px-2 py-1 text-xs font-bold active:opacity-50">+ Add Cluster</button>
+        </div>
     </header>
 
     <svg id="canvas">
-        <g id="links-group"></g>
-        <g id="nodes-group"></g>
+        <g id="camera-layer">
+            <g id="links-group"></g>
+            <g id="nodes-group"></g>
+        </g>
     </svg>
 
-    <button onclick="addNode()" class="fab bg-blue-600 shadow-lg shadow-blue-300 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl font-light pb-1">
+    <div class="zoom-controls">
+        <button class="zoom-btn" onclick="zoom(1.2)">+</button>
+        <button class="zoom-btn" onclick="zoom(0.8)">−</button>
+    </div>
+
+    <button onclick="addNode()" class="fab bg-blue-600 shadow-xl shadow-blue-300 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl font-light pb-1">
         +
     </button>
 
     <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-4 pb-6 z-10 shadow-[0_-10px_30px_rgba(0,0,0,0.03)]">
-        <p class="text-[10px] font-bold text-gray-400 uppercase mb-2 tracking-widest pl-1">Visibility Filters</p>
+        <p class="text-[10px] font-bold text-gray-400 uppercase mb-2 tracking-widest pl-1">Visible Clusters</p>
         <div id="visibility-list" class="flex gap-2 overflow-x-auto hide-scrollbar pb-1"></div>
     </div>
 
     <div id="editor" class="editor-sheet fixed inset-0 z-40 flex flex-col justify-end pointer-events-none">
-        <div class="bg-black/30 h-full w-full pointer-events-auto backdrop-blur-sm transition-opacity" onclick="closeEditor()"></div>
+        <div class="bg-black/30 h-full w-full pointer-events-auto backdrop-blur-[2px] transition-opacity" onclick="closeEditor()"></div>
         <div class="bg-white rounded-t-3xl p-6 shadow-2xl pointer-events-auto max-h-[85vh] flex flex-col">
             <div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6"></div>
             
-            <div class="space-y-5 overflow-y-auto pb-4">
+            <div class="space-y-4 overflow-y-auto pb-4">
                 <div>
                     <label class="block text-[11px] font-bold text-gray-400 uppercase mb-1">Node Name</label>
-                    <input type="text" id="edit-name" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 focus:border-blue-500 focus:bg-white transition outline-none font-medium">
+                    <input type="text" id="edit-name" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 focus:border-blue-500 outline-none font-medium">
                 </div>
 
                 <div>
@@ -74,60 +93,78 @@
 
                 <div>
                     <label class="block text-[11px] font-bold text-gray-400 uppercase mb-1">Notes</label>
-                    <textarea id="edit-notes" rows="3" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 outline-none transition focus:bg-white focus:border-blue-500 resize-none text-sm" placeholder="Tap to add details..."></textarea>
+                    <textarea id="edit-notes" rows="4" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 outline-none resize-none text-sm"></textarea>
                 </div>
 
                 <div class="flex gap-3 pt-2">
-                    <button onclick="saveNode()" class="flex-1 bg-blue-600 active:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-md transition">Save</button>
-                    <button onclick="deleteNode()" class="bg-red-50 active:bg-red-100 text-red-500 font-bold px-6 py-3.5 rounded-xl transition">Delete</button>
+                    <button onclick="saveNode()" class="flex-1 bg-blue-600 active:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-md">Save Changes</button>
+                    <button onclick="deleteNode()" class="bg-red-50 active:bg-red-100 text-red-500 font-bold px-5 py-3.5 rounded-xl">Delete</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- State Management ---
-        let clusters = { 'Idea 1': '#3b82f6', 'Idea 2': '#10b981' };
-        let activeCluster = 'Idea 1';
-        let hiddenClusters = new Set();
+        // --- Multi-Scene Data Architecture ---
+        let appData = {
+            activeSceneId: 1,
+            scenes: [
+                {
+                    id: 1, name: 'Project Alpha',
+                    clusters: { 'Concept': '#3b82f6', 'Design': '#10b981' },
+                    activeCluster: 'Concept',
+                    hiddenClusters: new Set(),
+                    nodes: [{ id: 1, x: window.innerWidth/2, y: window.innerHeight/2, cluster: 'Concept', label: 'Main Idea', notes: '' }],
+                    links: []
+                }
+            ]
+        };
+
+        // Camera / Viewport State
+        let cam = { x: 0, y: 0, z: 1 };
         let activeNodeId = null;
+        let isUIInteracting = false; // prevents canvas pan when touching UI
 
-        let nodes = [
-            { id: 1, x: window.innerWidth/2, y: window.innerHeight/2 - 50, cluster: 'Idea 1', label: 'Start Here', notes: '' }
-        ];
-        let links = [];
-
+        // DOM Elements
+        const cameraLayer = document.getElementById('camera-layer');
         const nodesGroup = document.getElementById('nodes-group');
         const linksGroup = document.getElementById('links-group');
-        
-        // --- Render Engine ---
-        function render() {
+        const canvas = document.getElementById('canvas');
+
+        // Helper to get active scene data
+        const getScene = () => appData.scenes.find(s => s.id === appData.activeSceneId);
+
+        // --- Core Rendering Engine ---
+        function renderAll() {
+            const scene = getScene();
             nodesGroup.innerHTML = ''; linksGroup.innerHTML = '';
             
             // Draw Links
-            links.forEach(link => {
-                const s = nodes.find(n => n.id === link.source);
-                const t = nodes.find(n => n.id === link.target);
+            scene.links.forEach(link => {
+                const s = scene.nodes.find(n => n.id === link.source);
+                const t = scene.nodes.find(n => n.id === link.target);
                 if (!s || !t) return;
                 
-                const isHidden = hiddenClusters.has(s.cluster) || hiddenClusters.has(t.cluster);
+                const isHidden = scene.hiddenClusters.has(s.cluster) || scene.hiddenClusters.has(t.cluster);
                 const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
                 line.setAttribute("x1", s.x); line.setAttribute("y1", s.y);
                 line.setAttribute("x2", t.x); line.setAttribute("y2", t.y);
                 line.setAttribute("class", `link ${isHidden ? 'hidden-element' : ''}`);
+                
+                link.element = line; // Store DOM reference for 0-lag drag updates
                 linksGroup.appendChild(line);
             });
 
             // Draw Nodes
-            nodes.forEach(node => {
-                const isHidden = hiddenClusters.has(node.cluster);
+            scene.nodes.forEach(node => {
+                const isHidden = scene.hiddenClusters.has(node.cluster);
                 const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
                 g.setAttribute("class", `node ${isHidden ? 'hidden-element' : ''}`);
                 g.setAttribute("transform", `translate(${node.x}, ${node.y})`);
                 
                 const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                circle.setAttribute("r", 32);
-                circle.setAttribute("fill", clusters[node.cluster] || '#94a3b8');
+                circle.setAttribute("r", 30);
+                circle.setAttribute("fill", scene.clusters[node.cluster] || '#94a3b8');
                 circle.setAttribute("stroke", "#ffffff");
                 circle.setAttribute("stroke-width", "4");
 
@@ -138,88 +175,62 @@
                 text.setAttribute("class", "text-[11px] font-bold fill-white pointer-events-none");
 
                 g.append(circle, text);
-                setupDragAndClick(g, node);
+                node.element = g; // Store DOM reference for fast transform
+
+                setupNodeInteractions(g, node);
                 nodesGroup.appendChild(g);
             });
 
-            updateUI();
+            updateUIControls();
+            applyCamera();
         }
 
-        function updateUI() {
-            // Update Active Cluster Dropdown
-            const activeSelect = document.getElementById('active-cluster-select');
-            activeSelect.innerHTML = '';
-            Object.keys(clusters).forEach(c => {
+        function updateUIControls() {
+            const scene = getScene();
+            
+            // Scenes Dropdown
+            const sceneSel = document.getElementById('scene-select');
+            sceneSel.innerHTML = '';
+            appData.scenes.forEach(s => {
                 const opt = document.createElement('option');
-                opt.value = c; opt.textContent = c;
-                if(c === activeCluster) opt.selected = true;
-                activeSelect.appendChild(opt);
+                opt.value = s.id; opt.textContent = s.name;
+                if(s.id === appData.activeSceneId) opt.selected = true;
+                sceneSel.appendChild(opt);
             });
 
-            // Update Bottom Visibility Filters
+            // Active Cluster Dropdown
+            const clusSel = document.getElementById('active-cluster-select');
+            clusSel.innerHTML = '';
+            Object.keys(scene.clusters).forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c; opt.textContent = c;
+                if(c === scene.activeCluster) opt.selected = true;
+                clusSel.appendChild(opt);
+            });
+
+            // Visibility Toggles (Bottom)
             const visList = document.getElementById('visibility-list');
             visList.innerHTML = '';
-            Object.keys(clusters).forEach(name => {
+            Object.keys(scene.clusters).forEach(name => {
                 const btn = document.createElement('button');
-                const isHidden = hiddenClusters.has(name);
+                const isHidden = scene.hiddenClusters.has(name);
                 btn.className = `flex items-center gap-2 px-4 py-2 rounded-full border-2 whitespace-nowrap transition text-xs font-bold ${isHidden ? 'bg-gray-50 border-gray-200 text-gray-400' : 'bg-white border-gray-100 text-gray-800 shadow-sm'}`;
-                btn.innerHTML = `<span style="width:12px;height:12px;border-radius:50%;background:${isHidden ? '#cbd5e1' : clusters[name]}"></span> ${name}`;
+                btn.innerHTML = `<span style="width:12px;height:12px;border-radius:50%;background:${isHidden ? '#cbd5e1' : scene.clusters[name]}"></span> ${name}`;
                 btn.onclick = () => {
-                    isHidden ? hiddenClusters.delete(name) : hiddenClusters.add(name);
-                    render();
+                    isHidden ? scene.hiddenClusters.delete(name) : scene.hiddenClusters.add(name);
+                    renderAll();
                 };
                 visList.appendChild(btn);
             });
         }
 
-        // --- Core Interactions ---
-        function changeActiveCluster() {
-            activeCluster = document.getElementById('active-cluster-select').value;
-        }
-
-        function addNode() {
-            // Ensure the active cluster is visible when adding
-            hiddenClusters.delete(activeCluster); 
-            
-            const id = Date.now();
-            // Connect ONLY to the last node in the SAME cluster
-            const clusterNodes = nodes.filter(n => n.cluster === activeCluster);
-            const lastNodeInCluster = clusterNodes[clusterNodes.length - 1];
-
-            // Offset slightly from the center so they don't stack perfectly
-            const offset = (clusterNodes.length % 5) * 15;
-            
-            const newNode = {
-                id: id,
-                x: window.innerWidth / 2 + offset,
-                y: window.innerHeight / 2 + offset,
-                cluster: activeCluster,
-                label: 'New Node',
-                notes: ''
-            };
-            
-            nodes.push(newNode);
-            if (lastNodeInCluster) links.push({ source: lastNodeInCluster.id, target: id });
-            
-            render();
-            openEditor(newNode); // Immediately let them type a name
-        }
-
-        function addNewCluster() {
-            const name = prompt("Enter a short name for the new cluster:");
-            if (name && name.trim() !== '' && !clusters[name]) {
-                const colors = ['#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#14b8a6', '#f43f5e'];
-                clusters[name] = colors[Object.keys(clusters).length % colors.length];
-                activeCluster = name; // Auto-switch to the new cluster
-                render();
-            }
-        }
-
-        // --- Smooth Drag vs Click Logic ---
-        function setupDragAndClick(element, node) {
+        // --- Zero-Lag Drag Logic (Direct DOM Update) ---
+        function setupNodeInteractions(element, node) {
             let startX, startY, isDragging = false;
-
+            
             const onStart = (e) => {
+                e.stopPropagation(); // Stop canvas pan
+                isUIInteracting = true;
                 const evt = e.touches ? e.touches[0] : e;
                 startX = evt.clientX; startY = evt.clientY;
                 isDragging = false;
@@ -232,19 +243,24 @@
 
             const onMove = (e) => {
                 const evt = e.touches ? e.touches[0] : e;
-                const dx = evt.clientX - startX;
-                const dy = evt.clientY - startY;
+                const dx = (evt.clientX - startX) / cam.z; // Apply zoom scale factor
+                const dy = (evt.clientY - startY) / cam.z;
                 
-                // If moved more than 5px, it's a drag, not a tap
-                if (!isDragging && Math.hypot(dx, dy) > 5) {
-                    isDragging = true;
-                }
+                if (!isDragging && Math.hypot(dx * cam.z, dy * cam.z) > 4) isDragging = true;
 
                 if (isDragging) {
-                    e.preventDefault(); // Prevent scrolling while dragging
-                    node.x = evt.clientX;
-                    node.y = evt.clientY;
-                    render(); // Update positions
+                    e.preventDefault(); 
+                    node.x += dx; node.y += dy;
+                    startX = evt.clientX; startY = evt.clientY;
+                    
+                    // Directly transform node (0 LAG)
+                    element.setAttribute("transform", `translate(${node.x}, ${node.y})`);
+                    
+                    // Directly update attached links (0 LAG)
+                    getScene().links.forEach(l => {
+                        if(l.source === node.id && l.element) { l.element.setAttribute('x1', node.x); l.element.setAttribute('y1', node.y); }
+                        if(l.target === node.id && l.element) { l.element.setAttribute('x2', node.x); l.element.setAttribute('y2', node.y); }
+                    });
                 }
             };
 
@@ -253,8 +269,7 @@
                 document.removeEventListener('touchmove', onMove);
                 document.removeEventListener('mouseup', onEnd);
                 document.removeEventListener('touchend', onEnd);
-                
-                // If we didn't drag, it was a click/tap! Open editor.
+                setTimeout(() => isUIInteracting = false, 50);
                 if (!isDragging) openEditor(node);
             };
 
@@ -262,15 +277,138 @@
             element.addEventListener('touchstart', onStart, {passive: false});
         }
 
-        // --- Editor Sheet ---
+        // --- Camera & Canvas Interactions (Pan/Zoom) ---
+        function applyCamera() {
+            cameraLayer.setAttribute("transform", `translate(${cam.x}, ${cam.y}) scale(${cam.z})`);
+        }
+
+        function zoom(factor) {
+            cam.z = Math.max(0.2, Math.min(3, cam.z * factor)); // Limit zoom out/in
+            applyCamera();
+        }
+
+        let isPanning = false, panStartX, panStartY, camStartX, camStartY;
+        let initialPinchDist = 0, initialPinchZoom = 1;
+
+        canvas.addEventListener('pointerdown', e => {
+            if (e.target === canvas || e.target === cameraLayer) {
+                isPanning = true;
+                panStartX = e.clientX; panStartY = e.clientY;
+                camStartX = cam.x; camStartY = cam.y;
+            }
+        });
+
+        window.addEventListener('pointermove', e => {
+            if (isPanning && !isUIInteracting) {
+                cam.x = camStartX + (e.clientX - panStartX);
+                cam.y = camStartY + (e.clientY - panStartY);
+                applyCamera();
+            }
+        });
+
+        window.addEventListener('pointerup', () => isPanning = false);
+
+        // Desktop Mouse Wheel Zoom
+        canvas.addEventListener('wheel', e => {
+            e.preventDefault();
+            zoom(e.deltaY < 0 ? 1.1 : 0.9);
+        }, {passive: false});
+
+        // Mobile Pinch Zoom
+        canvas.addEventListener('touchstart', e => {
+            if(e.touches.length === 2) {
+                isPanning = false;
+                initialPinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                initialPinchZoom = cam.z;
+            }
+        });
+
+        canvas.addEventListener('touchmove', e => {
+            if(e.touches.length === 2) {
+                e.preventDefault();
+                let dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                cam.z = Math.max(0.2, Math.min(3, initialPinchZoom * (dist / initialPinchDist)));
+                applyCamera();
+            }
+        }, {passive: false});
+
+
+        // --- Scene & Data Management ---
+        function addScene() {
+            const name = prompt("Name your new Scene:");
+            if(name) {
+                const newScene = {
+                    id: Date.now(), name: name,
+                    clusters: { 'Default': '#8b5cf6' },
+                    activeCluster: 'Default',
+                    hiddenClusters: new Set(),
+                    nodes: [{ id: Date.now(), x: window.innerWidth/2, y: window.innerHeight/2, cluster: 'Default', label: 'Start', notes: '' }],
+                    links: []
+                };
+                appData.scenes.push(newScene);
+                appData.activeSceneId = newScene.id;
+                cam = {x:0, y:0, z:1}; // Reset camera for new scene
+                renderAll();
+            }
+        }
+
+        function switchScene() {
+            appData.activeSceneId = parseInt(document.getElementById('scene-select').value);
+            cam = {x:0, y:0, z:1}; // Reset view
+            renderAll();
+        }
+
+        function changeActiveCluster() {
+            getScene().activeCluster = document.getElementById('active-cluster-select').value;
+        }
+
+        function addNewCluster() {
+            const name = prompt("New cluster name:");
+            const scene = getScene();
+            if (name && !scene.clusters[name]) {
+                const colors = ['#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#14b8a6', '#f43f5e'];
+                scene.clusters[name] = colors[Object.keys(scene.clusters).length % colors.length];
+                scene.activeCluster = name;
+                renderAll();
+            }
+        }
+
+        function addNode() {
+            const scene = getScene();
+            scene.hiddenClusters.delete(scene.activeCluster); 
+            
+            // Calculate center of current camera view
+            const spawnX = (window.innerWidth / 2 - cam.x) / cam.z;
+            const spawnY = (window.innerHeight / 2 - cam.y) / cam.z;
+
+            const clusterNodes = scene.nodes.filter(n => n.cluster === scene.activeCluster);
+            const lastNode = clusterNodes[clusterNodes.length - 1];
+            const offset = (clusterNodes.length % 4) * 20; // Stagger slightly
+            
+            const newNode = {
+                id: Date.now(),
+                x: spawnX + offset, y: spawnY + offset,
+                cluster: scene.activeCluster, label: 'New Node', notes: ''
+            };
+            
+            scene.nodes.push(newNode);
+            if (lastNode) scene.links.push({ source: lastNode.id, target: newNode.id });
+            
+            renderAll();
+            openEditor(newNode);
+        }
+
+        // --- Node Editor ---
         function openEditor(node) {
             activeNodeId = node.id;
+            const scene = getScene();
+            
             document.getElementById('edit-name').value = node.label;
             document.getElementById('edit-notes').value = node.notes || '';
             
             const select = document.getElementById('edit-cluster');
             select.innerHTML = '';
-            Object.keys(clusters).forEach(c => {
+            Object.keys(scene.clusters).forEach(c => {
                 const opt = document.createElement('option');
                 opt.value = c; opt.textContent = c;
                 if(c === node.cluster) opt.selected = true;
@@ -281,33 +419,35 @@
         }
 
         function saveNode() {
-            const node = nodes.find(n => n.id === activeNodeId);
+            const scene = getScene();
+            const node = scene.nodes.find(n => n.id === activeNodeId);
             if (node) {
                 node.label = document.getElementById('edit-name').value;
                 node.notes = document.getElementById('edit-notes').value;
                 const oldCluster = node.cluster;
                 node.cluster = document.getElementById('edit-cluster').value;
                 
-                // If cluster changed, we break its links so it doesn't cross-contaminate
+                // Sever connections if cluster changed to maintain clean silos
                 if (oldCluster !== node.cluster) {
-                    links = links.filter(l => l.source !== node.id && l.target !== node.id);
+                    scene.links = scene.links.filter(l => l.source !== node.id && l.target !== node.id);
                 }
             }
             closeEditor();
-            render();
+            renderAll();
         }
 
         function deleteNode() {
-            nodes = nodes.filter(n => n.id !== activeNodeId);
-            links = links.filter(l => l.source !== activeNodeId && l.target !== activeNodeId);
+            const scene = getScene();
+            scene.nodes = scene.nodes.filter(n => n.id !== activeNodeId);
+            scene.links = scene.links.filter(l => l.source !== activeNodeId && l.target !== activeNodeId);
             closeEditor();
-            render();
+            renderAll();
         }
 
         function closeEditor() { document.getElementById('editor').classList.remove('active'); activeNodeId = null; }
 
-        // Initialize
-        render();
+        // Start App
+        renderAll();
     </script>
 </body>
 </html>
