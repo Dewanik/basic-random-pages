@@ -34,6 +34,12 @@
         .zoom-btn:active { background: #f1f5f9; transform: scale(0.95); }
     </style>
 </head>
+<script>
+  // Automatically detects the filename (e.g. "bakery.html") and increments its hit count
+  const pageName = window.location.pathname.split("/").pop() || "index.html";
+  fetch(`https://api.counterapi.dev/v1/Dewanik-basic-random-pages/${pageName}/up`)
+    .catch(err => console.error("Hit tracker error:", err));
+</script>
 <body class="flex flex-col">
 
     <header class="bg-white/95 backdrop-blur-md p-3 shadow-sm z-30 flex flex-col gap-2 border-b border-gray-200 absolute top-0 w-full">
