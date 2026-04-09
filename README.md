@@ -17,6 +17,7 @@ The goal is simple: make it easy for anyone to open and view these files directl
 - [bakery.html](bakery.html)
 - [content-edit-40-60.html](content-edit-40-60.html)
 - [creative-boost.html](creative-boost.html)
+- [graph.html](graph.html)
 - [literary-link-mockup.html](literary-link-mockup.html)
 - [small_savings.html](small_savings.html)
 - [test.html](test.html)
