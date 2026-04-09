@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Hit Tracker | basic-random-pages</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-slate-100 text-slate-800 p-4 md:p-8 font-sans">
+    <div class="max-w-6xl mx-auto bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+        <h1 class="text-3xl font-bold mb-2 text-slate-900">GitHub Pages Hit Tracker</h1>
+        <p class="text-slate-500 mb-8">Live view count for <a href="https://github.com/Dewanik/basic-random-pages" class="text-blue-500 hover:underline">Dewanik/basic-random-pages</a></p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 shadow-inner flex flex-col justify-center">
+                <canvas id="hitsChart"></canvas>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white rounded-lg overflow-hidden border border-slate-200">
+                    <thead class="bg-slate-800 text-white">
+                        <tr>
+                            <th class="py-3 px-5 text-left font-medium">Page Name</th>
+                            <th class="py-3 px-5 text-left font-medium">Total Hits</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="divide-y divide-slate-200">
+                        <tr><td colspan="2" class="py-6 text-center text-slate-500 animate-pulse">Fetching latest data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="mt-8 bg-blue-50 p-6 rounded-lg border border-blue-200">
+            <h2 class="text-xl font-bold mb-3 text-blue-900">How to track your pages</h2>
+            <p class="mb-3 text-blue-800">To allow this dashboard to see the data, you must add a lightweight tracking script to the bottom of the pages you want to monitor (e.g., <code>bakery.html</code>, <code>test.html</code>).</p>
+            <p class="mb-2 text-sm font-semibold text-blue-900">Copy and paste this right above the closing <code>&lt;/body&gt;</code> tag in your HTML files:</p>
+            <pre class="bg-slate-900 text-green-400 p-4 rounded-md text-sm overflow-x-auto shadow-inner">
+&lt;script&gt;
+  // Automatically detects the filename (e.g. "bakery.html") and increments its hit count
+  const pageName = window.location.pathname.split("/").pop() || "index.html";
+  fetch(`https://api.counterapi.dev/v1/Dewanik-basic-random-pages/${pageName}/up`)
+    .catch(err => console.error("Hit tracker error:", err));
+&lt;/script&gt;</pre>
+        </div>
+    </div>
+
+    <script>
+        // List of specific HTML files found in your GitHub repo
+        const pages = [
+            "agent-ops.html",
+            "bakery.html",
+            "content-edit-40-60.html",
+            "creative-boost.html",
+            "graph.html",
+            "literary-link-mockup.html",
+            "small_savings.html",
+            "test.html",
+            "writers-research.html",
+            "writers2.html"
+        ];
+
+        // Unique namespace for your repository to prevent counter collisions
+        const namespace = "Dewanik-basic-random-pages";
+        const apiUrl = `https://api.counterapi.dev/v1/${namespace}/`;
+
+        async function fetchHits() {
+            // Concurrently fetch current view values for all pages
+            const fetchPromises = pages.map(async (page) => {
+                try {
+                    const response = await fetch(`${apiUrl}${page}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        return { page, hits: data.count || 0 };
+                    } else {
+                        // A 404 indicates the page hasn't received its first hit yet
+                        return { page, hits: 0 };
+                    }
+                } catch (error) {
+                    return { page, hits: 0 };
+                }
+            });
+
+            const results = await Promise.all(fetchPromises);
+            
+            // Sort pages so the ones with the most hits appear first
+            results.sort((a, b) => b.hits - a.hits);
+            renderDashboard(results);
+        }
+
+        function renderDashboard(data) {
+            const tableBody = document.getElementById("tableBody");
+            tableBody.innerHTML = "";
+
+            const labels = [];
+            const values = [];
+
+            // Populate the table
+            data.forEach((item) => {
+                labels.push(item.page);
+                values.push(item.hits);
+
+                const row = document.createElement("tr");
+                row.className = "hover:bg-slate-50 transition-colors";
+                row.innerHTML = `
+                    <td class="py-3 px-5">
+                        <a href="https://dewanik.github.io/basic-random-pages/${item.page}" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium">
+                            ${item.page}
+                        </a>
+                    </td>
+                    <td class="py-3 px-5 font-bold text-slate-700">${item.hits}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // Render the Bar Chart using Chart.js
+            const ctx = document.getElementById("hitsChart").getContext("2d");
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Page Views',
+                        data: values,
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)', // Tailwind Blue 500
+                        borderColor: 'rgba(37, 99, 235, 1)',      // Tailwind Blue 600
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { precision: 0 } // Prevent fractional hits on the axis
+                        }
+                    }
+                }
+            });
+        }
+
+        // Kick off the data fetch as soon as the page loads
+        fetchHits();
+    </script>
+</body>
+</html>
