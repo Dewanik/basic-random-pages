@@ -120,10 +120,41 @@
             ]
         };
 
+        // --- Offline Persistence Logic ---
+        const STORAGE_KEY = 'graphCluster_ProMax_Data';
+
+        function saveData() {
+            // Convert Sets to Arrays for JSON serialization
+            const dataToSave = {
+                activeSceneId: appData.activeSceneId,
+                scenes: appData.scenes.map(scene => ({
+                    ...scene,
+                    hiddenClusters: Array.from(scene.hiddenClusters)
+                }))
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
+        }
+
+        function loadData() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                try {
+                    const parsed = JSON.parse(stored);
+                    // Reconstruct Arrays back into Sets
+                    parsed.scenes.forEach(scene => {
+                        scene.hiddenClusters = new Set(scene.hiddenClusters || []);
+                    });
+                    appData = parsed;
+                } catch (e) {
+                    console.error("Failed to load local data", e);
+                }
+            }
+        }
+
         // Camera / Viewport State
         let cam = { x: 0, y: 0, z: 1 };
         let activeNodeId = null;
-        let isUIInteracting = false; // prevents canvas pan when touching UI
+        let isUIInteracting = false; 
 
         // DOM Elements
         const cameraLayer = document.getElementById('camera-layer');
@@ -175,7 +206,7 @@
                 text.setAttribute("class", "text-[11px] font-bold fill-white pointer-events-none");
 
                 g.append(circle, text);
-                node.element = g; // Store DOM reference for fast transform
+                node.element = g; 
 
                 setupNodeInteractions(g, node);
                 nodesGroup.appendChild(g);
@@ -219,6 +250,7 @@
                 btn.onclick = () => {
                     isHidden ? scene.hiddenClusters.delete(name) : scene.hiddenClusters.add(name);
                     renderAll();
+                    saveData(); // Save state on toggle
                 };
                 visList.appendChild(btn);
             });
@@ -229,7 +261,7 @@
             let startX, startY, isDragging = false;
             
             const onStart = (e) => {
-                e.stopPropagation(); // Stop canvas pan
+                e.stopPropagation(); 
                 isUIInteracting = true;
                 const evt = e.touches ? e.touches[0] : e;
                 startX = evt.clientX; startY = evt.clientY;
@@ -243,7 +275,7 @@
 
             const onMove = (e) => {
                 const evt = e.touches ? e.touches[0] : e;
-                const dx = (evt.clientX - startX) / cam.z; // Apply zoom scale factor
+                const dx = (evt.clientX - startX) / cam.z; 
                 const dy = (evt.clientY - startY) / cam.z;
                 
                 if (!isDragging && Math.hypot(dx * cam.z, dy * cam.z) > 4) isDragging = true;
@@ -253,10 +285,8 @@
                     node.x += dx; node.y += dy;
                     startX = evt.clientX; startY = evt.clientY;
                     
-                    // Directly transform node (0 LAG)
                     element.setAttribute("transform", `translate(${node.x}, ${node.y})`);
                     
-                    // Directly update attached links (0 LAG)
                     getScene().links.forEach(l => {
                         if(l.source === node.id && l.element) { l.element.setAttribute('x1', node.x); l.element.setAttribute('y1', node.y); }
                         if(l.target === node.id && l.element) { l.element.setAttribute('x2', node.x); l.element.setAttribute('y2', node.y); }
@@ -270,7 +300,12 @@
                 document.removeEventListener('mouseup', onEnd);
                 document.removeEventListener('touchend', onEnd);
                 setTimeout(() => isUIInteracting = false, 50);
-                if (!isDragging) openEditor(node);
+                
+                if (!isDragging) {
+                    openEditor(node);
+                } else {
+                    saveData(); // Save new positions after a drag ends
+                }
             };
 
             element.addEventListener('mousedown', onStart);
@@ -283,7 +318,7 @@
         }
 
         function zoom(factor) {
-            cam.z = Math.max(0.2, Math.min(3, cam.z * factor)); // Limit zoom out/in
+            cam.z = Math.max(0.2, Math.min(3, cam.z * factor));
             applyCamera();
         }
 
@@ -308,13 +343,11 @@
 
         window.addEventListener('pointerup', () => isPanning = false);
 
-        // Desktop Mouse Wheel Zoom
         canvas.addEventListener('wheel', e => {
             e.preventDefault();
             zoom(e.deltaY < 0 ? 1.1 : 0.9);
         }, {passive: false});
 
-        // Mobile Pinch Zoom
         canvas.addEventListener('touchstart', e => {
             if(e.touches.length === 2) {
                 isPanning = false;
@@ -347,19 +380,22 @@
                 };
                 appData.scenes.push(newScene);
                 appData.activeSceneId = newScene.id;
-                cam = {x:0, y:0, z:1}; // Reset camera for new scene
+                cam = {x:0, y:0, z:1}; 
                 renderAll();
+                saveData(); // Save new scene
             }
         }
 
         function switchScene() {
             appData.activeSceneId = parseInt(document.getElementById('scene-select').value);
-            cam = {x:0, y:0, z:1}; // Reset view
+            cam = {x:0, y:0, z:1}; 
             renderAll();
+            saveData(); // Save active scene preference
         }
 
         function changeActiveCluster() {
             getScene().activeCluster = document.getElementById('active-cluster-select').value;
+            saveData(); // Save active cluster preference
         }
 
         function addNewCluster() {
@@ -370,6 +406,7 @@
                 scene.clusters[name] = colors[Object.keys(scene.clusters).length % colors.length];
                 scene.activeCluster = name;
                 renderAll();
+                saveData(); // Save new cluster
             }
         }
 
@@ -377,13 +414,12 @@
             const scene = getScene();
             scene.hiddenClusters.delete(scene.activeCluster); 
             
-            // Calculate center of current camera view
             const spawnX = (window.innerWidth / 2 - cam.x) / cam.z;
             const spawnY = (window.innerHeight / 2 - cam.y) / cam.z;
 
             const clusterNodes = scene.nodes.filter(n => n.cluster === scene.activeCluster);
             const lastNode = clusterNodes[clusterNodes.length - 1];
-            const offset = (clusterNodes.length % 4) * 20; // Stagger slightly
+            const offset = (clusterNodes.length % 4) * 20; 
             
             const newNode = {
                 id: Date.now(),
@@ -396,6 +432,7 @@
             
             renderAll();
             openEditor(newNode);
+            saveData(); // Save new node
         }
 
         // --- Node Editor ---
@@ -427,13 +464,13 @@
                 const oldCluster = node.cluster;
                 node.cluster = document.getElementById('edit-cluster').value;
                 
-                // Sever connections if cluster changed to maintain clean silos
                 if (oldCluster !== node.cluster) {
                     scene.links = scene.links.filter(l => l.source !== node.id && l.target !== node.id);
                 }
             }
             closeEditor();
             renderAll();
+            saveData(); // Save edits
         }
 
         function deleteNode() {
@@ -442,11 +479,13 @@
             scene.links = scene.links.filter(l => l.source !== activeNodeId && l.target !== activeNodeId);
             closeEditor();
             renderAll();
+            saveData(); // Save deletion
         }
 
         function closeEditor() { document.getElementById('editor').classList.remove('active'); activeNodeId = null; }
 
-        // Start App
+        // Start App: Load saved data before initial render
+        loadData();
         renderAll();
     </script>
 </body>
