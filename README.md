@@ -19,6 +19,7 @@ The goal is simple: make it easy for anyone to open and view these files directl
 - [creative-boost.html](creative-boost.html)
 - [graph.html](graph.html)
 - [literary-link-mockup.html](literary-link-mockup.html)
+- [privacy-policy.html](privacy-policy.html)
 - [small_savings.html](small_savings.html)
 - [test.html](test.html)
 - [tracker.html](tracker.html)
