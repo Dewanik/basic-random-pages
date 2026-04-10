@@ -1,0 +1,26 @@
+Privacy Policy for GraphCluster
+Last updated: April 10, 2026
+
+This Privacy Policy describes how GraphCluster handles your information.
+
+1. Data Collection and Use
+GraphCluster is designed to operate offline. We do not collect, store, or transmit any of your personal information, notes, mind maps, or data to any external servers. All data created within the app is stored locally on your device using AsyncStorage.
+
+2. Local Data Persistence
+All data, including your nodes, scenes, and cluster settings, resides exclusively on your device. We have no access to this data, and it is not backed up or synced to any cloud services by us. If you delete the app or clear your device's app storage, your data will be permanently removed.
+
+3. Third-Party Services
+Our app does not use third-party tracking, analytics, or advertising SDKs.
+
+4. Payments
+GraphCluster requires a one-time payment of $4.99 to access the application. This payment is processed exclusively through the official application store (Apple App Store or Google Play Store) using their secure payment systems. We do not process, collect, or store any payment information, credit card numbers, or financial data.
+
+5. Children’s Privacy
+Our app does not target or knowingly collect data from children under the age of 13.
+
+6. Changes to this Policy
+We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. You are advised to review this Privacy Policy periodically for any changes.
+
+7. Contact Us
+If you have any questions about this Privacy Policy, please contact us at:
+kdewanik@gmail.com
