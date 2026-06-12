@@ -15,6 +15,7 @@ The goal is simple: make it easy for anyone to open and view these files directl
 <!-- FILE_LIST_START -->
 - [agent-ops.html](agent-ops.html)
 - [bakery.html](bakery.html)
+- [bookGeoArbitage.html](bookGeoArbitage.html)
 - [content-edit-40-60.html](content-edit-40-60.html)
 - [creative-boost.html](creative-boost.html)
 - [graph.html](graph.html)
