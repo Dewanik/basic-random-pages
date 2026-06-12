@@ -1,0 +1,386 @@
+
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>जियो-आर्बिट्रेज र रचनात्मक जीवन - देवानीक कोइराला</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans Devanagari', sans-serif;
+            background-color: #f4f1ea;
+            color: #2d3748;
+        }
+        
+        /* Lock Screen Styles */
+        #lock-screen {
+            background-image: linear-gradient(rgba(45, 55, 72, 0.9), rgba(45, 55, 72, 0.9)), url('https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Tab Content Hide/Show */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Sidebar active state */
+        .tab-btn.active {
+            background-color: #e2e8f0;
+            color: #2b6cb0;
+            border-right: 4px solid #2b6cb0;
+            font-weight: 600;
+        }
+
+        .number-highlight {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c5282;
+        }
+    </style>
+</head>
+<body class="h-screen overflow-hidden">
+
+    <!-- PASSWORD PROTECTION SCREEN -->
+    <div id="lock-screen" class="fixed inset-0 z-50 flex items-center justify-center flex-col">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-11/12 max-w-md text-center">
+            <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">सुरक्षित सामग्री</h2>
+            <p class="text-gray-600 mb-6 text-sm">यो पुस्तक पढ्नको लागि कृपया पासवर्ड प्रविष्ट गर्नुहोस्।</p>
+            
+            <input type="password" id="password-input" placeholder="पासवर्ड राख्नुहोस्..." 
+                   class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:outline-none mb-4 text-center text-lg">
+            
+            <button onclick="checkPassword()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200">
+                अनलक गर्नुहोस् (Unlock)
+            </button>
+            <p id="error-msg" class="text-red-500 text-sm mt-3 hidden">पासवर्ड मिलेन ! (Incorrect Password)</p>
+        </div>
+    </div>
+
+    <!-- MAIN APP LAYOUT (Hidden initially) -->
+    <div id="main-app" class="flex h-screen hidden">
+        
+        <!-- SIDEBAR NAVIGATION -->
+        <div class="w-64 bg-white shadow-lg z-10 flex flex-col h-full">
+            <div class="p-6 border-b border-gray-200">
+                <h1 class="text-xl font-bold text-gray-800 leading-tight">जियो-आर्बिट्रेज र<br><span class="text-blue-600">रचनात्मक जीवन</span></h1>
+                <p class="text-xs text-gray-500 mt-2">लेखक: देवानीक कोइराला</p>
+            </div>
+            
+            <div class="overflow-y-auto flex-1 py-4">
+                <button onclick="openTab('tab-prologue', this)" class="tab-btn active w-full text-left px-6 py-3 text-gray-700 hover:bg-gray-50 transition duration-150 flex items-center gap-3">
+                    <i class="fa-solid fa-user text-sm"></i> प्रस्तावना
+                </button>
+                <button onclick="openTab('tab-intro', this)" class="tab-btn w-full text-left px-6 py-3 text-gray-700 hover:bg-gray-50 transition duration-150 flex items-center gap-3">
+                    <i class="fa-solid fa-lightbulb text-sm"></i> परिचय
+                </button>
+                <button onclick="openTab('tab-chap1', this)" class="tab-btn w-full text-left px-6 py-3 text-gray-700 hover:bg-gray-50 transition duration-150 flex items-center gap-3">
+                    <i class="fa-solid fa-coins text-sm"></i> अध्याय १: अर्थतन्त्र
+                </button>
+                <button onclick="openTab('tab-chap2', this)" class="tab-btn w-full text-left px-6 py-3 text-gray-700 hover:bg-gray-50 transition duration-150 flex items-center gap-3">
+                    <i class="fa-solid fa-scale-balanced text-sm"></i> अध्याय २: कानुन र सीमा
+                </button>
+                <button onclick="openTab('tab-chap3', this)" class="tab-btn w-full text-left px-6 py-3 text-gray-700 hover:bg-gray-50 transition duration-150 flex items-center gap-3">
+                    <i class="fa-solid fa-chart-pie text-sm"></i> अध्याय ३: बजेट र योजना
+                </button>
+                <button onclick="openTab('tab-chap4', this)" class="tab-btn w-full text-left px-6 py-3 text-gray-700 hover:bg-gray-50 transition duration-150 flex items-center gap-3">
+                    <i class="fa-solid fa-solar-panel text-sm"></i> अध्याय ४: आत्मनिर्भरता
+                </button>
+                <button onclick="openTab('tab-chap5', this)" class="tab-btn w-full text-left px-6 py-3 text-gray-700 hover:bg-gray-50 transition duration-150 flex items-center gap-3">
+                    <i class="fa-solid fa-palette text-sm"></i> अध्याय ५: अन्तिम विचार
+                </button>
+                <button onclick="openTab('tab-ack', this)" class="tab-btn w-full text-left px-6 py-3 text-gray-700 hover:bg-gray-50 transition duration-150 flex items-center gap-3">
+                    <i class="fa-solid fa-handshake-angle text-sm"></i> आभार
+                </button>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT AREA -->
+        <div class="flex-1 overflow-y-auto bg-[#fbf8f1] relative p-8 md:p-12">
+            <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm p-8 md:p-12 border border-gray-100">
+
+                <!-- Prologue -->
+                <div id="tab-prologue" class="tab-content active">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800 border-b pb-4">प्रस्तावना: चक्रबाट उम्किँदै</h2>
+                    <p class="text-lg leading-relaxed mb-4">
+                        मेरो नाम देवानीक कोइराला हो, र मेरो कथा विभिन्न महाद्वीपहरूमा फैलिएको छ। म नेपालको विराटनगरमा (मोरङ) जन्मिएको हुँ, र मेरो पुर्ख्यौली जरा इलामको माटोमा गहिरोसँग जोडिएको छ। मेरा आमाबुवा, भूमि प्रसाद कोइराला र मातृका शिवाकोटीले मलाई हुर्काउनुभयो। मेरो बाल्यकाल बुद्धबारेका विद्यालयहरूदेखि काठमाडौंका व्यस्त सडकहरू हुँदै अन्ततः झापामा बित्यो, जहाँ म साँच्चिकै हुर्किएँ।
+                    </p>
+                    <p class="text-lg leading-relaxed mb-4">
+                        सोह्र वर्षको उमेरमा मेरो जीवनले नयाँ मोड लियो। विज्ञानको अध्ययन छाडेर म अमेरिका उडें। पछिल्लो ६ वर्षमा मैले अमेरिकामा आफ्नो जीवन बनाएँ र त्यहाँको नागरिकता पनि प्राप्त गरें। मैले सन् २०२० पछिको अमेरिकी परिवर्तनलाई नजिकबाट नियालें र विभिन्न कामहरू गरें— क्यासियर, स्टारबक्सको बार्मिने, फास्ट फुड कर्मचारी, विश्वविद्यालयमा विद्यार्थी सेवा विशेषज्ञ, र विविधता तथा समावेशीकरण (DEI) कार्यालयमा कार्यक्रम आयोजकको रूपमा। अहिले म डाटा सेन्टर प्राविधिक (Data Center Technician) को रूपमा काम गर्छु।
+                    </p>
+                    <p class="text-lg leading-relaxed mb-6">
+                        यस प्रणालीले विश्वलाई मूल्य (Value) दिए पनि, यसले मेरो आफ्नै सम्भावना र दृष्टिकोणका लागि थोरै मात्र ठाउँ छोडेको महसुस गरें। यो पुस्तक त्यही 'लुप' (चक्र) तोड्ने मेरो ब्लुप्रिन्ट (खाका) हो। यसमा <strong>$६९,००० (करिब १ करोड ४ लाख रुपैयाँ)</strong> को सानो बजेटलाई 'जियो-आर्बिट्रेज' को माध्यमबाट प्रयोग गरी कसरी आत्मनिर्भर र रचनात्मक जीवन निर्माण गर्न सकिन्छ भनेर व्याख्या गरिएको छ।
+                    </p>
+                </div>
+
+                <!-- Introduction -->
+                <div id="tab-intro" class="tab-content">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800 border-b pb-4">परिचय: जियो-आर्बिट्रेज र समयको फिर्ती</h2>
+                    <p class="text-lg leading-relaxed mb-4">
+                        यो जीवनशैलीको बीउ कहिले रोपियो भनेर ठ्याक्कै भन्न गाह्रो छ, तर सन् २०२५ को नोभेम्बरतिर, जब मैले अमेरिकी नागरिकता पाएँ, यो विचारले गहिरो जरा गाड्यो। मैले एउटा आधारभूत तर सम्भव विचार बनाउन थालें: आफ्नो मातृभूमि नेपाल फर्किएर एक निश्चित सीमित आयमा बाँच्ने। मेरो उद्देश्य केवल बाँच्ने मात्र थिएन, तर फक्रिने थियो— हप्तामा ४ घण्टाभन्दा बढी काम नगरीकन समृद्ध जीवन जिउने।
+                    </p>
+                    <p class="text-lg leading-relaxed mb-4">
+                        २१ औं शताब्दीमा, काम गर्नु एउटा विकल्प हुनुपर्छ। आधुनिक वित्तीय, वैज्ञानिक, र कृषि प्रविधिहरूले सुसज्जित बुद्धिमान प्राणी भएकाले हामीले हाम्रो आधारभूत अस्तित्व र कल्याण सुनिश्चित गर्न सक्छौं, त्यो पनि जीवनको सबै समय तलबको लागि नबेची। आज "अस्तित्व" (Survival) को परिभाषा उपभोक्तावाद (Consumerism) ले बिगारेको छ। मानिसहरू अत्यधिक महँगा सहरहरूमा जीवन धान्न संघर्ष गरिरहेका छन्, जबकि अन्य ठाउँहरूमा स्वतन्त्र जीवन सम्भव छ भन्ने कुरा उनीहरू बिर्सन्छन्।
+                    </p>
+                    <p class="text-lg leading-relaxed bg-blue-50 p-6 rounded-xl border border-blue-100">
+                        <strong>मेरो दृष्टिकोण स्पष्ट छ:</strong> आफूसँग भएको जमिन प्रयोग गरेर आफ्नै खाना उब्जाउने, आफ्नै बिजुली निकाल्ने, र दैनिक आवश्यकताहरू आफैं पूर्ति गर्ने। जीवनलाई सरल बनाएर, हामी ठूला कर्पोरेट प्रणालीहरूमाथिको निर्भरता कम गर्न सक्छौं। हामी आत्मनिर्भर, स्वतन्त्र र अन्ततः खुसी हुन सक्छौं।
+                    </p>
+                </div>
+
+                <!-- Chapter 1 -->
+                <div id="tab-chap1" class="tab-content">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800 border-b pb-4">अध्याय १: आर्थिक व्यवस्थापन र अर्थतन्त्र (The Engine of Freedom)</h2>
+                    <p class="text-lg leading-relaxed mb-4">
+                        कला र स्वतन्त्रताको बारेमा लेखिएको पुस्तक अर्थतन्त्रको अध्यायबाट सुरु हुनु अनौठो लाग्न सक्छ। तर मैले बुझेको छु कि आर्थिक स्रोत नै रचनात्मकताको प्रमुख सहजकर्ता हो। यदि तपाईंले आफ्नो आधारभूत आवश्यकताहरू पूरा गर्न सक्नुभएन भने, तपाईंको रचनात्मक ऊर्जा सधैं दैनिक जीवनको चिन्तामा नष्ट हुन्छ।
+                    </p>
+                    <p class="text-lg leading-relaxed mb-6">
+                        हाल म डाटा सेन्टर प्राविधिकको रूपमा काम गर्दै <strong>महिनाको करिब $३,०००</strong> कमाउँछु। मैले बुझें कि मलाई एउटा यस्तो प्रणाली चाहिएको छ जसले मलाई अर्थव्यवस्थामा योगदान पुर्‍याउन देओस्, तर एउटै नीरस काममा मेरो समय बर्बाद नहोस्। यसले मलाई 'जियो-आर्बिट्रेज' (Geo-Arbitrage) को अवधारणा तिर डोहोर्यायो— एउटा देशको उच्च मूल्यवान मुद्रालाई अर्को देशको सस्तो जीवनशैलीसँग जोड्ने।
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                            <h3 class="font-bold text-xl mb-3 text-gray-800">१. उच्च प्रतिफल बचत (HYSA)</h3>
+                            <p class="text-gray-600">सुरुमा मैले उच्च प्रतिफल दिने बचत खाताहरू (High-Yield Savings Accounts) हेरें, जुन आपतकालीन कोषको लागि सुरक्षित र भरपर्दो हुन्छ।</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                            <h3 class="font-bold text-xl mb-3 text-gray-800">२. अमेरिकी ट्रेजरी बन्ड (US Treasury Bonds)</h3>
+                            <p class="text-gray-600">मैले मेरो मुख्य रणनीतिको रूपमा अमेरिकी ट्रेजरी बन्डलाई छानें। यसले सरकारलाई ऋण प्रदान गरेबापत निश्चित अवधिका लागि निश्चित ब्याज दिन्छ। हाल यसको ब्याजदर <strong>४.७५%</strong> छ।</p>
+                        </div>
+                    </div>
+                    <p class="text-lg leading-relaxed">
+                        संसारकै सबैभन्दा सुरक्षित लगानी मानिने यी बन्डहरूले मुद्रास्फीतिबाट बचाउनुका साथै नेपालमा अफ-ग्रिड जीवन बिताउनको लागि स्थिर आम्दानी प्रदान गर्दछ। यसले बचत गरिएको पुँजीलाई अन्तिम विलासिता— "समय" मा रूपान्तरण गर्छ।
+                    </p>
+                </div>
+
+                <!-- Chapter 2 -->
+                <div id="tab-chap2" class="tab-content">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800 border-b pb-4">अध्याय २: कानुन र सीमानाहरू (Legalities and Borders)</h2>
+                    <p class="text-lg leading-relaxed mb-6">
+                        आजको विश्वमा, स्वतन्त्र रूपमा हिँड्डुल गर्न कानुनी ढाँचाहरूमा गहिरो ध्यान दिनुपर्छ। मुख्य रूपमा नेपालमा बस्ने योजना बनाएको एक अमेरिकी नागरिकको रूपमा, मेरो दोहोरो कानुनी हैसियत— अमेरिकी नागरिकता र गैरआवासीय नेपाली (NRN) कार्ड— व्यवस्थापन गर्नु महत्त्वपूर्ण छ।
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-passport text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl text-gray-800">अमेरिकी नागरिकको अधिकार</h3>
+                                <p class="text-gray-600 mt-1">विदेशमा वर्षौं बसे पनि मेरो नागरिकता घट्दैन। म काठमाडौंस्थित अमेरिकी दूतावासबाट कन्सुलर सुरक्षा, आपतकालीन उद्धार, पासपोर्ट नवीकरण, र मतदान अधिकार प्राप्त गर्न सक्छु।</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-file-invoice-dollar text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl text-gray-800">कर र आर्थिक अनुपालन (Tax & Compliance)</h3>
+                                <p class="text-gray-600 mt-1">अमेरिकाले आफ्ना नागरिकको विश्वव्यापी आयमा कर लगाउँछ। तर मेरो वार्षिक ब्याज आम्दानी अमेरिकी मानक कटौती थ्रेसहोल्ड <strong>(Standard Deduction: $५०,०००)</strong> भन्दा तल हुनेछ। त्यसैले मैले कर तिर्नुपर्दैन, तर अनुपालनको लागि वार्षिक शून्य कर रिटर्न (Zero Tax Return) फाइल गर्नुपर्छ।</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-building-columns text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl text-gray-800">FBAR नियम (FinCEN 114)</h3>
+                                <p class="text-gray-600 mt-1">यदि वर्षको कुनै पनि समयमा मेरो नेपाली बैंक खाताको कुल रकम <strong>$१०,००० (USD)</strong> भन्दा बढी भएमा, मैले अप्रिल १५ सम्ममा FBAR (Foreign Bank and Account Report) फाइल गर्नुपर्छ। साथै ट्रेजरी खाताहरूको लागि अमेरिकी ठेगाना (Expat Mail Forwarding) व्यवस्थापन गर्नुपर्छ।</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-id-card text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl text-gray-800">गैर-आवासीय नेपाली (NRN) कार्ड</h3>
+                                <p class="text-gray-600 mt-1">नेपालको सन्दर्भमा, NRN कार्ड प्राप्त गरेपछि हरेक वर्ष पर्यटक भिसा लिने झन्झट र खर्चबाट मुक्ति मिल्छ र अनिश्चित कालसम्म बस्न पाइन्छ।</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chapter 3 -->
+                <div id="tab-chap3" class="tab-content">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800 border-b pb-4">अध्याय ३: $६९,००० को खाका (Budgeting for Abundance)</h2>
+                    <p class="text-lg leading-relaxed mb-6">
+                        $६९,००० मा पूर्ण स्वतन्त्रताको जीवन कसरी निर्माण गर्ने? पश्चिमी देशहरूमा यो रकम एक वर्षको तलब वा घरको डाउन पेमेन्ट मात्र हुन सक्छ। तर जियो-आर्बिट्रेजको माध्यमबाट, यो जीवनभरको आधार हो।
+                    </p>
+
+                    <div class="bg-indigo-50 rounded-2xl p-6 border border-indigo-100 mb-8">
+                        <h3 class="font-bold text-2xl mb-4 text-indigo-900 text-center">कुल पुँजी: $६९,००० (१ करोड ४ लाख ८८ हजार ने.रु.)</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded-lg shadow-sm text-center">
+                                <span class="text-gray-500 text-sm">आपतकालीन कोष (Emergency Fund)</span><br>
+                                <span class="number-highlight">$१९,०००</span>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm text-center">
+                                <span class="text-gray-500 text-sm">ट्रेजरी बन्ड लगानी (४.७५% ब्याजमा)</span><br>
+                                <span class="number-highlight text-green-600">$५०,०००</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-center bg-white p-4 rounded-lg shadow-sm">
+                            <span class="text-gray-500 text-sm">मासिक ब्याज आम्दानी</span><br>
+                            <span class="number-highlight text-blue-600">~$२०० (करिब ३०,००० ने.रु.)</span>
+                        </div>
+                    </div>
+
+                    <h3 class="font-bold text-xl text-gray-800 mb-4">मासिक बजेटको बाँडफाँड (Radical Minimalism):</h3>
+                    <ul class="space-y-3 text-lg mb-6 text-gray-700">
+                        <li class="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
+                            <span><i class="fa-solid fa-seedling text-green-500 mr-2"></i> किराना र कृषि (Groceries/Agriculture)</span>
+                            <span class="font-bold">$५० (~६,५०० ने.रु.)</span>
+                        </li>
+                        <li class="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
+                            <span><i class="fa-solid fa-motorcycle text-blue-500 mr-2"></i> यातायात (Transportation)</span>
+                            <span class="font-bold">$५० (~६,५०० ने.रु.)</span>
+                        </li>
+                        <li class="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
+                            <span><i class="fa-solid fa-dumbbell text-gray-500 mr-2"></i> स्वास्थ्य र व्यायाम (Gym)</span>
+                            <span class="font-bold">$१५ (~२,००० ने.रु.)</span>
+                        </li>
+                        <li class="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
+                            <span><i class="fa-solid fa-mug-hot text-yellow-500 mr-2"></i> विविध खर्च (Miscellaneous)</span>
+                            <span class="font-bold">$५० (~६,५०० ने.रु.)</span>
+                        </li>
+                        <li class="flex justify-between items-center bg-blue-600 text-white p-3 rounded-lg mt-2">
+                            <span class="font-bold">कुल अनुमानित खर्च</span>
+                            <span class="font-bold">$१६५ - $१७५</span>
+                        </li>
+                    </ul>
+                    <p class="text-lg leading-relaxed bg-green-50 border-l-4 border-green-500 p-4">
+                        यस हिसाबले प्रत्येक महिना <strong>$२५ देखि $३५</strong> बचत हुन्छ। यो बजेट कागजमा कसिलो देखिए पनि व्यवहारमा धेरै धनी छ, किनकि यहाँ कच्चा पुँजीलाई मेरो समय र सीपले प्रतिस्थापन गर्छ।
+                    </p>
+                </div>
+
+                <!-- Chapter 4 -->
+                <div id="tab-chap4" class="tab-content">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800 border-b pb-4">अध्याय ४: आत्मनिर्भरता र अफ-ग्रिड जीवन (Self-Sustainability)</h2>
+                    <p class="text-lg leading-relaxed mb-6">
+                        अमेरिकामा 'अफ-ग्रिड' (Off-grid) जीवन बिताउने एउटा ठूलो आन्दोलन नै छ। मानिसहरू नगरपालिकाका सुविधाहरूबाट अलग भएर आफ्नै खाना उब्जाउँछन् र आफ्नै स्वतन्त्रता दावी गर्छन्। मेरो लक्ष्य पनि नेपालको मेरो गाउँको उर्वर भूमिमा यही अवधारणा लागू गर्नु हो।
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                            <div class="text-3xl text-yellow-500 mb-3"><i class="fa-solid fa-solar-panel"></i></div>
+                            <h3 class="font-bold text-lg mb-2">ऊर्जा स्वतन्त्रता</h3>
+                            <p class="text-gray-600 text-sm">कलेजमा मैले फोटोभोल्टिक्स (Photovoltaics) को अध्ययन गरें। सोलर प्यानल र साना हावा टर्बाइनहरू (Wind Turbines) को प्रयोग गरेर आफ्नै बिजुली उत्पादन गर्नु अब महँगो सपना रहेन, यो एक पटकको सस्तो लगानी हो।</p>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                            <div class="text-3xl text-green-500 mb-3"><i class="fa-solid fa-wheat-awn"></i></div>
+                            <h3 class="font-bold text-lg mb-2">कृषि विज्ञान</h3>
+                            <p class="text-gray-600 text-sm">आधुनिक कृषि प्रविधिको प्रयोग गरेर वर्षभरि नै थोरै मिहिनेतमा धेरै उब्जनी गर्न सकिन्छ। म आफ्नै खाना र प्रोटिन (जस्तै कुखुरा, माछा) आफैं उत्पादन गर्नेछु।</p>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-6 border border-gray-200 md:col-span-2">
+                            <div class="text-3xl text-gray-700 mb-3"><i class="fa-solid fa-hammer"></i></div>
+                            <h3 class="font-bold text-lg mb-2">आर्किटेक्चर र निर्माण</h3>
+                            <p class="text-gray-600 text-sm">धातु (Metalwork) र काठको (Woodwork) काम सिकेर म आफ्ना लागि आवश्यक फर्निचरदेखि स्टिल-फ्रेम गरिएको क्याबिनसम्म आफैं बनाउन सक्छु। यो केवल बाँच्नको लागि मात्र होइन, एउटा आरामदायक, आत्मनिर्भर र रचनात्मक जीवनको लागि तयार गरिएको डिजाइन हो।</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chapter 5 -->
+                <div id="tab-chap5" class="tab-content">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800 border-b pb-4">अध्याय ५: रचनात्मक जीवन शैली (Final Remarks)</h2>
+                    <p class="text-lg leading-relaxed mb-4">
+                        यस पुस्तकमा विस्तृत रूपमा व्याख्या गरिएका सबै योजना, कानुनी अनुपालन, बजेटिङ र इन्जिनियरिङ एउटै साझा उद्देश्यका लागि हुन्: <strong>एउटा रचनात्मक जीवनशैलीको लागि ठाउँ बनाउनु।</strong>
+                    </p>
+                    <p class="text-lg leading-relaxed mb-4">
+                        जब बाँच्नको लागि गर्नुपर्ने संघर्षको बोझ उठ्छ, तब रचनात्मकता हरेक स्तरमा फक्रिन सक्छ। यो आफ्नै खाना उब्जाउने दैनिक कार्यमा पनि हुन्छ, र संगीत रचना गर्ने वा कला सिर्जना गर्ने ठूला कार्यहरूमा पनि हुन्छ। म एउटा यस्तो वातावरण निर्माण गर्न चाहन्छु जहाँ मेरा भावी सन्ततिहरू सुरक्षित, खुसी र आत्मनिर्भर भएर हुर्कन सकुन्।
+                    </p>
+                    <p class="text-lg leading-relaxed mb-6">
+                        एउटा यस्तो समाज जसले मानिसहरूलाई सधैं बाँच्नको लागि संघर्ष गर्न बाध्य पार्छ र साथसाथै प्रणालीको लागि "उपयोगी" हुन माग गर्छ, त्यसले अक्सर स्वार्थी र थकित जीवनशैलीलाई जन्म दिन्छ। त्यो प्रणालीबाट बाहिर निस्केर— जियो-आर्बिट्रेज र अफ-ग्रिड प्रविधिको माध्यमबाट आफ्ना आधारभूत आवश्यकताहरू सुरक्षित गरेर— म बाँच्ने अन्डरलाइंग त्रास बिना नै विश्वलाई वास्तविक, रचनात्मक मूल्य प्रदान गर्न सक्छु।
+                    </p>
+                    <div class="bg-blue-600 text-white rounded-xl p-8 text-center italic text-xl shadow-lg mt-8">
+                        "अबको मेरो कदम यी दुवै संसार (अमेरिका र नेपाल) मा आफ्नो आधार तयार पार्ने र पूर्ण रूपमा आत्मनिर्भर जीवनमा प्रवेश गर्ने हुनेछ। ब्लुप्रिन्ट तयार छ। आधार सेट गरिएको छ। अब बाँच्ने समय आएको छ।"
+                    </div>
+                </div>
+
+                <!-- Acknowledgments -->
+                <div id="tab-ack" class="tab-content">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800 border-b pb-4">आभार (Acknowledgments)</h2>
+                    <p class="text-lg leading-relaxed mb-4">
+                        मैले यो पुस्तक लेख्नुअघि अरू कुनै पुस्तक लेखेको थिइनँ। यो पुस्तक पूर्ण रूपमा मेरो भ्वाइस मेमो (Voice Memos) हरूको रेकर्डिङबाट सुरु भएको हो। 
+                    </p>
+                    <p class="text-lg leading-relaxed mb-4">
+                        त्यसपछि ती रेकर्डिङहरूलाई Gemini AI र कृत्रिम बौद्धिकताको (Artificial Intelligence) मद्दतले सरल अंग्रेजी र पछि नेपालीमा अनुवाद तथा सम्पादन गरिएको हो।
+                    </p>
+                    <p class="text-lg leading-relaxed mb-4">
+                        म यस यात्रामा मद्दत गर्ने सबै स्रोतहरू, मेरा आमाबुवा, र मलाई अवसर दिने दुवै देशहरू (नेपाल र अमेरिका) प्रति आभारी छु। यदि कुनै क्रेडिट वा सन्दर्भहरू छुटेका छन् भने मलाई सम्पर्क गर्न सक्नुहुन्छ, म त्यसलाई पक्कै थप्नेछु।
+                    </p>
+                    <div class="mt-8 pt-6 border-t border-gray-200 text-center text-gray-500">
+                        <p>© २०२६ देवानीक कोइराला। सबै अधिकार सुरक्षित।</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Logic Script -->
+    <script>
+        function checkPassword() {
+            const pwdInput = document.getElementById('password-input').value;
+            const errorMsg = document.getElementById('error-msg');
+            
+            // Password verification
+            if (pwdInput === 'Dewanik8') {
+                // Hide lock screen
+                document.getElementById('lock-screen').style.display = 'none';
+                // Show main app layout
+                document.getElementById('main-app').classList.remove('hidden');
+            } else {
+                errorMsg.classList.remove('hidden');
+                document.getElementById('password-input').value = '';
+                document.getElementById('password-input').focus();
+            }
+        }
+
+        // Allow pressing Enter to submit password
+        document.getElementById('password-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        function openTab(tabId, btnElement) {
+            // Hide all contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Remove active style from all buttons
+            const btns = document.querySelectorAll('.tab-btn');
+            btns.forEach(btn => {
+                btn.classList.remove('active', 'bg-e2e8f0', 'border-r-4');
+            });
+
+            // Show current tab
+            document.getElementById(tabId).classList.add('active');
+
+            // Add active style to clicked button
+            btnElement.classList.add('active');
+            
+            // On mobile, scroll to top when tab changes
+            document.querySelector('.flex-1.overflow-y-auto').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
+
